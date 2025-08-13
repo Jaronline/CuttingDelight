@@ -1,9 +1,9 @@
 package dev.jaronline.cuttingdelight;
 
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
-import dev.jaronline.cuttingdelight.registry.BlockRegistry;
-import dev.jaronline.cuttingdelight.registry.CreativeTabRegistry;
-import dev.jaronline.cuttingdelight.registry.ItemRegistry;
+import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.common.registry.BlockRegistry;
+import dev.jaronline.cuttingdelight.common.registry.CreativeTabRegistry;
+import dev.jaronline.cuttingdelight.common.registry.ItemRegistry;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

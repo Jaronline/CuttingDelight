@@ -1,6 +1,6 @@
-package dev.jaronline.cuttingdelight.block.entity;
+package dev.jaronline.cuttingdelight.common.block.entity;
 
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;

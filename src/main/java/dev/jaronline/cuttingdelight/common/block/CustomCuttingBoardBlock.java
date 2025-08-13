@@ -1,8 +1,8 @@
-package dev.jaronline.cuttingdelight.block;
+package dev.jaronline.cuttingdelight.common.block;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
+import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
