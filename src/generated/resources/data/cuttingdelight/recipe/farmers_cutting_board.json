@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "farmersdelight:cutting_board"
+      "item": "cuttingdelight:cutting_board"
     }
   ],
   "result": {
-    "id": "cuttingdelight:cutting_board",
-    "count": 1
+    "count": 1,
+    "id": "farmersdelight:cutting_board"
   }
 }
