@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "farmersdelight:cutting_board"
+    }
+  ],
+  "result": {
+    "id": "cuttingdelight:cutting_board",
+    "count": 1
+  }
+}
