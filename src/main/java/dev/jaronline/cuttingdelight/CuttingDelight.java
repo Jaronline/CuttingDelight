@@ -28,8 +28,6 @@ public class CuttingDelight {
         ItemRegistry.register(modEventBus);
         CreativeTabRegistry.register(modEventBus);
 
-        NeoForge.EVENT_BUS.register(this);
-
 //        Config.register(modContainer, ModConfig.Type.COMMON);
     }
 
