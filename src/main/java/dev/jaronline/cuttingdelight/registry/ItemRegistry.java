@@ -1,13 +1,20 @@
 package dev.jaronline.cuttingdelight.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import vectorwing.farmersdelight.common.item.FuelBlockItem;
 
 public class ItemRegistry {
     private static ItemRegistry instance;
 
+    private final BlockRegistry blocks = BlockRegistry.getInstance();
     private final DeferredRegister.Items items = DeferredRegister.createItems(CuttingDelight.MOD_ID);
+
+    public final DeferredItem<FuelBlockItem> cuttingBoard = items.register("cutting_board",
+            () -> new FuelBlockItem(blocks.cuttingBoard.get(), new Item.Properties(), 200));
 
     private ItemRegistry() {}
 

@@ -19,6 +19,10 @@ public class CreativeTabRegistry {
     private final DeferredHolder<CreativeModeTab, CreativeModeTab> cuttingDelightTab = creativeTabs
             .register("cuttingdelight_tab", () -> CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.cuttingdelight"))
+                .icon(() -> itemRegistry.cuttingBoard.get().getDefaultInstance())
+                .displayItems((params, output) -> {
+                    output.accept(itemRegistry.cuttingBoard.get());
+                })
                 .build());
 
     private CreativeTabRegistry() {}

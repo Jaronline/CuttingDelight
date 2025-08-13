@@ -1,13 +1,20 @@
 package dev.jaronline.cuttingdelight.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
+import dev.jaronline.cuttingdelight.block.CustomCuttingBoardBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 
 public class BlockRegistry {
     private static BlockRegistry instance;
 
     private final DeferredRegister.Blocks blocks = DeferredRegister.createBlocks(CuttingDelight.MOD_ID);
+
+    public final DeferredBlock<CustomCuttingBoardBlock> cuttingBoard = blocks.register("cutting_board",
+            () -> new CustomCuttingBoardBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.CUTTING_BOARD.get())));
 
     private BlockRegistry() {}
 
