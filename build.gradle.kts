@@ -21,6 +21,7 @@ val modGroupId: String by extra
 val modAuthors: String by extra
 val modDescription: String by extra
 
+val jeiVersion: String by extra
 val farmersDelightVersionRange: String by extra
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -41,6 +42,16 @@ repositories {
         filter {
             includeGroup("curse.maven")
         }
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = uri("https://maven.blamejared.com/")
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = uri("https://modmaven.dev")
     }
 }
 
@@ -83,7 +94,15 @@ neoForge {
 
             // gameDirectory = project.file("run-data")
 
-            programArguments.addAll("--mod", modId, "--all", "--output", file("src/generated/resources/").absolutePath, "--existing", file("src/main/resources/").absolutePath)
+            programArguments.addAll(
+                "--mod",
+                modId,
+                "--all",
+                "--output",
+                file("src/generated/resources/").absolutePath,
+                "--existing",
+                file("src/main/resources/").absolutePath
+            )
         }
 
         configureEach {
@@ -110,6 +129,11 @@ configurations {
 }
 
 dependencies {
+    val localRuntime by configurations
+
+    compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
+    localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+
     implementation("curse.maven:farmersdelight-398521:6597295")
 }
 
