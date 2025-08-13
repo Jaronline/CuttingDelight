@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.integration.jei;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.common.registry.ItemRegistry;
+import dev.jaronline.cuttingdelight.registry.ItemRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;

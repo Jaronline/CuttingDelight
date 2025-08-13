@@ -1,7 +1,7 @@
-package dev.jaronline.cuttingdelight.common.registry;
+package dev.jaronline.cuttingdelight.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
+import dev.jaronline.cuttingdelight.block.CustomCuttingBoardBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;

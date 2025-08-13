@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.common;
+package dev.jaronline.cuttingdelight;
 
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
