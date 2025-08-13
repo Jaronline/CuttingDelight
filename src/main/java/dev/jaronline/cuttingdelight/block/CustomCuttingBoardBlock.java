@@ -4,6 +4,8 @@ import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
