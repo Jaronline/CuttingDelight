@@ -1,17 +1,12 @@
 package dev.jaronline.cuttingdelight;
 
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
-import dev.jaronline.cuttingdelight.registry.BlockRegistry;
-import dev.jaronline.cuttingdelight.registry.CreativeTabRegistry;
-import dev.jaronline.cuttingdelight.registry.ItemRegistry;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
+import dev.jaronline.cuttingdelight.registry.*;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.slf4j.Logger;
 
 @Mod(CuttingDelight.MOD_ID)
 public class CuttingDelight {
@@ -25,6 +20,7 @@ public class CuttingDelight {
         BlockEntityTypeRegistry.register(modEventBus);
         ItemRegistry.register(modEventBus);
         CreativeTabRegistry.register(modEventBus);
+        MenuTypeRegistry.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

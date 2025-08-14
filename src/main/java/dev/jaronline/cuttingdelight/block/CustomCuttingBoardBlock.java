@@ -2,14 +2,13 @@ package dev.jaronline.cuttingdelight.block;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
+import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,6 +29,15 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 	}
 
 	@Override
+	protected @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		return new SimpleMenuProvider((containerId, playerInventory, player) ->
+				new CuttingBoardMenu(containerId, playerInventory, ContainerLevelAccess.create(
+						blockEntity.getLevel(), blockEntity.getBlockPos())),
+				getName());
+	}
+
+	@Override
 	public @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, Level level,
 													@NotNull BlockPos pos, @NotNull Player player,
 													@NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
@@ -38,8 +46,12 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 		if (tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardEntity) {
 			ItemStack heldStack = player.getItemInHand(hand);
 
+
 			if (!cuttingBoardEntity.isEmpty() && !heldStack.isEmpty()) {
-				return ItemInteractionResult.CONSUME;
+				if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+					serverPlayer.openMenu(state.getMenuProvider(level, pos));
+				}
+				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			}
 		}
 
