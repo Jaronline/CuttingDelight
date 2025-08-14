@@ -69,7 +69,9 @@ neoForge {
         minecraftVersion = parchmentMinecraftVersion
     }
 
-    // accessTransformers = project.files("src/main/resources/META-INF/accesstransformer.cfg")
+//    accessTransformers {
+//        file("src/main/resources/META-INF/accesstransformer.cfg")
+//    }
 
     runs {
         create("client") {
