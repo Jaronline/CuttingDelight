@@ -19,6 +19,7 @@ val modLicense: String by extra
 val modVersion: String by extra
 val modGroupId: String by extra
 val modAuthors: String by extra
+val modCredits: String by extra
 val modDescription: String by extra
 
 val jeiVersion: String by extra
@@ -143,8 +144,8 @@ tasks.withType<ProcessResources>().configureEach {
     var replaceProperties = mapOf(
         "minecraft_version" to minecraftVersion, "minecraft_version_range" to minecraftVersionRange,
         "neo_version" to neoVersion, "loader_version_range" to loaderVersionRange,
-        "mod_id" to modId, "mod_name" to modName, "mod_license" to modLicense,
-        "mod_version" to modVersion, "mod_authors" to modAuthors, "mod_description" to modDescription,
+        "mod_id" to modId, "mod_name" to modName, "mod_license" to modLicense, "mod_version" to modVersion,
+        "mod_authors" to modAuthors, "mod_credits" to modCredits, "mod_description" to modDescription,
         "farmers_delight_version_range" to farmersDelightVersionRange
     )
     inputs.properties(replaceProperties)
