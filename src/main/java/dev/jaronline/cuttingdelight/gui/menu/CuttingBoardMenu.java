@@ -1,12 +1,15 @@
 package dev.jaronline.cuttingdelight.gui.menu;
 
 import com.google.common.collect.Lists;
+import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.registry.BlockRegistry;
 import dev.jaronline.cuttingdelight.registry.MenuTypeRegistry;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +20,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.common.registry.ModItems;
@@ -48,12 +52,18 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
     private final BlockRegistry blocks = BlockRegistry.getInstance();
     private final MenuTypeRegistry menuTypes = MenuTypeRegistry.getInstance();
 
-    public CuttingBoardMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, ContainerLevelAccess.NULL);
+    public CuttingBoardMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public CuttingBoardMenu(int containerId, Inventory playerInventory, final ContainerLevelAccess access) {
-        super(MenuType.STONECUTTER, containerId);
+    public CuttingBoardMenu(int containerId, Inventory playerInventory, BlockEntity blockEntity) {
+        super(MenuTypeRegistry.getInstance().cuttingBoardMenu.get(), containerId);
+        if(blockEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardEntity) {
+            //this.cuttingBoardEntity = cuttingBoardEntity;
+        } else {
+            throw new IllegalArgumentException("BlockEntity must be instance of CustomCuttingBoardBlockEntity");
+        }
+
         this.selectedRecipeIndex = DataSlot.standalone();
         this.recipes = Lists.newArrayList();
         this.input = ItemStack.EMPTY;
@@ -67,9 +77,19 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             }
         };
         this.resultContainer = new ResultContainer();
-        this.access = access;
+        this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
         this.level = playerInventory.player.level();
-        this.inputSlot = this.addSlot(new Slot(this.container, 0, 20, 33));
+        this.inputSlot = this.addSlot(new Slot(this.container, 0, 20, 33) {
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+
+            @Override
+            public boolean mayPickup(Player player) {
+                return false;
+            }
+        });
+
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 33) {
             public boolean mayPlace(ItemStack p_40362_) {
                 return false;
@@ -110,6 +130,8 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         }
 
         this.addDataSlot(this.selectedRecipeIndex);
+
+        this.inputSlot.set(cuttingBoardEntity.getStoredItem());
     }
 
     public int getSelectedRecipeIndex() {

@@ -111,7 +111,6 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
             int i1 = y + l * 18 + 2;
             guiGraphics.renderItem((((RecipeHolder)list.get(i)).value()).getResultItem(this.minecraft.level.registryAccess()), k, i1);
         }
-
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

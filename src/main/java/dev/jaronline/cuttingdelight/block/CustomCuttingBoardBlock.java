@@ -32,8 +32,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 	protected @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		return new SimpleMenuProvider((containerId, playerInventory, player) ->
-				new CuttingBoardMenu(containerId, playerInventory, ContainerLevelAccess.create(
-						blockEntity.getLevel(), blockEntity.getBlockPos())),
+				new CuttingBoardMenu(containerId, playerInventory, blockEntity),
 				getName());
 	}
 
@@ -49,7 +48,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 
 			if (!cuttingBoardEntity.isEmpty() && !heldStack.isEmpty()) {
 				if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-					serverPlayer.openMenu(state.getMenuProvider(level, pos));
+					serverPlayer.openMenu(state.getMenuProvider(level, pos), pos);
 				}
 				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			}

@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -16,7 +17,7 @@ public class MenuTypeRegistry {
             Registries.MENU, CuttingDelight.MOD_ID);
 
     public final DeferredHolder<MenuType<?>, MenuType<CuttingBoardMenu>> cuttingBoardMenu = menuTypes.register(
-            "cutting_board_menu", () -> new MenuType<>(CuttingBoardMenu::new, FeatureFlags.DEFAULT_FLAGS));
+            "cutting_board_menu", () -> IMenuTypeExtension.create(CuttingBoardMenu::new));
 
     private MenuTypeRegistry() {}
 
