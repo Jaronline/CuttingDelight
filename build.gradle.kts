@@ -138,6 +138,7 @@ dependencies {
     localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("curse.maven:farmersdelight-398521:6597295")
+    localRuntime("curse.maven:hearth-and-harvest-1212197:6891528")
 }
 
 tasks.withType<ProcessResources>().configureEach {
