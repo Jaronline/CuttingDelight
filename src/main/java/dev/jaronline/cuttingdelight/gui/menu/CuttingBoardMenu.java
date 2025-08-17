@@ -9,7 +9,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
-import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -51,6 +49,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
     final ResultContainer resultContainer;
     private final BlockRegistry blocks = BlockRegistry.getInstance();
     private final MenuTypeRegistry menuTypes = MenuTypeRegistry.getInstance();
+    private final ItemStack usedTool;
 
     public CuttingBoardMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
@@ -64,6 +63,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             throw new IllegalArgumentException("BlockEntity must be instance of CustomCuttingBoardBlockEntity");
         }
 
+        this.usedTool = playerInventory.player.getMainHandItem();
         this.selectedRecipeIndex = DataSlot.standalone();
         this.recipes = Lists.newArrayList();
         this.input = ItemStack.EMPTY;
@@ -176,8 +176,8 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
     }
 
-    private static CuttingBoardRecipeInput createRecipeInput(Container container) {
-        return new CuttingBoardRecipeInput(container.getItem(0), ModItems.FLINT_KNIFE.get().getDefaultInstance());
+    private CuttingBoardRecipeInput createRecipeInput(Container container) {
+        return new CuttingBoardRecipeInput(container.getItem(0), this.usedTool);
     }
 
     protected void setupRecipeList(Container container, ItemStack stack) {
