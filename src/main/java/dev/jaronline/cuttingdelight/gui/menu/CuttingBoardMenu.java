@@ -57,9 +57,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
     public CuttingBoardMenu(int containerId, Inventory playerInventory, BlockEntity blockEntity) {
         super(MenuTypeRegistry.getInstance().cuttingBoardMenu.get(), containerId);
-        if(blockEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardEntity) {
-            //this.cuttingBoardEntity = cuttingBoardEntity;
-        } else {
+        if (!(blockEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardEntity)) {
             throw new IllegalArgumentException("BlockEntity must be instance of CustomCuttingBoardBlockEntity");
         }
 
