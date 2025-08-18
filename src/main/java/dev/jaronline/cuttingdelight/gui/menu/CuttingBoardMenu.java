@@ -93,24 +93,26 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
                 return false;
             }
 
-            public void onTake(Player p_150672_, ItemStack p_150673_) {
-                p_150673_.onCraftedBy(p_150672_.level(), p_150672_, p_150673_.getCount());
-                CuttingBoardMenu.this.resultContainer.awardUsedRecipes(p_150672_, this.getRelevantItems());
-                ItemStack itemstack = CuttingBoardMenu.this.inputSlot.remove(1);
-                if (!itemstack.isEmpty()) {
-                    CuttingBoardMenu.this.setupResultSlot();
-                }
 
-                access.execute((p_40364_, p_40365_) -> {
-                    long l = p_40364_.getGameTime();
-                    if (CuttingBoardMenu.this.lastSoundTime != l) {
-                        p_40364_.playSound((Player)null, p_40365_, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        CuttingBoardMenu.this.lastSoundTime = l;
-                    }
 
-                });
-                super.onTake(p_150672_, p_150673_);
-            }
+            //            public void onTake(Player p_150672_, ItemStack p_150673_) {
+//                p_150673_.onCraftedBy(p_150672_.level(), p_150672_, p_150673_.getCount());
+//                CuttingBoardMenu.this.resultContainer.awardUsedRecipes(p_150672_, this.getRelevantItems());
+//                ItemStack itemstack = CuttingBoardMenu.this.inputSlot.remove(1);
+//                if (!itemstack.isEmpty()) {
+//                    CuttingBoardMenu.this.setupResultSlot();
+//                }
+//
+//                access.execute((p_40364_, p_40365_) -> {
+//                    long l = p_40364_.getGameTime();
+//                    if (CuttingBoardMenu.this.lastSoundTime != l) {
+//                        p_40364_.playSound((Player)null, p_40365_, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0F, 1.0F);
+//                        CuttingBoardMenu.this.lastSoundTime = l;
+//                    }
+//
+//                });
+//                super.onTake(p_150672_, p_150673_);
+//            }
 
             private List<ItemStack> getRelevantItems() {
                 return List.of(CuttingBoardMenu.this.inputSlot.getItem());
