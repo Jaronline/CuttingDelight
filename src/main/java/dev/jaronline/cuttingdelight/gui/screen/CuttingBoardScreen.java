@@ -1,5 +1,6 @@
 package dev.jaronline.cuttingdelight.gui.screen;
 
+import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,12 +17,14 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import java.util.List;
 
 public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu> {
+    private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "textures/gui/container/cutting_board.png");
+
     private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
     private static final ResourceLocation RECIPE_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected");
     private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
     private static final ResourceLocation RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe");
-    private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath("cuttingdelight", "textures/gui/container/cutting_board.png");
+
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
     private static final int RECIPES_COLUMNS = 4;
