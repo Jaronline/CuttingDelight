@@ -88,7 +88,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             }
         });
 
-        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 33) {
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 21) {
             public boolean mayPlace(ItemStack p_40362_) {
                 return false;
             }
