@@ -77,7 +77,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         this.resultContainer = new ResultContainer();
         this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
         this.level = playerInventory.player.level();
-        this.inputSlot = this.addSlot(new Slot(this.container, 0, 20, 33) {
+        this.inputSlot = this.addSlot(new Slot(this.container, INPUT_SLOT, 20, 33) {
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
@@ -88,12 +88,10 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             }
         });
 
-        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 143, 21) {
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, RESULT_SLOT, 143, 21) {
             public boolean mayPlace(ItemStack p_40362_) {
                 return false;
             }
-
-
 
             //            public void onTake(Player p_150672_, ItemStack p_150673_) {
 //                p_150673_.onCraftedBy(p_150672_.level(), p_150672_, p_150673_.getCount());
@@ -228,24 +226,24 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             itemstack = itemstack1.copy();
             if (index == 1) {
                 item.onCraftedBy(itemstack1, player.level(), player);
-                if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
+                if (!this.moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index == 0) {
-                if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {
+                if (!this.moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (this.level.getRecipeManager().getRecipeFor(RecipeType.STONECUTTING, new SingleRecipeInput(itemstack1), this.level).isPresent()) {
-                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, INPUT_SLOT, RESULT_SLOT, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 2 && index < 29) {
-                if (!this.moveItemStackTo(itemstack1, 29, 38, false)) {
+            } else if (index >= INV_SLOT_START && index < INV_SLOT_END) {
+                if (!this.moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 29 && index < 38 && !this.moveItemStackTo(itemstack1, 2, 29, false)) {
+            } else if (index >= USE_ROW_SLOT_START && index < USE_ROW_SLOT_END && !this.moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -267,7 +265,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
     public void removed(Player player) {
         super.removed(player);
-        this.resultContainer.removeItemNoUpdate(1);
+        this.resultContainer.removeItemNoUpdate(RESULT_SLOT);
         this.access.execute((p_40313_, p_40314_) -> this.clearContainer(player, this.container));
     }
 }
