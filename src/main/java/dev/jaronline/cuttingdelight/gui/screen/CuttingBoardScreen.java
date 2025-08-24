@@ -4,14 +4,19 @@ import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -27,6 +32,12 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
     private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
     private static final ResourceLocation RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe");
 
+    private static final ResourceLocation BUTTON_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button_disabled");
+    private static final ResourceLocation BUTTON_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button_highlighted");
+    private static final ResourceLocation BUTTON_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button_selected");
+    private static final ResourceLocation BUTTON_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button");
+    private static final ResourceLocation CONFIRM_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/confirm");
+
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
     private static final int RECIPES_COLUMNS = 4;
@@ -36,6 +47,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
     private static final int SCROLLER_FULL_HEIGHT = 54;
     private static final int RECIPES_X = 52;
     private static final int RECIPES_Y = 14;
+
     private float scrollOffs;
     private boolean scrolling;
     private int startIndex;
@@ -47,11 +59,20 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         --this.titleLabelY;
     }
 
+    @Override
+    protected void init() {
+        super.init();
+        CuttingBoardScreenButton confirmButton = new CuttingBoardConfirmButton(this.leftPos + 140, this.topPos + 46);
+        this.addRenderableWidget(confirmButton);
+    }
+
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
+    @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int i = this.leftPos;
         int j = this.topPos;
@@ -66,6 +87,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         this.renderRecipes(guiGraphics, l, i1, j1);
     }
 
+    @Override
     protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
         super.renderTooltip(guiGraphics, x, y);
         if (this.displayRecipes) {
@@ -118,6 +140,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         }
     }
 
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         this.scrolling = false;
         if (this.displayRecipes) {
@@ -146,6 +169,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.scrolling && this.isScrollBarActive()) {
             int i = this.topPos + 14;
@@ -159,6 +183,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         }
     }
 
+    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (this.isScrollBarActive()) {
             int i = this.getOffscreenRows();
@@ -183,6 +208,63 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         if (!this.displayRecipes) {
             this.scrollOffs = 0.0F;
             this.startIndex = 0;
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    class CuttingBoardConfirmButton extends CuttingBoardScreenButton {
+        protected CuttingBoardConfirmButton(int x, int y) {
+            super(x, y, CuttingBoardScreen.CONFIRM_SPRITE, CommonComponents.GUI_DONE);
+        }
+
+        @Override
+        public void onPress() {
+            CuttingBoardScreen.this.minecraft.player.closeContainer();
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    abstract static class CuttingBoardScreenButton extends AbstractButton {
+        private boolean selected;
+        private final ResourceLocation sprite;
+
+        protected CuttingBoardScreenButton(int x, int y, ResourceLocation sprite, Component message) {
+            super(x, y, 22, 22, message);
+            this.sprite = sprite;
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+            ResourceLocation resourcelocation;
+            if (!this.active) {
+                resourcelocation = CuttingBoardScreen.BUTTON_DISABLED_SPRITE;
+            } else if (this.selected) {
+                resourcelocation = CuttingBoardScreen.BUTTON_SELECTED_SPRITE;
+            } else if (this.isHoveredOrFocused()) {
+                resourcelocation = CuttingBoardScreen.BUTTON_HIGHLIGHTED_SPRITE;
+            } else {
+                resourcelocation = CuttingBoardScreen.BUTTON_SPRITE;
+            }
+
+            guiGraphics.blitSprite(resourcelocation, this.getX(), this.getY(), this.width, this.height);
+            this.renderIcon(guiGraphics);
+        }
+
+        protected void renderIcon(GuiGraphics guiGraphics) {
+            guiGraphics.blitSprite(this.sprite, this.getX() + 2, this.getY() + 2, 18, 18);
+        }
+
+        public boolean isSelected() {
+            return this.selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+            this.defaultButtonNarrationText(narrationElementOutput);
         }
     }
 }
