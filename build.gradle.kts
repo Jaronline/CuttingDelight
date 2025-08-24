@@ -23,6 +23,7 @@ val modCredits: String by extra
 val modDescription: String by extra
 
 val jeiVersion: String by extra
+val farmersDelightVersion: String by extra
 val farmersDelightVersionRange: String by extra
 
 tasks.named<Wrapper>("wrapper").configure {
@@ -37,11 +38,12 @@ repositories {
     exclusiveContent {
         forRepository {
             maven {
-                url = uri("https://cursemaven.com")
+                name = "Modrinth"
+                url = uri("https://api.modrinth.com/maven")
             }
         }
         filter {
-            includeGroup("curse.maven")
+            includeGroup("maven.modrinth")
         }
     }
     maven {
@@ -137,8 +139,8 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
     localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
-    implementation("curse.maven:farmersdelight-398521:6597295")
-    localRuntime("curse.maven:hearth-and-harvest-1212197:6891528")
+    implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
+    localRuntime("maven.modrinth:hearth-and-harvest:xr8I6A0Z")
 }
 
 tasks.withType<ProcessResources>().configureEach {
