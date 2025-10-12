@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.registry;
+package dev.jaronline.cuttingdelight.common.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import net.minecraft.world.item.Item;

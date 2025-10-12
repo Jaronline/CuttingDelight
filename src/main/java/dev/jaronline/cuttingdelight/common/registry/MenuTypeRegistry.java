@@ -1,9 +1,8 @@
-package dev.jaronline.cuttingdelight.registry;
+package dev.jaronline.cuttingdelight.common.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.client.gui.menu.CuttingBoardMenu;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;

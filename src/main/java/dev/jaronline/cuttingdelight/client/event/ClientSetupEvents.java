@@ -1,9 +1,9 @@
 package dev.jaronline.cuttingdelight.client.event;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.gui.screen.CuttingBoardScreen;
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
-import dev.jaronline.cuttingdelight.registry.MenuTypeRegistry;
+import dev.jaronline.cuttingdelight.client.gui.screen.CuttingBoardScreen;
+import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.common.registry.MenuTypeRegistry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

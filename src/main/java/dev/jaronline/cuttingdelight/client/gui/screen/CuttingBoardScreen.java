@@ -1,13 +1,15 @@
-package dev.jaronline.cuttingdelight.gui.screen;
+package dev.jaronline.cuttingdelight.client.gui.screen;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.client.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.network.CutPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 @ParametersAreNonnullByDefault
+@OnlyIn(Dist.CLIENT)
 public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu> {
     private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "textures/gui/container/cutting_board.png");
 
@@ -52,17 +55,20 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
     private boolean scrolling;
     private int startIndex;
     private boolean displayRecipes;
+    private CuttingBoardScreenButton confirmButton;
 
     public CuttingBoardScreen(CuttingBoardMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         menu.registerUpdateListener(this::containerChanged);
+        menu.registerSelectedRecipeUpdateListener(this::selectedRecipeChanged);
         --this.titleLabelY;
     }
 
     @Override
     protected void init() {
         super.init();
-        CuttingBoardScreenButton confirmButton = new CuttingBoardConfirmButton(this.leftPos + 140, this.topPos + 46);
+        confirmButton = new CuttingBoardConfirmButton(this.leftPos + 140, this.topPos + 46);
+        confirmButton.active = false;
         this.addRenderableWidget(confirmButton);
     }
 
@@ -211,6 +217,10 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
         }
     }
 
+    private void selectedRecipeChanged() {
+        confirmButton.active = true;
+    }
+
     @OnlyIn(Dist.CLIENT)
     class CuttingBoardConfirmButton extends CuttingBoardScreenButton {
         protected CuttingBoardConfirmButton(int x, int y) {
@@ -219,6 +229,12 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 
         @Override
         public void onPress() {
+            BlockPos blockPos = CuttingBoardScreen.this.menu.getBlockPos();
+            CuttingBoardRecipe result = CuttingBoardScreen.this.menu.getSelectedRecipe();
+            if (result == null) {
+                return;
+            }
+            CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));
             CuttingBoardScreen.this.minecraft.player.closeContainer();
         }
     }

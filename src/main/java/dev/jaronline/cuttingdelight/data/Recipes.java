@@ -1,6 +1,6 @@
 package dev.jaronline.cuttingdelight.data;
 
-import dev.jaronline.cuttingdelight.registry.BlockRegistry;
+import dev.jaronline.cuttingdelight.common.registry.BlockRegistry;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
