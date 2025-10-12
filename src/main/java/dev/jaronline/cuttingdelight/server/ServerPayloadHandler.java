@@ -10,10 +10,10 @@ public class ServerPayloadHandler {
     public static void handleCut(final CutPayload payload, final IPayloadContext context) {
         BlockEntity blockEntity = context.player().level().getBlockEntity(payload.blockPos());
         if (!(blockEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardEntity)) {
-            throw new IllegalArgumentException("BlockEntity must be instance of CustomCuttingBoardBlockEntity");
+            throw new IllegalArgumentException("Expected CustomCuttingBoardBlockEntity but found: " + blockEntity.getClass().getSimpleName());
         }
         if (!(payload.recipe() instanceof CuttingBoardRecipe cuttingRecipe)) {
-            throw new IllegalArgumentException("Recipe must be instance of CuttingBoardRecipe");
+            throw new IllegalArgumentException("Expected CuttingBoardRecipe but found: " + payload.recipe().getClass().getSimpleName());
         }
         cuttingBoardEntity.processStoredItemUsingTool(cuttingRecipe, context.player().getMainHandItem(), context.player());
     }
