@@ -140,7 +140,7 @@ dependencies {
     localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
-    localRuntime("maven.modrinth:hearth-and-harvest:xr8I6A0Z")
+    localRuntime("maven.modrinth:hearth-and-harvest:6rnNHSe5")
 }
 
 tasks.withType<ProcessResources>().configureEach {
