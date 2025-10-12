@@ -1,14 +1,13 @@
-package dev.jaronline.cuttingdelight.block;
+package dev.jaronline.cuttingdelight.common.block;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
-import dev.jaronline.cuttingdelight.gui.menu.CuttingBoardMenu;
-import dev.jaronline.cuttingdelight.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
+import dev.jaronline.cuttingdelight.client.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

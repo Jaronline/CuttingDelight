@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight;
 
 import com.mojang.logging.LogUtils;
-import dev.jaronline.cuttingdelight.registry.*;
+import dev.jaronline.cuttingdelight.common.registry.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

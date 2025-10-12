@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.data;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.registry.BlockRegistry;
+import dev.jaronline.cuttingdelight.common.registry.BlockRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;

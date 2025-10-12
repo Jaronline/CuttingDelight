@@ -1,7 +1,7 @@
-package dev.jaronline.cuttingdelight.registry;
+package dev.jaronline.cuttingdelight.common.registry;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
-import dev.jaronline.cuttingdelight.block.entity.CustomCuttingBoardBlockEntity;
+import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
