@@ -167,7 +167,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 
             i = this.leftPos + 119;
             j = this.topPos + 9;
-            if (mouseX >= (double)i && mouseX < (double)(i + (RECIPES_ROWS * RECIPES_COLUMNS)) && mouseY >= (double)j && mouseY < (double)(j + SCROLLER_FULL_HEIGHT)) {
+            if (mouseX >= (double)i && mouseX < (double)(i + SCROLLER_WIDTH) && mouseY >= (double)j && mouseY < (double)(j + SCROLLER_FULL_HEIGHT)) {
                 this.scrolling = true;
             }
         }
