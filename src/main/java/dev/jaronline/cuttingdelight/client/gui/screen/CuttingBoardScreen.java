@@ -2,7 +2,7 @@ package dev.jaronline.cuttingdelight.client.gui.screen;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.client.gui.menu.CuttingBoardMenu;
-import dev.jaronline.cuttingdelight.network.CutPayload;
+import dev.jaronline.cuttingdelight.common.network.CutPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;

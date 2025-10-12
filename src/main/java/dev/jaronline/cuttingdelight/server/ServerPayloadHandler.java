@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.server;
 
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
-import dev.jaronline.cuttingdelight.network.CutPayload;
+import dev.jaronline.cuttingdelight.common.network.CutPayload;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;

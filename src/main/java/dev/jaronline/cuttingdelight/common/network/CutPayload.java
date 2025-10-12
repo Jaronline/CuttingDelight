@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.network;
+package dev.jaronline.cuttingdelight.common.network;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import io.netty.buffer.ByteBuf;
