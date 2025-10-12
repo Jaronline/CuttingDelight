@@ -89,15 +89,6 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
             public boolean mayPickup(Player player) {
                 return false;
             }
-
-//            public void onTake(Player player, ItemStack itemStack) {
-//                itemStack.onCraftedBy(player.level(), player, itemStack.getCount());
-//                CuttingBoardMenu.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
-//            }
-
-//            private List<ItemStack> getRelevantItems() {
-//                return List.of(CuttingBoardMenu.this.inputSlot.getItem());
-//            }
         });
 
         for (int i = 0; i < 3; ++i) {
