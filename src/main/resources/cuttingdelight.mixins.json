@@ -2,7 +2,9 @@
   "required": true,
   "package": "dev.jaronline.cuttingdelight.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "CuttingBoardBlockEntityAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
