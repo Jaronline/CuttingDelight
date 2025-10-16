@@ -2,6 +2,8 @@ package dev.jaronline.cuttingdelight.common.event;
 
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.common.network.CutPayload;
+import dev.jaronline.cuttingdelight.common.network.CuttingBoardEmptiedPayload;
+import dev.jaronline.cuttingdelight.common.network.CuttingBoardFilledPayload;
 import dev.jaronline.cuttingdelight.server.ServerPayloadHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,6 +20,16 @@ public class SetupEvents {
                 CutPayload.TYPE,
                 CutPayload.STREAM_CODEC,
                 new MainThreadPayloadHandler<>(ServerPayloadHandler::handleCut)
+        );
+        registrar.playToServer(
+                CuttingBoardEmptiedPayload.TYPE,
+                CuttingBoardEmptiedPayload.STREAM_CODEC,
+                new MainThreadPayloadHandler<>(ServerPayloadHandler::handleCuttingBoardEmptied)
+        );
+        registrar.playToServer(
+                CuttingBoardFilledPayload.TYPE,
+                CuttingBoardFilledPayload.STREAM_CODEC,
+                new MainThreadPayloadHandler<>(ServerPayloadHandler::handleCuttingBoardFilled)
         );
     }
 }

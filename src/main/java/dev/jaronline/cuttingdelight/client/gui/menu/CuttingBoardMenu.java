@@ -21,6 +21,7 @@ import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.function.Consumer;
 
 @ParametersAreNonnullByDefault
 public class CuttingBoardMenu extends AbstractContainerMenu {
@@ -33,6 +34,8 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
     private ItemStack input;
     final Slot inputSlot;
     protected final Slot resultSlot;
+    Runnable inputEmptiedListener;
+    Consumer<ItemStack> inputFilledListener;
     Runnable slotUpdateListener;
     Runnable selectedRecipeUpdateListener;
     public final Container container;
@@ -57,6 +60,8 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         this.selectedRecipeIndex = DataSlot.standalone();
         this.recipes = Lists.newArrayList();
         this.input = ItemStack.EMPTY;
+        this.inputEmptiedListener = () -> {};
+        this.inputFilledListener = (s) -> {};
         this.slotUpdateListener = () -> {};
         this.selectedRecipeUpdateListener = () -> {};
         this.container = new SimpleContainer(1) {
@@ -70,13 +75,21 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
         this.level = playerInventory.player.level();
         this.inputSlot = this.addSlot(new Slot(this.container, INPUT_SLOT, 20, 33) {
-            public boolean mayPlace(ItemStack stack) {
-                return false;
+            @Override
+            public void setChanged() {
+                super.setChanged();
+                setupResultSlot();
             }
 
             @Override
-            public boolean mayPickup(Player player) {
-                return false;
+            public void setByPlayer(ItemStack newStack, ItemStack oldStack) {
+                super.setByPlayer(newStack, oldStack);
+                if (oldStack.isEmpty() && !newStack.isEmpty()) {
+                    CuttingBoardMenu.this.inputFilledListener.accept(newStack);
+                }
+                if (!oldStack.isEmpty() && newStack.isEmpty()) {
+                    CuttingBoardMenu.this.inputEmptiedListener.run();
+                }
             }
         });
 
@@ -178,6 +191,14 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
     public boolean hasInputItem() {
         return this.inputSlot.hasItem() && !this.recipes.isEmpty();
+    }
+
+    public void registerInputEmptiedListener(Runnable listener) {
+        this.inputEmptiedListener = listener;
+    }
+
+    public void registerInputFilledListener(Consumer<ItemStack> listener) {
+        this.inputFilledListener = listener;
     }
 
     public void registerUpdateListener(Runnable listener) {
