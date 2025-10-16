@@ -1,7 +1,9 @@
 package dev.jaronline.cuttingdelight.common.block.entity;
 
+import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
 import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
+import dev.jaronline.cuttingdelight.mixin.CuttingBoardBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -53,5 +55,29 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
     @Override
     public @NotNull BlockEntityType<?> getType() {
         return BlockEntityTypeRegistry.getInstance().cuttingBoard.get();
+    }
+
+    public boolean addStack(ItemStack itemStack) {
+        if (this.isEmpty() && !itemStack.isEmpty()) {
+            CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
+            accessor.getInventory().setStackInSlot(0, itemStack.split(itemStack.getCount()));
+            accessor.setItemCarvingBoard(false);
+            this.inventoryChanged();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public ItemStack removeStack() {
+        if (!this.isEmpty()) {
+            CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
+            accessor.setItemCarvingBoard(false);
+            ItemStack item = this.getStoredItem().split(this.getStoredItem().getCount());
+            this.inventoryChanged();
+            return item;
+        } else {
+            return ItemStack.EMPTY;
+        }
     }
 }
