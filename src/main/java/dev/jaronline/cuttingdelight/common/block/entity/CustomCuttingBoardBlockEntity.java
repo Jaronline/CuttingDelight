@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
@@ -28,11 +29,17 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         super(pos, state);
     }
 
-    public boolean processStoredItemUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
+    public boolean processStoredStackUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
         if (level == null) return false;
         if (isItemCarvingBoard()) return false;
 
-        List<ItemStack> results = recipe.rollResults(level.random, EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack));
+        int itemCount = getStoredItem().getCount();
+        List<ItemStack> results = Lists.newArrayList();
+        int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack);
+        for (int i = 0; i < itemCount; i++) {
+            results.addAll(recipe.rollResults(level.random, fortuneLevel));
+        }
+
         for (ItemStack resultStack : results) {
             Direction direction = getBlockState().getValue(CustomCuttingBoardBlock.FACING).getCounterClockWise();
             ItemUtils.spawnItemEntity(level, resultStack.copy(),
@@ -40,11 +47,11 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
                     direction.getStepX() * 0.2F, 0.0F, direction.getStepZ() * 0.2F);
         }
         if (!level.isClientSide) {
-            toolStack.hurtAndBreak(1, (ServerLevel) level, player, (item) -> {});
+            toolStack.hurtAndBreak(itemCount, (ServerLevel) level, player, (item) -> {});
         }
 
         playProcessingSound(recipe.getSoundEvent().orElse(null), toolStack, getStoredItem());
-        removeItem();
+        removeStack();
         if (player instanceof ServerPlayer) {
             ModAdvancements.USE_CUTTING_BOARD.get().trigger((ServerPlayer) player);
         }
