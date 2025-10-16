@@ -15,6 +15,6 @@ public class ServerPayloadHandler {
         if (!(payload.recipe() instanceof CuttingBoardRecipe cuttingRecipe)) {
             throw new IllegalArgumentException("Expected CuttingBoardRecipe but found: " + payload.recipe().getClass().getSimpleName());
         }
-        cuttingBoardEntity.processStoredItemUsingTool(cuttingRecipe, context.player().getMainHandItem(), context.player());
+        cuttingBoardEntity.processStoredStackUsingTool(cuttingRecipe, context.player().getMainHandItem(), context.player());
     }
 }
