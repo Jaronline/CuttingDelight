@@ -216,6 +216,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
             RecipeHolder<CuttingBoardRecipe> recipeholder = this.recipes.get(this.selectedRecipeIndex.get());
             ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(this.container), this.level.registryAccess());
+            itemstack.setCount(itemstack.getCount() * this.inputSlot.getItem().getCount());
             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
                 this.resultContainer.setRecipeUsed(recipeholder);
                 this.resultSlot.set(itemstack);
