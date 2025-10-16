@@ -34,6 +34,15 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         if (isItemCarvingBoard()) return false;
 
         int itemCount = getStoredItem().getCount();
+        if (toolStack.isDamageableItem() && (player == null || !player.hasInfiniteMaterials())) {
+            itemCount = Math.min(itemCount, toolStack.getMaxDamage() - toolStack.getDamageValue());
+        }
+
+        if (itemCount < 1) {
+            CuttingDelight.LOGGER.warn("Cutting Board at {} tried to process with a broken tool!", worldPosition);
+            return false;
+        }
+
         List<ItemStack> results = Lists.newArrayList();
         int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack);
         for (int i = 0; i < itemCount; i++) {
@@ -51,7 +60,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         }
 
         playProcessingSound(recipe.getSoundEvent().orElse(null), toolStack, getStoredItem());
-        removeStack();
+        removeItem(itemCount);
         if (player instanceof ServerPlayer) {
             ModAdvancements.USE_CUTTING_BOARD.get().trigger((ServerPlayer) player);
         }
@@ -73,6 +82,18 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public ItemStack removeItem(int count) {
+        if (!this.isEmpty()) {
+            CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
+            accessor.setItemCarvingBoard(false);
+            ItemStack item = this.getStoredItem().split(count);
+            this.inventoryChanged();
+            return item;
+        } else {
+            return ItemStack.EMPTY;
         }
     }
 
