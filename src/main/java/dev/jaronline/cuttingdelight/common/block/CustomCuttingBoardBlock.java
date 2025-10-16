@@ -75,8 +75,9 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             } else if (hand.equals(InteractionHand.MAIN_HAND)) {
                 if (!player.isCreative()) {
-                    if (!player.getInventory().add(player.isCrouching() ? cuttingBoardEntity.removeItem() : cuttingBoardEntity.removeStack())) {
-                        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), player.isCrouching() ? cuttingBoardEntity.removeItem() : cuttingBoardEntity.removeStack());
+                    ItemStack removed = player.isCrouching() ? cuttingBoardEntity.removeItem() : cuttingBoardEntity.removeStack();
+                    if (!player.getInventory().add(removed)) {
+                        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), removed);
                     }
                 } else if (player.isCrouching()) {
                     cuttingBoardEntity.removeItem();
