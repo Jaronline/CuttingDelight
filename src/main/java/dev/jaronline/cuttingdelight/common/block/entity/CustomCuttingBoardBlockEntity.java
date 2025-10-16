@@ -100,4 +100,9 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
     public ItemStack removeStack() {
         return removeItem(this.getStoredItem().getCount());
     }
+
+    public void empty() {
+        CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
+        accessor.getInventory().setStackInSlot(0, ItemStack.EMPTY);
+    }
 }
