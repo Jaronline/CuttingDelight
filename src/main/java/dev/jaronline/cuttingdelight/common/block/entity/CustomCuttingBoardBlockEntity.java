@@ -33,7 +33,11 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         if (level == null) return false;
         if (isItemCarvingBoard()) return false;
 
-        int itemCount = Math.min(getStoredItem().getCount(), toolStack.getMaxDamage() - toolStack.getDamageValue());
+        int itemCount = getStoredItem().getCount();
+        if (toolStack.isDamageableItem() && (player == null || !player.hasInfiniteMaterials())) {
+            itemCount = Math.min(itemCount, toolStack.getMaxDamage() - toolStack.getDamageValue());
+        }
+
         List<ItemStack> results = Lists.newArrayList();
         int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack);
         for (int i = 0; i < itemCount; i++) {
