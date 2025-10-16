@@ -98,14 +98,6 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
     }
 
     public ItemStack removeStack() {
-        if (!this.isEmpty()) {
-            CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
-            accessor.setItemCarvingBoard(false);
-            ItemStack item = this.getStoredItem().split(this.getStoredItem().getCount());
-            this.inventoryChanged();
-            return item;
-        } else {
-            return ItemStack.EMPTY;
-        }
+        return removeItem(this.getStoredItem().getCount());
     }
 }
