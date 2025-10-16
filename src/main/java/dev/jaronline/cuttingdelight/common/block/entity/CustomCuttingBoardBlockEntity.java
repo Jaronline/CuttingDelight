@@ -38,6 +38,11 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
             itemCount = Math.min(itemCount, toolStack.getMaxDamage() - toolStack.getDamageValue());
         }
 
+        if (itemCount < 1) {
+            CuttingDelight.LOGGER.warn("Cutting Board at {} tried to process with a broken tool!", worldPosition);
+            return false;
+        }
+
         List<ItemStack> results = Lists.newArrayList();
         int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack);
         for (int i = 0; i < itemCount; i++) {
