@@ -11,6 +11,7 @@ val parchmentMappingsVersion: String by extra
 val minecraftVersion: String by extra
 val minecraftVersionRange: String by extra
 val neoVersion: String by extra
+val neoVersionRange: String by extra
 val loaderVersionRange: String by extra
 
 val modId: String by extra
@@ -146,7 +147,7 @@ dependencies {
 tasks.withType<ProcessResources>().configureEach {
     var replaceProperties = mapOf(
         "minecraft_version" to minecraftVersion, "minecraft_version_range" to minecraftVersionRange,
-        "neo_version" to neoVersion, "loader_version_range" to loaderVersionRange,
+        "neo_version_range" to neoVersionRange, "loader_version_range" to loaderVersionRange,
         "mod_id" to modId, "mod_name" to modName, "mod_license" to modLicense, "mod_version" to modVersion,
         "mod_authors" to modAuthors, "mod_credits" to modCredits, "mod_description" to modDescription,
         "farmers_delight_version_range" to farmersDelightVersionRange
