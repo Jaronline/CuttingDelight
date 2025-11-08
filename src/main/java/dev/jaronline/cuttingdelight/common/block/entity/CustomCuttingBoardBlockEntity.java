@@ -14,7 +14,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
@@ -22,6 +21,7 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.registry.ModAdvancements;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
@@ -43,7 +43,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
             return false;
         }
 
-        List<ItemStack> results = Lists.newArrayList();
+        List<ItemStack> results = new ArrayList<>();
         int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(level.holder(Enchantments.FORTUNE).get(), toolStack);
         for (int i = 0; i < itemCount; i++) {
             results.addAll(recipe.rollResults(level.random, fortuneLevel));
