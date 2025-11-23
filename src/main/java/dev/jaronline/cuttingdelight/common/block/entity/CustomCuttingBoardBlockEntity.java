@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.registry.ModAdvancements;
@@ -47,7 +46,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         for (ItemStack resultStack : results) {
             ItemStack stackToAdd = resultStack.copy();
             if (player == null || !player.addItem(stackToAdd)) {
-                Direction direction = this.getBlockState().getValue(CuttingBoardBlock.FACING).getCounterClockWise();
+                Direction direction = this.getBlockState().getValue(CustomCuttingBoardBlock.FACING).getCounterClockWise();
                 ItemUtils.spawnItemEntity(this.level, resultStack.copy(), (double) this.worldPosition.getX() + (double) 0.5F + (double) direction.getStepX() * 0.2, (double) this.worldPosition.getY() + 0.2, (double) this.worldPosition.getZ() + (double) 0.5F + (double) direction.getStepZ() * 0.2, (float) direction.getStepX() * 0.2F, 0.0F, (float) direction.getStepZ() * 0.2F);
             }
         }
