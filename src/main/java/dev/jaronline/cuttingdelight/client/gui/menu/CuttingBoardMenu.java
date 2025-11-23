@@ -212,6 +212,10 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
     public void updateInputItem(ItemStack stack) {
         this.inputSlot.set(stack);
+        // Re-enable the button if items remain and a recipe is still selected
+        if (!stack.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
+            this.selectedRecipeUpdateListener.run();
+        }
     }
 
     @Override
