@@ -18,8 +18,14 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Validate wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
 
       - name: Build with Gradle
         run: ./gradlew build
