@@ -250,6 +250,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
             if (result == null) {
                 return;
             }
+            CuttingBoardScreen.this.confirmButton.setFocused(false);
             CuttingBoardScreen.this.confirmButton.active = false;
             CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));
         }
