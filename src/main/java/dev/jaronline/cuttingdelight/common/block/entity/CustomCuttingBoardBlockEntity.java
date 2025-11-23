@@ -50,15 +50,12 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         }
 
         for (ItemStack resultStack : results) {
-            if (player == null) {
+            if (player == null || !player.addItem(resultStack)) {
                 Direction direction = getBlockState().getValue(CustomCuttingBoardBlock.FACING).getCounterClockWise();
                 ItemUtils.spawnItemEntity(level, resultStack.copy(),
                         worldPosition.getX() + 0.5 + (direction.getStepX() * 0.2), worldPosition.getY() + 0.2, worldPosition.getZ() + 0.5 + (direction.getStepZ() * 0.2),
                         direction.getStepX() * 0.2F, 0.0F, direction.getStepZ() * 0.2F);
-                continue;
             }
-
-            player.addItem(resultStack);
         }
         if (!level.isClientSide) {
             toolStack.hurtAndBreak(itemCount, (ServerLevel) level, player, (item) -> {});
