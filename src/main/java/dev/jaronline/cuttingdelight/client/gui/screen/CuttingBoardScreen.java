@@ -250,7 +250,6 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
                 return;
             }
             CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));
-            CuttingBoardScreen.this.minecraft.player.closeContainer();
         }
     }
 
