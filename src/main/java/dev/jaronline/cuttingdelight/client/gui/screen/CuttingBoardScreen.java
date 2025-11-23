@@ -223,6 +223,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
     }
 
     private void inputEmptied() {
+        confirmButton.active = false;
         BlockPos blockPos = CuttingBoardScreen.this.menu.getBlockPos();
         this.minecraft.getConnection().send(new CuttingBoardEmptiedPayload(blockPos));
     }
