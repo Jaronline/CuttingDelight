@@ -1,6 +1,7 @@
 package dev.jaronline.cuttingdelight.client.gui.menu;
 
 import com.google.common.collect.Lists;
+import dev.jaronline.cuttingdelight.Config;
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.common.registry.BlockRegistry;
 import dev.jaronline.cuttingdelight.common.registry.MenuTypeRegistry;
@@ -193,6 +194,10 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         return this.inputSlot.hasItem() && !this.recipes.isEmpty();
     }
 
+    public boolean hasSingleInputItem() {
+        return this.inputSlot.getItem().getCount() <= 1;
+    }
+
     public void registerInputEmptiedListener(Runnable listener) {
         this.inputEmptiedListener = listener;
     }
@@ -241,7 +246,9 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
             RecipeHolder<CuttingBoardRecipe> recipeholder = this.recipes.get(this.selectedRecipeIndex.get());
             ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(this.container), this.level.registryAccess());
-            itemstack.setCount(itemstack.getCount() * this.inputSlot.getItem().getCount());
+            if (Config.PROCESS_STACK.getAsBoolean()) {
+                itemstack.setCount(itemstack.getCount() * this.inputSlot.getItem().getCount());
+            }
             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
                 this.resultContainer.setRecipeUsed(recipeholder);
                 this.resultSlot.set(itemstack);

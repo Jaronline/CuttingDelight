@@ -5,5 +5,7 @@
 
   "cuttingdelight.configuration.title": "Cutting Delight Configs",
   "cuttingdelight.configuration.section.cuttingdelight.common.toml": "Cutting Delight Configs",
-  "cuttingdelight.configuration.section.cuttingdelight.common.toml.title": "Cutting Delight Configs"
+  "cuttingdelight.configuration.section.cuttingdelight.common.toml.title": "Cutting Delight Configs",
+  "cuttingdelight.configuration.process_stack": "Process Stack",
+  "cuttingdelight.configuration.process_stack.tooltip": "Whether to allow processing the entire stack on the cutting board when using a tool.\nIf disabled, only one item will be processed at a time."
 }
