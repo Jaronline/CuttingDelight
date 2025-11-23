@@ -253,9 +253,11 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
                 return;
             }
             CuttingBoardScreen.this.confirmButton.setFocused(false);
-            // Only disable the button if processing the entire stack
-            // When processing single items, keep it enabled if more items remain
-            if (Config.PROCESS_STACK.getAsBoolean()) {
+            // Disable the button if:
+            // - Processing the entire stack, OR
+            // - Processing single items but only 1 item remains (will become empty)
+            int itemCount = CuttingBoardScreen.this.menu.inputSlot.getItem().getCount();
+            if (Config.PROCESS_STACK.getAsBoolean() || itemCount <= 1) {
                 CuttingBoardScreen.this.confirmButton.active = false;
             }
             CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));
