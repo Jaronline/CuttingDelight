@@ -1,5 +1,6 @@
 package dev.jaronline.cuttingdelight.client.gui.screen;
 
+import dev.jaronline.cuttingdelight.Config;
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.client.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.common.network.CutPayload;
@@ -252,7 +253,11 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
                 return;
             }
             CuttingBoardScreen.this.confirmButton.setFocused(false);
-            CuttingBoardScreen.this.confirmButton.active = false;
+            // Only disable the button if processing the entire stack
+            // When processing single items, keep it enabled if more items remain
+            if (Config.PROCESS_STACK.getAsBoolean()) {
+                CuttingBoardScreen.this.confirmButton.active = false;
+            }
             CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));
         }
     }
