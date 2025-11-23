@@ -209,6 +209,10 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         this.selectedRecipeUpdateListener = listener;
     }
 
+    public void clearInputSlot() {
+        this.inputSlot.set(ItemStack.EMPTY);
+    }
+
     @Override
     protected void clearContainer(Player player, Container container) {
         for (int i = 0; i < container.getContainerSize(); ++i) {
