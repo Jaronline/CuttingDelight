@@ -1,13 +1,16 @@
 package dev.jaronline.cuttingdelight.common.block.entity;
 
+import dev.jaronline.cuttingdelight.Config;
 import dev.jaronline.cuttingdelight.CuttingDelight;
 import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
 import dev.jaronline.cuttingdelight.common.registry.BlockEntityTypeRegistry;
 import dev.jaronline.cuttingdelight.mixin.CuttingBoardBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -16,6 +19,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import vectorwing.farmersdelight.common.advancement.CuttingBoardTrigger;
+import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.registry.ModAdvancements;
@@ -29,7 +34,37 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
         super(pos, state);
     }
 
-    public boolean processStoredStackUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
+    public boolean processStoredStackOrItemUsingTool(CuttingBoardRecipe recipe, ItemStack tool, @Nullable Player player) {
+        if (Config.PROCESS_STACK.getAsBoolean()) {
+            return processStoredStackUsingTool(recipe, tool, player);
+        } else {
+            return processStoredItemUsingTool(recipe, tool, player);
+        }
+    }
+
+    public boolean processStoredItemUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
+        if (level == null) return false;
+        if (isItemCarvingBoard()) return false;
+
+        for (ItemStack resultStack : (recipe.rollResults(this.level.random, EnchantmentHelper.getTagEnchantmentLevel(this.level.holder(Enchantments.FORTUNE).get(), toolStack)))) {
+            Direction direction = this.getBlockState().getValue(CuttingBoardBlock.FACING).getCounterClockWise();
+            ItemUtils.spawnItemEntity(this.level, resultStack.copy(), (double) this.worldPosition.getX() + (double) 0.5F + (double) direction.getStepX() * 0.2, (double) this.worldPosition.getY() + 0.2, (double) this.worldPosition.getZ() + (double) 0.5F + (double) direction.getStepZ() * 0.2, (double) ((float) direction.getStepX() * 0.2F), 0.0F, (float) direction.getStepZ() * 0.2F);
+        }
+
+        if (!this.level.isClientSide) {
+            toolStack.hurtAndBreak(1, (ServerLevel) this.level, player, (item) -> {});
+        }
+
+        playProcessingSound(recipe.getSoundEvent().orElse(null), toolStack, getStoredItem());
+        removeItem();
+        if (player instanceof ServerPlayer) {
+            ModAdvancements.USE_CUTTING_BOARD.get().trigger((ServerPlayer) player);
+        }
+
+        return true;
+    }
+
+    private boolean processStoredStackUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
         if (level == null) return false;
         if (isItemCarvingBoard()) return false;
 
@@ -59,7 +94,8 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
             }
         }
         if (!level.isClientSide) {
-            toolStack.hurtAndBreak(itemCount, (ServerLevel) level, player, (item) -> {});
+            toolStack.hurtAndBreak(itemCount, (ServerLevel) level, player, (item) -> {
+            });
         }
 
         playProcessingSound(recipe.getSoundEvent().orElse(null), toolStack, getStoredItem());

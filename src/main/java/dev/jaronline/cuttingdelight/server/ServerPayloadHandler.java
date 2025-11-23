@@ -21,7 +21,7 @@ public class ServerPayloadHandler {
         if (!(payload.recipe() instanceof CuttingBoardRecipe cuttingRecipe)) {
             throw new IllegalArgumentException("Expected CuttingBoardRecipe but found: " + payload.recipe().getClass().getSimpleName());
         }
-        cuttingBoardEntity.processStoredStackUsingTool(cuttingRecipe, player.getMainHandItem(), player);
+        cuttingBoardEntity.processStoredStackOrItemUsingTool(cuttingRecipe, player.getMainHandItem(), player);
         if (player.containerMenu instanceof CuttingBoardMenu cuttingBoardMenu) {
             cuttingBoardMenu.updateInputItem(cuttingBoardEntity.getStoredItem());
         } else {
