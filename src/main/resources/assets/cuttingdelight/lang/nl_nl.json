@@ -1,0 +1,11 @@
+{
+  "itemGroup.cuttingdelight": "Cutting Delight",
+
+  "block.cuttingdelight.cutting_board": "Snijplank",
+
+  "cuttingdelight.configuration.title": "Cutting Delight Configuraties",
+  "cuttingdelight.configuration.section.cuttingdelight.common.toml": "Cutting Delight Configuraties",
+  "cuttingdelight.configuration.section.cuttingdelight.common.toml.title": "Cutting Delight Configuraties",
+  "cuttingdelight.configuration.process_stack": "Verwerk Stapel",
+  "cuttingdelight.configuration.process_stack.tooltip": "Of de gehele stapel op de snijplank mag worden verwerkt bij gebruik van gereedschap.\nAls deze optie is uitgeschakeld, wordt er slechts één item tegelijk verwerkt."
+}
