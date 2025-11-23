@@ -31,6 +31,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu> {
     private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "textures/gui/container/cutting_board.png");
+    private static final ResourceLocation CONFIRM_SPRITE = ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "container/cutting_board/confirm");
 
     private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
@@ -42,7 +43,6 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
     private static final ResourceLocation BUTTON_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button_highlighted");
     private static final ResourceLocation BUTTON_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button_selected");
     private static final ResourceLocation BUTTON_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/button");
-    private static final ResourceLocation CONFIRM_SPRITE = ResourceLocation.withDefaultNamespace("container/beacon/confirm");
 
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
