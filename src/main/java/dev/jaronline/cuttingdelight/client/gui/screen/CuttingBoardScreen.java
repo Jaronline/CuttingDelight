@@ -235,6 +235,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 
     private void selectedRecipeChanged() {
         confirmButton.active = true;
+        confirmButton.setFocused(false);
     }
 
     @OnlyIn(Dist.CLIENT)
