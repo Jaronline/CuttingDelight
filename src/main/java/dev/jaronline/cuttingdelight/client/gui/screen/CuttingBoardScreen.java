@@ -253,8 +253,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
                 return;
             }
             CuttingBoardScreen.this.confirmButton.setFocused(false);
-            int itemCount = CuttingBoardScreen.this.menu.container.getItem(CuttingBoardMenu.INPUT_SLOT).getCount();
-            if (Config.PROCESS_STACK.getAsBoolean() || itemCount <= 1) {
+            if (Config.PROCESS_STACK.getAsBoolean() || CuttingBoardScreen.this.menu.hasSingleInputItem()) {
                 CuttingBoardScreen.this.confirmButton.active = false;
             }
             CuttingBoardScreen.this.minecraft.getConnection().send(new CutPayload(blockPos, result));

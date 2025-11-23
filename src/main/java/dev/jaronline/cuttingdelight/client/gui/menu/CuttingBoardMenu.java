@@ -194,6 +194,10 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
         return this.inputSlot.hasItem() && !this.recipes.isEmpty();
     }
 
+    public boolean hasSingleInputItem() {
+        return this.inputSlot.getItem().getCount() <= 1;
+    }
+
     public void registerInputEmptiedListener(Runnable listener) {
         this.inputEmptiedListener = listener;
     }
