@@ -31,7 +31,7 @@ tasks.named<Wrapper>("wrapper").configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = modVersion
+version = "${minecraftVersion}-${modVersion}"
 group = modGroupId
 
 repositories {
