@@ -1,6 +1,21 @@
 name: Release Mod
 on:
   workflow_dispatch:
+    inputs:
+      publish-type:
+        description: 'Type of release to publish'
+        required: true
+        default: 'STABLE'
+        type: choice
+        options:
+          - STABLE
+          - BETA
+          - ALPHA
+
+env:
+  PUBLISH_TYPE: ${{ inputs.publish-type }}
+  ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
+  ORG_GRADLE_PROJECT_curseforgeApikey: ${{ secrets.CURSEFORGE_API_KEY }}
 
 jobs:
   release:
@@ -18,7 +33,16 @@ jobs:
       - name: Setup Gradle
         uses: Jaronline/.github/actions/setup-java-gradle@main
 
+      - name: Build package
+        run: ./gradlew build
+
       - name: Publish package
         run: ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish CurseForge
+        run: ./gradlew publishCurseforge
+
+      - name: Publish Modrinth
+        run: ./gradlew publishModrinth
