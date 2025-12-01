@@ -1,3 +1,5 @@
+import me.modmuss50.mpp.PublishModTask
+import me.modmuss50.mpp.ReleaseType
 import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
@@ -5,6 +7,7 @@ plugins {
     id("maven-publish")
     id("net.neoforged.moddev") version "2.0.121"
     id("idea")
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
     // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
     id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "3.1.1"
 }
@@ -14,6 +17,7 @@ val parchmentMinecraftVersion: String by extra
 val parchmentMappingsVersion: String by extra
 val minecraftVersion: String by extra
 val minecraftVersionRange: String by extra
+val minecraftVersionRangeStart: String by extra
 val neoVersion: String by extra
 val neoVersionRange: String by extra
 val loaderVersionRange: String by extra
@@ -31,6 +35,14 @@ val modJavaVersion: String by extra
 val jeiVersion: String by extra
 val farmersDelightVersion: String by extra
 val farmersDelightVersionRange: String by extra
+
+val curseProjectId: String by extra
+val modrinthId: String by extra
+
+// set by ORG_GRADLE_PROJECT_modrinthToken
+val modrinthToken: String? by project
+// set by ORG_GRADLE_PROJECT_curseforgeApikey
+val curseforgeApikey: String? by project
 
 tasks.named<Wrapper>("wrapper").configure {
     distributionType = Wrapper.DistributionType.BIN
@@ -214,6 +226,72 @@ val makeMarkdownChangelog = tasks.register<GitChangelogTask>("makeMarkdownChange
 
 tasks.withType<GitChangelogTask> {
 	outputs.upToDateWhen { false }
+}
+
+val changelogHtml = configurations.create("changelogHtml") {
+	isCanBeConsumed = false
+	isCanBeResolved = true
+	attributes {
+		attribute(Usage.USAGE_ATTRIBUTE, objects.named<Usage>("changelogHtml"))
+	}
+	outgoing.artifact(makeHtmlChangelog.map { it.outputs.files.singleFile }) {
+		type = "html"
+	}
+}
+
+val changelogMarkdown = configurations.create("changelogMarkdown") {
+	isCanBeConsumed = false
+	isCanBeResolved = true
+	attributes {
+		attribute(Usage.USAGE_ATTRIBUTE, objects.named<Usage>("changelogMarkdown"))
+	}
+	outgoing.artifact(makeMarkdownChangelog.map { it.outputs.files.singleFile }) {
+		type = "markdown"
+	}
+}
+
+fun Configuration.singleFileContents(): Provider<String> =
+	incoming
+		.files
+		.elements
+		.map { elements -> elements.single() }
+		.map { it.asFile.readText() }
+
+publishMods {
+    val publishType = System.getenv("PUBLISH_TYPE")
+
+    if (publishType != null) {
+        file.set(tasks.jar.get().archiveFile)
+        type.set(ReleaseType.of(publishType.uppercase()))
+        modLoaders.add("neoforge")
+        displayName.set("$modVersion for NeoForge $minecraftVersion")
+        version.set(project.version.toString())
+
+        curseforge {
+            projectId = curseProjectId
+            accessToken.set(curseforgeApikey ?: "0")
+		    changelog.set(changelogHtml.singleFileContents())
+		    changelogType = "html"
+            minecraftVersionRange {
+                start = minecraftVersionRangeStart
+                end = minecraftVersion
+            }
+            javaVersions.add(JavaVersion.toVersion(modJavaVersion))
+        }
+
+        modrinth {
+            projectId = modrinthId
+            accessToken = modrinthToken
+            changelog.set(changelogMarkdown.singleFileContents())
+            minecraftVersionRange {
+                start = minecraftVersionRangeStart
+                end = minecraftVersion
+            }
+        }
+    }
+}
+tasks.withType<PublishModTask> {
+	dependsOn(tasks.jar, ":makeChangelog", ":makeMarkdownChangelog")
 }
 
 publishing {
