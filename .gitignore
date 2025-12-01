@@ -24,3 +24,7 @@ runs
 run-data
 
 repo
+
+# changelogs
+CHANGELOG.html
+CHANGELOG.md

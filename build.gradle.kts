@@ -1,8 +1,12 @@
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+
 plugins {
     id("java-library")
     id("maven-publish")
     id("net.neoforged.moddev") version "2.0.121"
     id("idea")
+    // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
+    id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version "3.1.1"
 }
 
 // gradle.properties
@@ -174,6 +178,42 @@ tasks.withType<Jar> {
             "Implementation-Vendor" to modAuthors
         ))
     }
+}
+
+val changelogUntaggedName = "Version $modVersion"
+
+val makeHtmlChangelog = tasks.register<GitChangelogTask>("makeChangelog") {
+    val output = layout.buildDirectory.file("CHANGELOG.html")
+
+    fromRepo.set(project.rootProject.rootDir.absolutePath)
+	file.set(output.get().asFile)
+	untaggedName.set(changelogUntaggedName)
+	fromRevision.set("HEAD~30")
+	toRevision.set("HEAD")
+	templateContent.set(file("changelog.mustache").readText())
+
+    outputs.file(output)
+}
+
+val makeMarkdownChangelog = tasks.register<GitChangelogTask>("makeMarkdownChangelog") {
+    val output = layout.buildDirectory.file("CHANGELOG.md")
+
+	fromRepo.set(project.rootProject.rootDir.absolutePath)
+	file.set(output.get().asFile)
+	untaggedName.set(changelogUntaggedName)
+	fromRevision.set("HEAD~30")
+	toRevision.set("HEAD")
+	templateContent.set(
+        file("changelog-markdown.mustache").readText()
+            .split("\n")
+            .joinToString("\n", transform = String::trim)
+    )
+
+    outputs.file(output)
+}
+
+tasks.withType<GitChangelogTask> {
+	outputs.upToDateWhen { false }
 }
 
 publishing {

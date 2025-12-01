@@ -1,0 +1,53 @@
+{{#tags}}
+## {{name}}
+
+    {{#ifContainsBreaking commits}}
+    ### Breaking changes
+
+        {{#commits}}
+            {{#ifCommitBreaking .}}
+                * {{#ifCommitScope . scope=".*"}}**{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:** {{/ifCommitScope}}[{{commitDescription .}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) (by {{authorName}})
+            {{/ifCommitBreaking}}
+        {{/commits}}
+    {{/ifContainsBreaking}}
+
+    {{#ifContainsType commits type="feat"}}
+    ### Features
+
+        {{#commits}}
+            {{#ifCommitType . type="feat"}}
+                * {{#ifCommitScope . scope=".*"}}**{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:** {{/ifCommitScope}}[{{commitDescription .}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) (by {{authorName}})
+            {{/ifCommitType}}
+        {{/commits}}
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="fix"}}
+    ### Bug Fixes
+
+        {{#commits}}
+            {{#ifCommitType . type="fix"}}
+                * {{#ifCommitScope . scope=".*"}}**{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:** {{/ifCommitScope}}[{{commitDescription .}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) (by {{authorName}})
+            {{/ifCommitType}}
+        {{/commits}}
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="perf"}}
+        ### Performance
+
+        {{#commits}}
+            {{#ifCommitType . type="perf"}}
+                * {{#ifCommitScope . scope=".*"}}**{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:** {{/ifCommitScope}}[{{commitDescription .}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) (by {{authorName}})
+            {{/ifCommitType}}
+        {{/commits}}
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="docs"}}
+        ### Documentation
+
+        {{#commits}}
+            {{#ifCommitType . type="docs"}}
+                * {{#ifCommitScope . scope=".*"}}**{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:** {{/ifCommitScope}}[{{commitDescription .}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) (by {{authorName}})
+            {{/ifCommitType}}
+        {{/commits}}
+    {{/ifContainsType}}
+{{/tags}}
