@@ -63,7 +63,10 @@ base {
     archivesName = "${modId}-neoforge"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
 
 neoForge {
     version = neoVersion
@@ -159,15 +162,35 @@ tasks.withType<ProcessResources>().configureEach {
     }
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes(mapOf(
+            "Specification-Title" to modName,
+            "Specification-Vendor" to modAuthors,
+            "Specification-Version" to modVersion,
+            "Implementation-Title" to name,
+            "Implementation-Version" to archiveVersion,
+            "Implementation-Vendor" to modAuthors
+        ))
+    }
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
-            from(components.getByName("java"))
+            artifactId = base.archivesName.get()
+            artifact(tasks.jar)
+            artifact(tasks.named("sourcesJar"))
         }
     }
     repositories {
         maven {
-            url = project.projectDir.resolve("repo").toURI()
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }
