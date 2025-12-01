@@ -17,8 +17,6 @@ jobs:
 
       - name: Setup Gradle
         uses: Jaronline/.github/actions/setup-java-gradle@main
-        with:
-          validate-wrapper: false
 
       - name: Publish package
         run: ./gradlew publish
