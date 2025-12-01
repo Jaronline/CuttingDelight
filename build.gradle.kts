@@ -22,6 +22,7 @@ val modGroupId: String by extra
 val modAuthors: String by extra
 val modCredits: String by extra
 val modDescription: String by extra
+val modJavaVersion: String by extra
 
 val jeiVersion: String by extra
 val farmersDelightVersion: String by extra
@@ -64,7 +65,7 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion)
     withSourcesJar()
 }
 
