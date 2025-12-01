@@ -15,17 +15,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: Jaronline/.github/actions/setup-java-gradle@main
         with:
-          gradle-version: wrapper
-          cache-read-only: false
+          validate-wrapper: false
 
       - name: Publish package
         run: ./gradlew publish
