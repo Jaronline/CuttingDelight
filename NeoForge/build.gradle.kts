@@ -112,16 +112,12 @@ fun Configuration.singleFileContents(): Provider<String> =
 		.map { elements -> elements.single() }
 		.map { it.asFile.readText() }
 
-configurations {
-    val localRuntime by creating {}
-    runtimeClasspath {
-        extendsFrom(localRuntime)
-    }
+val localRuntime = configurations.create("localRuntime")
+configurations.runtimeClasspath {
+    extendsFrom(localRuntime)
 }
 
 dependencies {
-    val localRuntime by configurations
-
     dependencyProjects.forEach {
         implementation(it)
     }
