@@ -244,7 +244,7 @@ artifacts {
 
 publishing {
     publications {
-        register<MavenPublication>("mavenJava") {
+        register<MavenPublication>("neoforgeJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
             artifact(sourcesJarTask.get())
