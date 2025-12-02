@@ -1,10 +1,40 @@
 pluginManagement {
     repositories {
-        mavenLocal()
+        fun exclusiveMaven(url: String, filter: Action<InclusiveRepositoryContentDescriptor>) =
+			exclusiveContent {
+				forRepository { maven(url) }
+				filter(filter)
+			}
+        exclusiveMaven("https://maven.parchmentmc.org") {
+			includeGroupByRegex("org\\.parchmentmc.*")
+		}
+        exclusiveMaven("https://maven.neoforged.net/releases") {
+			includeGroupByRegex("net\\.neoforged.*")
+			includeGroup("codechicken")
+			includeGroup("net.covers1624")
+		}
+        maven("https://repo.spongepowered.org/repository/maven-public/") {
+			content {
+				includeGroupByRegex("org\\.spongepowered.*")
+				includeGroupByRegex("net\\.minecraftforge.*")
+			}
+		}
         gradlePluginPortal()
     }
+	resolutionStrategy {
+		eachPlugin {
+			if (requested.id.id == "org.spongepowered.mixin") {
+				useModule("org.spongepowered:mixingradle:${requested.version}")
+			}
+		}
+	}
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
+val modId: String by settings
+val minecraftVersion: String by settings
+
+rootProject.name = "$modId-$minecraftVersion"
+include(
+    "Changelog",
+    "NeoForge"
+)
