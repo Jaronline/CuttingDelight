@@ -20,7 +20,7 @@ dependencies {
     implementation(
         group = "com.google.guava",
         name = "guava",
-        version = "32.0.1-jre"
+        version = "32.1.3-jre"
     )
     implementation(
         group = "org.jetbrains",
