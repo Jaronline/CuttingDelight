@@ -1,4 +1,6 @@
 import me.modmuss50.mpp.ReleaseType
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.slf4j.event.Level
 
 plugins {
@@ -22,6 +24,7 @@ val modJavaVersion: String by extra
 
 val jeiVersion: String by extra
 val farmersDelightVersion: String by extra
+val jUnitVersion: String by extra
 
 val curseProjectId: String by extra
 val modrinthId: String by extra
@@ -66,6 +69,12 @@ sourceSets {
             setSrcDirs(listOf("src/main/resources", "src/generated/resources"))
         }
     }
+    named("test") {
+		resources {
+			//The test module has no resources
+			setSrcDirs(emptyList<String>())
+		}
+	}
 }
 
 val dependencyProjects: List<Project> = listOf(
@@ -114,21 +123,25 @@ fun Configuration.singleFileContents(): Provider<String> =
 		.map { elements -> elements.single() }
 		.map { it.asFile.readText() }
 
-val localRuntime = configurations.create("localRuntime")
-configurations.runtimeClasspath {
-    extendsFrom(localRuntime)
-}
-
 dependencies {
     dependencyProjects.forEach {
         implementation(it)
     }
 
-    compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
-    localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+    runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
-    localRuntime("maven.modrinth:hearth-and-harvest:6rnNHSe5")
+    runtimeOnly("maven.modrinth:hearth-and-harvest:6rnNHSe5")
+
+	testImplementation(
+		group = "org.junit.jupiter",
+		name = "junit-jupiter",
+		version = jUnitVersion
+	)
+	testRuntimeOnly(
+		group = "org.junit.platform",
+		name = "junit-platform-launcher"
+	)
 
 	changelogHtml(project(":Changelog"))
 	changelogMarkdown(project(":Changelog"))
@@ -137,6 +150,8 @@ dependencies {
 neoForge {
     version = neoVersion
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
+
+	addModdingDependenciesTo(sourceSets.test.get())
 
     parchment {
         mappingsVersion = parchmentMappingsVersion
@@ -242,6 +257,19 @@ publishMods {
             }
         }
     }
+}
+
+tasks.test {
+	useJUnitPlatform()
+	include("dev/jaronline/cuttingdelight/**")
+	exclude("dev/jaronline/cuttingdelight/lib/**")
+	outputs.upToDateWhen { false }
+	testLogging {
+		events = setOf(TestLogEvent.FAILED)
+		exceptionFormat = TestExceptionFormat.FULL
+	}
+    // Should be removed once tests are added
+    failOnNoDiscoveredTests = false
 }
 
 artifacts {
