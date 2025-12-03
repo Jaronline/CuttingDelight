@@ -61,7 +61,9 @@ sourceSets {
     }
 }
 
-val dependencyProjects: List<Project> = listOf()
+val dependencyProjects: List<Project> = listOf(
+    project(":Core")
+)
 
 dependencyProjects.forEach {
     project.evaluationDependsOn(it.path)

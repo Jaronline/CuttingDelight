@@ -78,6 +78,7 @@ sourceSets {
 }
 
 val dependencyProjects: List<Project> = listOf(
+    project(":Core"),
     project(":Common")
 )
 

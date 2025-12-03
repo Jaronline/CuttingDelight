@@ -1,0 +1,5 @@
+@ParametersAreNonnullByDefault
+@FieldsAndMethodsAreNonnullByDefault
+package dev.jaronline.cuttingdelight.core;
+
+import javax.annotation.ParametersAreNonnullByDefault;
