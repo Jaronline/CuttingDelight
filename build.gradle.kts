@@ -52,6 +52,7 @@ subprojects {
         options.encoding = "UTF-8"
         options.release.set(JavaLanguageVersion.of(modJavaVersion).asInt())
         options.isDeprecation = true
+        options.compilerArgs.add("-Xlint:unchecked")
     }
 
     tasks.withType<Jar> {
