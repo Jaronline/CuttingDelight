@@ -43,6 +43,14 @@ base {
     archivesName.set(baseArchivesName)
 }
 
+sourceSets {
+    named("main") {
+        resources {
+            setSrcDirs(listOf("src/main/resources"))
+        }
+    }
+}
+
 val dependencyProjects: List<Project> = listOf()
 
 dependencyProjects.forEach {

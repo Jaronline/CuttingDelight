@@ -180,6 +180,9 @@ neoForge {
             "--existing",
             file("src/main/resources/").absolutePath
         )
+        dependencyProjects.stream().flatMap { it.sourceSets.main.get().resources.srcDirs.stream() }.forEach {
+            data.programArguments.addAll("--existing", it.absolutePath)
+        }
 
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
