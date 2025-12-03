@@ -25,7 +25,7 @@ dependencies {
     implementation(
         group = "org.jetbrains",
         name = "annotations",
-        version = "23.0.0"
+        version = "23.1.0"
     )
     testImplementation(
         group = "org.junit.jupiter",
