@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id("idea")
     id("java")
@@ -12,6 +15,7 @@ val modId: String by extra
 val modJavaVersion: String by extra
 val jeiVersion: String by extra
 val farmersDelightVersion: String by extra
+val jUnitVersion: String by extra
 
 repositories {
     mavenCentral()
@@ -49,6 +53,12 @@ sourceSets {
             setSrcDirs(listOf("src/main/resources"))
         }
     }
+    named("test") {
+        resources {
+            //The test module has no resources
+            setSrcDirs(emptyList<String>())
+        }
+    }
 }
 
 val dependencyProjects: List<Project> = listOf()
@@ -59,6 +69,7 @@ dependencyProjects.forEach {
 
 neoForge {
     neoFormVersion = neoformVersionAndTimestamp
+    addModdingDependenciesTo(sourceSets.test.get())
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 }
 
@@ -71,7 +82,7 @@ dependencies {
     dependencyProjects.forEach {
         implementation(it)
     }
-    compileOnly(
+    api(
         group = "mezz.jei",
         name = "jei-$minecraftVersion-common-api",
         version = jeiVersion
@@ -81,6 +92,28 @@ dependencies {
         name = "farmers-delight",
         version = "$minecraftVersion-$farmersDelightVersion"
     )
+    testImplementation(
+        group = "org.junit.jupiter",
+        name = "junit-jupiter",
+        version = jUnitVersion
+    )
+    testRuntimeOnly(
+        group = "org.junit.platform",
+        name = "junit-platform-launcher"
+    )
+}
+
+tasks.test {
+    useJUnitPlatform()
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
+    outputs.upToDateWhen { false }
+    testLogging {
+        events = setOf(TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+    }
+    // Should be removed once tests are added
+    failOnNoDiscoveredTests = false
 }
 
 java {

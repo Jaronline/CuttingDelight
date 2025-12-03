@@ -1,4 +1,6 @@
 import me.modmuss50.mpp.ReleaseType
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.slf4j.event.Level
 
 plugins {
@@ -22,6 +24,7 @@ val modJavaVersion: String by extra
 
 val jeiVersion: String by extra
 val farmersDelightVersion: String by extra
+val jUnitVersion: String by extra
 
 val curseProjectId: String by extra
 val modrinthId: String by extra
@@ -66,6 +69,12 @@ sourceSets {
             setSrcDirs(listOf("src/main/resources", "src/generated/resources"))
         }
     }
+    named("test") {
+        resources {
+            //The test module has no resources
+            setSrcDirs(emptyList<String>())
+        }
+    }
 }
 
 val dependencyProjects: List<Project> = listOf(
@@ -73,7 +82,7 @@ val dependencyProjects: List<Project> = listOf(
 )
 
 dependencyProjects.forEach {
-	project.evaluationDependsOn(it.path)
+    project.evaluationDependsOn(it.path)
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -108,35 +117,41 @@ changelogMarkdown.attributes {
 }
 
 fun Configuration.singleFileContents(): Provider<String> =
-	incoming
-		.files
-		.elements
-		.map { elements -> elements.single() }
-		.map { it.asFile.readText() }
-
-val localRuntime = configurations.create("localRuntime")
-configurations.runtimeClasspath {
-    extendsFrom(localRuntime)
-}
+    incoming
+        .files
+        .elements
+        .map { elements -> elements.single() }
+        .map { it.asFile.readText() }
 
 dependencies {
     dependencyProjects.forEach {
         implementation(it)
     }
 
-    compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
-    localRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+    runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
-    localRuntime("maven.modrinth:hearth-and-harvest:6rnNHSe5")
+    runtimeOnly("maven.modrinth:hearth-and-harvest:6rnNHSe5")
 
-	changelogHtml(project(":Changelog"))
-	changelogMarkdown(project(":Changelog"))
+    testImplementation(
+        group = "org.junit.jupiter",
+        name = "junit-jupiter",
+        version = jUnitVersion
+    )
+    testRuntimeOnly(
+        group = "org.junit.platform",
+        name = "junit-platform-launcher"
+    )
+
+    changelogHtml(project(":Changelog"))
+    changelogMarkdown(project(":Changelog"))
 }
 
 neoForge {
     version = neoVersion
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
+
+    addModdingDependenciesTo(sourceSets.test.get())
 
     parchment {
         mappingsVersion = parchmentMappingsVersion
@@ -193,21 +208,21 @@ neoForge {
 }
 
 tasks.jar {
-	from(sourceSets.main.get().output)
-	for (p in dependencyProjects) {
-		from(p.sourceSets.main.get().output)
-	}
+    from(sourceSets.main.get().output)
+    for (p in dependencyProjects) {
+        from(p.sourceSets.main.get().output)
+    }
 
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
-	from(sourceSets.main.get().allJava)
-	for (p in dependencyProjects) {
-		from(p.sourceSets.main.get().allJava)
-	}
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	archiveClassifier.set("sources")
+    from(sourceSets.main.get().allJava)
+    for (p in dependencyProjects) {
+        from(p.sourceSets.main.get().allJava)
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveClassifier.set("sources")
 }
 
 publishMods {
@@ -223,8 +238,8 @@ publishMods {
         curseforge {
             projectId = curseProjectId
             accessToken.set(curseforgeApikey ?: "0")
-		    changelog.set(changelogHtml.singleFileContents())
-		    changelogType = "html"
+            changelog.set(changelogHtml.singleFileContents())
+            changelogType = "html"
             minecraftVersionRange {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
@@ -244,9 +259,22 @@ publishMods {
     }
 }
 
+tasks.test {
+    useJUnitPlatform()
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
+    outputs.upToDateWhen { false }
+    testLogging {
+        events = setOf(TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+    }
+    // Should be removed once tests are added
+    failOnNoDiscoveredTests = false
+}
+
 artifacts {
-	archives(tasks.jar.get())
-	archives(sourcesJarTask.get())
+    archives(tasks.jar.get())
+    archives(sourcesJarTask.get())
 }
 
 publishing {
