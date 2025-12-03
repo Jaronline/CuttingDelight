@@ -45,16 +45,20 @@ jobs:
       - name: Setup Gradle
         uses: Jaronline/.github/actions/setup-java-gradle@main
 
-      - name: Build package
-        run: ./gradlew build
+      - name: Build packages
+        run: |
+          ./gradlew :Common:build
+          ./gradlew :NeoForge:build
 
-      - name: Publish package
-        run: ./gradlew publish
+      - name: Publish packages
+        run: |
+          ./gradlew :Common:publish
+          ./gradlew :NeoForge:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish CurseForge
-        run: ./gradlew publishCurseforge
+        run: ./gradlew :NeoForge:publishCurseforge
 
       - name: Publish Modrinth
-        run: ./gradlew publishModrinth
+        run: ./gradlew :NeoForge:publishModrinth
