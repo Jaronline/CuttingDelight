@@ -13,19 +13,19 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 import java.util.concurrent.CompletableFuture;
 
 public class Recipes extends RecipeProvider {
-    public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
-    }
+	public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+		super(output, registries);
+	}
 
-    @Override
-    protected void buildRecipes(RecipeOutput recipeOutput) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.CUTTING_BOARD)
-                .requires(ModItems.CUTTING_BOARD.get())
-                .unlockedBy("has_original_cutting_board", has(ModItems.CUTTING_BOARD.get()))
-                .save(recipeOutput);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, vectorwing.farmersdelight.common.registry.ModBlocks.CUTTING_BOARD.get())
-                .requires(ModBlocks.CUTTING_BOARD)
-                .unlockedBy("has_original_cutting_board", has(ModItems.CUTTING_BOARD.get()))
-                .save(recipeOutput, ModIds.CUTTING_DELIGHT_ID + ":farmers_cutting_board");
-    }
+	@Override
+	protected void buildRecipes(RecipeOutput recipeOutput) {
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.CUTTING_BOARD)
+				.requires(ModItems.CUTTING_BOARD.get())
+				.unlockedBy("has_original_cutting_board", has(ModItems.CUTTING_BOARD.get()))
+				.save(recipeOutput);
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, vectorwing.farmersdelight.common.registry.ModBlocks.CUTTING_BOARD.get())
+				.requires(ModBlocks.CUTTING_BOARD)
+				.unlockedBy("has_original_cutting_board", has(ModItems.CUTTING_BOARD.get()))
+				.save(recipeOutput, ModIds.CUTTING_DELIGHT_ID + ":farmers_cutting_board");
+	}
 }

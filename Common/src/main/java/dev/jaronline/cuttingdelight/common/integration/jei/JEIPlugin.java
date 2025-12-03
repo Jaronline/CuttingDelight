@@ -12,13 +12,13 @@ import vectorwing.farmersdelight.integration.jei.FDRecipeTypes;
 @JeiPlugin
 @SuppressWarnings("unused")
 public class JEIPlugin implements IModPlugin {
-    @Override
-    public ResourceLocation getPluginUid() {
-        return ModIds.cuttingDelightResource("jei_plugin");
-    }
+	@Override
+	public ResourceLocation getPluginUid() {
+		return ModIds.cuttingDelightResource("jei_plugin");
+	}
 
-    @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModItems.CUTTING_BOARD), FDRecipeTypes.CUTTING);
-    }
+	@Override
+	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+		registration.addRecipeCatalyst(new ItemStack(ModItems.CUTTING_BOARD), FDRecipeTypes.CUTTING);
+	}
 }

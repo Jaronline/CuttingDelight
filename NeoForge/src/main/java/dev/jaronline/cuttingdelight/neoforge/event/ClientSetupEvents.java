@@ -13,13 +13,13 @@ import vectorwing.farmersdelight.client.renderer.CuttingBoardRenderer;
 
 @EventBusSubscriber(modid = ModIds.CUTTING_DELIGHT_ID, value = Dist.CLIENT)
 public class ClientSetupEvents {
-    @SubscribeEvent
-    public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.CUTTING_BOARD_MENU, CuttingBoardScreen::new);
-    }
+	@SubscribeEvent
+	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+		event.register(ModMenuTypes.CUTTING_BOARD_MENU, CuttingBoardScreen::new);
+	}
 
-    @SubscribeEvent
-    public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntityTypes.CUTTING_BOARD, CuttingBoardRenderer::new);
-    }
+	@SubscribeEvent
+	public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+		event.registerBlockEntityRenderer(ModBlockEntityTypes.CUTTING_BOARD, CuttingBoardRenderer::new);
+	}
 }

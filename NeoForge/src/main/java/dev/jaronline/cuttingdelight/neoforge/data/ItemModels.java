@@ -17,19 +17,19 @@ import java.util.stream.Collectors;
 public class ItemModels extends ItemModelProvider {
 	public static final String GENERATED = "item/generated";
 
-    public ItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, ModIds.CUTTING_DELIGHT_ID, existingFileHelper);
-    }
+	public ItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, ModIds.CUTTING_DELIGHT_ID, existingFileHelper);
+	}
 
-    @Override
-    protected void registerModels() {
-        Set<Item> items = BuiltInRegistries.ITEM.stream().filter(i -> ModIds.CUTTING_DELIGHT_ID.equals(
-                BuiltInRegistries.ITEM.getKey(i).getNamespace())).collect(Collectors.toSet());
+	@Override
+	protected void registerModels() {
+		Set<Item> items = BuiltInRegistries.ITEM.stream().filter(i -> ModIds.CUTTING_DELIGHT_ID.equals(
+				BuiltInRegistries.ITEM.getKey(i).getNamespace())).collect(Collectors.toSet());
 
 		takeAll(items, i -> i instanceof BlockItem).forEach(item -> blockBasedModel(item, ""));
 
-        items.forEach(item -> itemGeneratedModel(item, resourceItem(itemName(item))));
-    }
+		items.forEach(item -> itemGeneratedModel(item, resourceItem(itemName(item))));
+	}
 
 	public void blockBasedModel(Item item, String suffix) {
 		withExistingParent(itemName(item), resourceBlock(itemName(item) + suffix));

@@ -18,27 +18,27 @@ import java.util.function.BiConsumer;
 
 @EventBusSubscriber(modid = ModIds.CUTTING_DELIGHT_ID)
 public class SetupEvents {
-    @SubscribeEvent
-    public static void registerPayloadHandlers(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(
-                CutPayload.TYPE,
-                CutPayload.STREAM_CODEC,
-                new MainThreadPayloadHandler<>(playerPayloadHandlerWrapper(ServerPayloadHandler::handleCut))
-        );
-        registrar.playToServer(
-                CuttingBoardFilledPayload.TYPE,
-                CuttingBoardFilledPayload.STREAM_CODEC,
-                new MainThreadPayloadHandler<>(playerPayloadHandlerWrapper(ServerPayloadHandler::handleCuttingBoardFilled))
-        );
-    }
+	@SubscribeEvent
+	public static void registerPayloadHandlers(final RegisterPayloadHandlersEvent event) {
+		final PayloadRegistrar registrar = event.registrar("1");
+		registrar.playToServer(
+				CutPayload.TYPE,
+				CutPayload.STREAM_CODEC,
+				new MainThreadPayloadHandler<>(playerPayloadHandlerWrapper(ServerPayloadHandler::handleCut))
+		);
+		registrar.playToServer(
+				CuttingBoardFilledPayload.TYPE,
+				CuttingBoardFilledPayload.STREAM_CODEC,
+				new MainThreadPayloadHandler<>(playerPayloadHandlerWrapper(ServerPayloadHandler::handleCuttingBoardFilled))
+		);
+	}
 
-    @SubscribeEvent
-    public static void registerEntries(RegisterEvent event) {
-        Bootstrapper.boostrapByRegistryKey(event.getRegistryKey());
-    }
+	@SubscribeEvent
+	public static void registerEntries(RegisterEvent event) {
+		Bootstrapper.boostrapByRegistryKey(event.getRegistryKey());
+	}
 
-    private static <T extends CustomPacketPayload> IPayloadHandler<T> playerPayloadHandlerWrapper(BiConsumer<T, Player> handler) {
-        return (payload, context) -> handler.accept(payload, context.player());
-    }
+	private static <T extends CustomPacketPayload> IPayloadHandler<T> playerPayloadHandlerWrapper(BiConsumer<T, Player> handler) {
+		return (payload, context) -> handler.accept(payload, context.player());
+	}
 }

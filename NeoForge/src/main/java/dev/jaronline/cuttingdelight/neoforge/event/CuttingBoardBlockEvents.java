@@ -12,17 +12,17 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 @EventBusSubscriber(modid = ModIds.CUTTING_DELIGHT_ID)
 public class CuttingBoardBlockEvents {
-    @SubscribeEvent
-    public static void onSneakPlaceTool(PlayerInteractEvent.RightClickBlock event) {
-        Level level = event.getLevel();
-        BlockPos pos = event.getPos();
-        Player player = event.getEntity();
+	@SubscribeEvent
+	public static void onSneakPlaceTool(PlayerInteractEvent.RightClickBlock event) {
+		Level level = event.getLevel();
+		BlockPos pos = event.getPos();
+		Player player = event.getEntity();
 
-        InteractionResult result = CustomCuttingBoardBlock.ToolCarvingEvent.onSneakPlaceTool(level, pos, player);
+		InteractionResult result = CustomCuttingBoardBlock.ToolCarvingEvent.onSneakPlaceTool(level, pos, player);
 
-        if (result != InteractionResult.PASS) {
-            event.setCanceled(true);
-            event.setCancellationResult(result);
-        }
-    }
+		if (result != InteractionResult.PASS) {
+			event.setCanceled(true);
+			event.setCancellationResult(result);
+		}
+	}
 }

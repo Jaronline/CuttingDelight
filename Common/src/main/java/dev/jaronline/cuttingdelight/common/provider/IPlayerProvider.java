@@ -5,5 +5,5 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 
 public interface IPlayerProvider {
-    void openMenu(ServerPlayer serverPlayer, MenuProvider menuProvider, BlockPos blockPos);
+	void openMenu(ServerPlayer serverPlayer, MenuProvider menuProvider, BlockPos blockPos);
 }

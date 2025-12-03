@@ -20,9 +20,9 @@ import java.util.function.Function;
 public class BlockStates extends BlockStateProvider {
 	private static final int DEFAULT_ANGLE_OFFSET = 180;
 
-    public BlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, ModIds.CUTTING_DELIGHT_ID, exFileHelper);
-    }
+	public BlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, ModIds.CUTTING_DELIGHT_ID, exFileHelper);
+	}
 
 	private String blockName(Block block) {
 		return BuiltInRegistries.BLOCK.getKey(block).getPath();
@@ -40,11 +40,11 @@ public class BlockStates extends BlockStateProvider {
 		return new ModelFile.ExistingModelFile(resourceBlock(path), models().existingFileHelper);
 	}
 
-    @Override
-    protected void registerStatesAndModels() {
+	@Override
+	protected void registerStatesAndModels() {
 		customHorizontalBlock(ModBlocks.CUTTING_BOARD,
 				$ -> existingModel(ModBlocks.CUTTING_BOARD), CuttingBoardBlock.WATERLOGGED);
-    }
+	}
 
 	public void customHorizontalBlock(Block block, Function<BlockState, ModelFile> modelFunc, Property<?>... ignored) {
 		getVariantBuilder(block)

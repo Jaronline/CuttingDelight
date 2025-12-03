@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(value = ModIds.CUTTING_DELIGHT_ID, dist = Dist.CLIENT)
 public class CuttingDelightClient {
-    public CuttingDelightClient(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-    }
+	public CuttingDelightClient(ModContainer container) {
+		container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+	}
 }

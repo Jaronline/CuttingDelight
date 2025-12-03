@@ -13,13 +13,13 @@ import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTags extends BlockTagsProvider {
-    public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, ModIds.CUTTING_DELIGHT_ID, existingFileHelper);
-    }
+	public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, ModIds.CUTTING_DELIGHT_ID, existingFileHelper);
+	}
 
-    @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
-        tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CUTTING_BOARD);
-        tag(CompatibilityTags.CREATE_BRITTLE).add(ModBlocks.CUTTING_BOARD);
-    }
+	@Override
+	protected void addTags(HolderLookup.@NotNull Provider provider) {
+		tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CUTTING_BOARD);
+		tag(CompatibilityTags.CREATE_BRITTLE).add(ModBlocks.CUTTING_BOARD);
+	}
 }

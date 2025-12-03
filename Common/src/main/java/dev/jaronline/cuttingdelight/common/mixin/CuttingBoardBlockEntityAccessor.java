@@ -6,6 +6,6 @@ import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 
 @Mixin(CuttingBoardBlockEntity.class)
 public interface CuttingBoardBlockEntityAccessor {
-    @Accessor("isItemCarvingBoard")
-    void setItemCarvingBoard(boolean value);
+	@Accessor("isItemCarvingBoard")
+	void setItemCarvingBoard(boolean value);
 }

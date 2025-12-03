@@ -15,13 +15,13 @@ import org.slf4j.Logger;
 
 @Mod(ModIds.CUTTING_DELIGHT_ID)
 public class CuttingDelight {
-    public static final Logger LOGGER = LogUtils.getLogger();
+	public static final Logger LOGGER = LogUtils.getLogger();
 
-    public CuttingDelight(IEventBus modEventBus, ModContainer modContainer) {
-        ConfigManager.setConfig(new Config());
-        ProviderManager.setClientCommonPacketListenerProvider(new ClientCommonPacketListenerProvider());
-        ProviderManager.setPlayerProvider(new PlayerProvider());
-        ProviderManager.setInventoryProvider(new InventoryProvider());
-        modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
-    }
+	public CuttingDelight(IEventBus modEventBus, ModContainer modContainer) {
+		ConfigManager.setConfig(new Config());
+		ProviderManager.setClientCommonPacketListenerProvider(new ClientCommonPacketListenerProvider());
+		ProviderManager.setPlayerProvider(new PlayerProvider());
+		ProviderManager.setInventoryProvider(new InventoryProvider());
+		modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
+	}
 }

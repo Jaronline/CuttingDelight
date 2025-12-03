@@ -1,4 +1,6 @@
 plugins {
+    // https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless
+	id("com.diffplug.spotless") version ("8.1.0")
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.1")
     // https://projects.neoforged.net/neoforged/moddevgradle
@@ -28,6 +30,19 @@ val modDescription: String by extra
 val modJavaVersion: String by extra
 
 val farmersDelightVersionRange: String by extra
+
+spotless {
+    java {
+        target("*/src/*/java/dev/jaronline/cuttingdelight/**/*.java")
+
+        endWithNewline()
+        trimTrailingWhitespace()
+        removeUnusedImports()
+        leadingSpacesToTabs(4)
+        replaceRegex("class-level javadoc indentation fix", "^\\*", " *")
+        replaceRegex("method-level javadoc indentation fix", "\t\\*", "\t *")
+    }
+}
 
 subprojects {
     version = "${minecraftVersion}-${modVersion}"

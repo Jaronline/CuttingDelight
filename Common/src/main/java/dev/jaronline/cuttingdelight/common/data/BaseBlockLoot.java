@@ -11,20 +11,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class BaseBlockLoot extends BlockLootSubProvider {
-    protected final Set<Block> generatedLootTables = new HashSet<>();
+	protected final Set<Block> generatedLootTables = new HashSet<>();
 
-    protected BaseBlockLoot(HolderLookup.Provider registries) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
-    }
+	protected BaseBlockLoot(HolderLookup.Provider registries) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
+	}
 
-    @Override
-    protected void generate() {
-        dropSelf(ModBlocks.CUTTING_BOARD);
-    }
+	@Override
+	protected void generate() {
+		dropSelf(ModBlocks.CUTTING_BOARD);
+	}
 
-    @Override
-    protected void add(Block block, LootTable.Builder builder) {
-        this.generatedLootTables.add(block);
-        this.map.put(block.getLootTable(), builder);
-    }
+	@Override
+	protected void add(Block block, LootTable.Builder builder) {
+		this.generatedLootTables.add(block);
+		this.map.put(block.getLootTable(), builder);
+	}
 }

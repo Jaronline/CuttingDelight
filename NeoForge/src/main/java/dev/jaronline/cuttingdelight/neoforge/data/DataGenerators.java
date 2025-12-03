@@ -19,22 +19,22 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("unused")
 @EventBusSubscriber(modid = ModIds.CUTTING_DELIGHT_ID)
 public class DataGenerators {
-    @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent event) {
+		DataGenerator generator = event.getGenerator();
+		PackOutput output = generator.getPackOutput();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeServer(), new BlockTags(output, lookupProvider, existingFileHelper));
+		generator.addProvider(event.includeServer(), new BlockTags(output, lookupProvider, existingFileHelper));
 
-        generator.addProvider(event.includeServer(), new Recipes(output, lookupProvider));
-        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(), List.of(
-            new LootTableProvider.SubProviderEntry(BlockLoot::new, LootContextParamSets.BLOCK)
-        ), lookupProvider));
+		generator.addProvider(event.includeServer(), new Recipes(output, lookupProvider));
+		generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(), List.of(
+			new LootTableProvider.SubProviderEntry(BlockLoot::new, LootContextParamSets.BLOCK)
+		), lookupProvider));
 
-        BlockStates blockStates = new BlockStates(output, existingFileHelper);
-        generator.addProvider(event.includeClient(), blockStates);
-        generator.addProvider(event.includeClient(), new ItemModels(output, blockStates.models().existingFileHelper));
-    }
+		BlockStates blockStates = new BlockStates(output, existingFileHelper);
+		generator.addProvider(event.includeClient(), blockStates);
+		generator.addProvider(event.includeClient(), new ItemModels(output, blockStates.models().existingFileHelper));
+	}
 }

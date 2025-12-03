@@ -9,16 +9,16 @@ import net.minecraft.world.item.crafting.Recipe;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 public record CutPayload(Recipe<?> recipe) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<CutPayload> TYPE = new CustomPacketPayload.Type<>(ModIds.cuttingDelightResource("cut"));
+	public static final CustomPacketPayload.Type<CutPayload> TYPE = new CustomPacketPayload.Type<>(ModIds.cuttingDelightResource("cut"));
 
-    public static final StreamCodec<ByteBuf, CutPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.fromCodec(CuttingBoardRecipe.CODEC),
-            CutPayload::recipe,
-            CutPayload::new
-    );
+	public static final StreamCodec<ByteBuf, CutPayload> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.fromCodec(CuttingBoardRecipe.CODEC),
+			CutPayload::recipe,
+			CutPayload::new
+	);
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 }
