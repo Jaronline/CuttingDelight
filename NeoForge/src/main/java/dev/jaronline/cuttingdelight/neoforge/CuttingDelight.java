@@ -22,6 +22,6 @@ public class CuttingDelight {
         ProviderManager.setClientCommonPacketListenerProvider(new ClientCommonPacketListenerProvider());
         ProviderManager.setPlayerProvider(new PlayerProvider());
         ProviderManager.setInventoryProvider(new InventoryProvider());
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 }
