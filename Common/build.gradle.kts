@@ -54,11 +54,11 @@ sourceSets {
         }
     }
     named("test") {
-		resources {
-			//The test module has no resources
-			setSrcDirs(emptyList<String>())
-		}
-	}
+        resources {
+            //The test module has no resources
+            setSrcDirs(emptyList<String>())
+        }
+    }
 }
 
 val dependencyProjects: List<Project> = listOf()
@@ -105,8 +105,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-	include("dev/jaronline/cuttingdelight/**")
-	exclude("dev/jaronline/cuttingdelight/lib/**")
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
     outputs.upToDateWhen { false }
     testLogging {
         events = setOf(TestLogEvent.FAILED)

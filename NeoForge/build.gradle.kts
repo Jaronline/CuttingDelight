@@ -70,11 +70,11 @@ sourceSets {
         }
     }
     named("test") {
-		resources {
-			//The test module has no resources
-			setSrcDirs(emptyList<String>())
-		}
-	}
+        resources {
+            //The test module has no resources
+            setSrcDirs(emptyList<String>())
+        }
+    }
 }
 
 val dependencyProjects: List<Project> = listOf(
@@ -82,7 +82,7 @@ val dependencyProjects: List<Project> = listOf(
 )
 
 dependencyProjects.forEach {
-	project.evaluationDependsOn(it.path)
+    project.evaluationDependsOn(it.path)
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -117,11 +117,11 @@ changelogMarkdown.attributes {
 }
 
 fun Configuration.singleFileContents(): Provider<String> =
-	incoming
-		.files
-		.elements
-		.map { elements -> elements.single() }
-		.map { it.asFile.readText() }
+    incoming
+        .files
+        .elements
+        .map { elements -> elements.single() }
+        .map { it.asFile.readText() }
 
 dependencies {
     dependencyProjects.forEach {
@@ -133,25 +133,25 @@ dependencies {
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
     runtimeOnly("maven.modrinth:hearth-and-harvest:6rnNHSe5")
 
-	testImplementation(
-		group = "org.junit.jupiter",
-		name = "junit-jupiter",
-		version = jUnitVersion
-	)
-	testRuntimeOnly(
-		group = "org.junit.platform",
-		name = "junit-platform-launcher"
-	)
+    testImplementation(
+        group = "org.junit.jupiter",
+        name = "junit-jupiter",
+        version = jUnitVersion
+    )
+    testRuntimeOnly(
+        group = "org.junit.platform",
+        name = "junit-platform-launcher"
+    )
 
-	changelogHtml(project(":Changelog"))
-	changelogMarkdown(project(":Changelog"))
+    changelogHtml(project(":Changelog"))
+    changelogMarkdown(project(":Changelog"))
 }
 
 neoForge {
     version = neoVersion
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
-	addModdingDependenciesTo(sourceSets.test.get())
+    addModdingDependenciesTo(sourceSets.test.get())
 
     parchment {
         mappingsVersion = parchmentMappingsVersion
@@ -208,21 +208,21 @@ neoForge {
 }
 
 tasks.jar {
-	from(sourceSets.main.get().output)
-	for (p in dependencyProjects) {
-		from(p.sourceSets.main.get().output)
-	}
+    from(sourceSets.main.get().output)
+    for (p in dependencyProjects) {
+        from(p.sourceSets.main.get().output)
+    }
 
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
-	from(sourceSets.main.get().allJava)
-	for (p in dependencyProjects) {
-		from(p.sourceSets.main.get().allJava)
-	}
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	archiveClassifier.set("sources")
+    from(sourceSets.main.get().allJava)
+    for (p in dependencyProjects) {
+        from(p.sourceSets.main.get().allJava)
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveClassifier.set("sources")
 }
 
 publishMods {
@@ -238,8 +238,8 @@ publishMods {
         curseforge {
             projectId = curseProjectId
             accessToken.set(curseforgeApikey ?: "0")
-		    changelog.set(changelogHtml.singleFileContents())
-		    changelogType = "html"
+            changelog.set(changelogHtml.singleFileContents())
+            changelogType = "html"
             minecraftVersionRange {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
@@ -260,21 +260,21 @@ publishMods {
 }
 
 tasks.test {
-	useJUnitPlatform()
-	include("dev/jaronline/cuttingdelight/**")
-	exclude("dev/jaronline/cuttingdelight/lib/**")
-	outputs.upToDateWhen { false }
-	testLogging {
-		events = setOf(TestLogEvent.FAILED)
-		exceptionFormat = TestExceptionFormat.FULL
-	}
+    useJUnitPlatform()
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
+    outputs.upToDateWhen { false }
+    testLogging {
+        events = setOf(TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+    }
     // Should be removed once tests are added
     failOnNoDiscoveredTests = false
 }
 
 artifacts {
-	archives(tasks.jar.get())
-	archives(sourcesJarTask.get())
+    archives(tasks.jar.get())
+    archives(sourcesJarTask.get())
 }
 
 publishing {
