@@ -1,5 +1,6 @@
 package dev.jaronline.cuttingdelight.neoforge.data;
 
+import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.neoforge.CuttingDelight;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -17,12 +18,12 @@ public class ItemModels extends ItemModelProvider {
 	public static final String GENERATED = "item/generated";
 
     public ItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, CuttingDelight.MOD_ID, existingFileHelper);
+        super(output, ModIds.CUTTING_DELIGHT_ID, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
-        Set<Item> items = BuiltInRegistries.ITEM.stream().filter(i -> CuttingDelight.MOD_ID.equals(
+        Set<Item> items = BuiltInRegistries.ITEM.stream().filter(i -> ModIds.CUTTING_DELIGHT_ID.equals(
                 BuiltInRegistries.ITEM.getKey(i).getNamespace())).collect(Collectors.toSet());
 
 		takeAll(items, i -> i instanceof BlockItem).forEach(item -> blockBasedModel(item, ""));
@@ -43,11 +44,11 @@ public class ItemModels extends ItemModelProvider {
 	}
 
 	public ResourceLocation resourceBlock(String path) {
-		return ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "block/" + path);
+		return ModIds.cuttingDelightResource("block/" + path);
 	}
 
 	public ResourceLocation resourceItem(String path) {
-		return ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "item/" + path);
+		return ModIds.cuttingDelightResource("item/" + path);
 	}
 
 	@SafeVarargs

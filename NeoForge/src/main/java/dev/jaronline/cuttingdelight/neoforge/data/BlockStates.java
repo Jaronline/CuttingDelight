@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.neoforge.data;
 
-import dev.jaronline.cuttingdelight.neoforge.CuttingDelight;
-import dev.jaronline.cuttingdelight.neoforge.common.registry.BlockRegistry;
+import dev.jaronline.cuttingdelight.common.ModBlocks;
+import dev.jaronline.cuttingdelight.common.ModIds;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -20,10 +20,8 @@ import java.util.function.Function;
 public class BlockStates extends BlockStateProvider {
 	private static final int DEFAULT_ANGLE_OFFSET = 180;
 
-    private final BlockRegistry blocks = BlockRegistry.getInstance();
-
     public BlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, CuttingDelight.MOD_ID, exFileHelper);
+        super(output, ModIds.CUTTING_DELIGHT_ID, exFileHelper);
     }
 
 	private String blockName(Block block) {
@@ -31,7 +29,7 @@ public class BlockStates extends BlockStateProvider {
 	}
 
 	public ResourceLocation resourceBlock(String path) {
-		return ResourceLocation.fromNamespaceAndPath(CuttingDelight.MOD_ID, "block/" + path);
+		return ModIds.cuttingDelightResource("block/" + path);
 	}
 
 	public ModelFile existingModel(Block block) {
@@ -44,8 +42,8 @@ public class BlockStates extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-		customHorizontalBlock(blocks.cuttingBoard.get(),
-				$ -> existingModel(blocks.cuttingBoard.get()), CuttingBoardBlock.WATERLOGGED);
+		customHorizontalBlock(ModBlocks.CUTTING_BOARD,
+				$ -> existingModel(ModBlocks.CUTTING_BOARD), CuttingBoardBlock.WATERLOGGED);
     }
 
 	public void customHorizontalBlock(Block block, Function<BlockState, ModelFile> modelFunc, Property<?>... ignored) {

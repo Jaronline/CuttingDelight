@@ -36,5 +36,6 @@ val minecraftVersion: String by settings
 rootProject.name = "$modId-$minecraftVersion"
 include(
     "Changelog",
+    "Common",
     "NeoForge"
 )

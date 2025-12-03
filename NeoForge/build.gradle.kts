@@ -68,7 +68,9 @@ sourceSets {
     }
 }
 
-val dependencyProjects: List<Project> = listOf()
+val dependencyProjects: List<Project> = listOf(
+    project(":Common")
+)
 
 dependencyProjects.forEach {
 	project.evaluationDependsOn(it.path)
@@ -153,10 +155,12 @@ neoForge {
     runs {
         val client = create("client")
         client.client()
+        client.gameDirectory = file("run/client")
         client.systemProperty("neoforge.enabledGameTestNamespaces", modId)
 
         val server = create("server")
         server.server()
+        server.gameDirectory = file("run/server")
         server.programArgument("--nogui")
         server.systemProperty("neoforge.enabledGameTestNamespaces", modId)
 

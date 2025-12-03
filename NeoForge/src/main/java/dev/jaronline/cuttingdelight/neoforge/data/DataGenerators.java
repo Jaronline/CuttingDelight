@@ -1,6 +1,7 @@
 package dev.jaronline.cuttingdelight.neoforge.data;
 
-import dev.jaronline.cuttingdelight.neoforge.CuttingDelight;
+import dev.jaronline.cuttingdelight.common.ModIds;
+import dev.jaronline.cuttingdelight.common.data.Recipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-@EventBusSubscriber(modid = CuttingDelight.MOD_ID)
+@EventBusSubscriber(modid = ModIds.CUTTING_DELIGHT_ID)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

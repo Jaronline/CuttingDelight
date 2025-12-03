@@ -1,8 +1,9 @@
 package dev.jaronline.cuttingdelight.neoforge;
 
+import dev.jaronline.cuttingdelight.common.config.IConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class Config {
+public class Config implements IConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.BooleanValue PROCESS_STACK = BUILDER
@@ -12,4 +13,9 @@ public class Config {
             .define("processStack", true);
 
     static final ModConfigSpec SPEC = BUILDER.build();
+
+    @Override
+    public boolean shouldProcessStack() {
+        return PROCESS_STACK.getAsBoolean();
+    }
 }
