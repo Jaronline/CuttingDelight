@@ -3,7 +3,6 @@ package dev.jaronline.cuttingdelight.common.block;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -62,7 +61,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 				}
 			} else if (!heldStack.isEmpty()) {
 				if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-					ProviderManager.getPlayerProvider().openMenu(serverPlayer, state.getMenuProvider(level, pos), pos);
+					serverPlayer.openMenu(state.getMenuProvider(level, pos));
 				}
 				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			} else if (hand.equals(InteractionHand.MAIN_HAND)) {

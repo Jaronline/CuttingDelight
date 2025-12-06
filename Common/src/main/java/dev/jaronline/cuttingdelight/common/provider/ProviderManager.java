@@ -2,7 +2,6 @@ package dev.jaronline.cuttingdelight.common.provider;
 
 public class ProviderManager {
 	private static IClientCommonPacketListenerProvider clientCommonPacketListenerProvider;
-	private static IPlayerProvider playerProvider;
 	private static IInventoryProvider inventoryProvider;
 
 	public static IClientCommonPacketListenerProvider getClientCommonPacketListenerProvider() {
@@ -14,17 +13,6 @@ public class ProviderManager {
 
 	public static void setClientCommonPacketListenerProvider(IClientCommonPacketListenerProvider provider) {
 		clientCommonPacketListenerProvider = provider;
-	}
-
-	public static IPlayerProvider getPlayerProvider() {
-		if (playerProvider == null) {
-			unsetError(IPlayerProvider.class);
-		}
-		return playerProvider;
-	}
-
-	public static void setPlayerProvider(IPlayerProvider provider) {
-		playerProvider = provider;
 	}
 
 	public static IInventoryProvider getInventoryProvider() {
