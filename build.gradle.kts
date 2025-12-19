@@ -1,16 +1,16 @@
 plugins {
-    // https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless
-	id("com.diffplug.spotless") version ("8.1.0")
+    // https://plugins.gradle.org/plugin/com.diffplug.gradle.spoittless
+    id("com.diffplug.spotless") version ("8.1.0")
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.1")
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/vanillagradle/
-    id("org.spongepowered.gradle.vanilla") version("0.2.2-SNAPSHOT") apply(false)
+    id("org.spongepowered.gradle.vanilla") version ("0.2.2-SNAPSHOT") apply (false)
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
-    id("org.spongepowered.mixin") version("0.7.38") apply(false)
+    id("org.spongepowered.mixin") version ("0.7.38") apply (false)
     // https://files.minecraftforge.net/net/minecraftforge/gradle/ForgeGradle/index.html
-    id("net.minecraftforge.gradle") version("6.0.46") apply(false)
+    id("net.minecraftforge.gradle") version ("6.0.46") apply (false)
     // https://mvnrepository.com/artifact/org.parchmentmc.librarian.forgegradle/org.parchmentmc.librarian.forgegradle.gradle.plugin
-    id("org.parchmentmc.librarian.forgegradle") version("1.2.0") apply(false)
+    id("org.parchmentmc.librarian.forgegradle") version ("1.2.0") apply (false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
     id("me.modmuss50.mod-publish-plugin") version ("1.1.0") apply (false)
 }
