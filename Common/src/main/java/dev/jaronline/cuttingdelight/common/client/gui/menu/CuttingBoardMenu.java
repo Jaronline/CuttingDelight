@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,8 +97,9 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 		return this.selectedRecipeIndex.get();
 	}
 
+    @Nullable
 	public CuttingBoardRecipe getSelectedRecipe() {
-		if (this.isValidSlotIndex(this.selectedRecipeIndex.get())) {
+		if (this.isValidSlotIndex(this.selectedRecipeIndex.get()) && this.selectedRecipeIndex.get() != -1) {
 			return this.recipes.get(this.selectedRecipeIndex.get());
 		}
 		return null;

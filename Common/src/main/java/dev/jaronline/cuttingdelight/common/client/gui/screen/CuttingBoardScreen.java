@@ -1,5 +1,6 @@
 package dev.jaronline.cuttingdelight.common.client.gui.screen;
 
+import com.mojang.logging.LogUtils;
 import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
@@ -19,6 +20,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.slf4j.Logger;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_board.png");
 	private static final ResourceLocation STONECUTTER_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/stonecutter.png");
 	private static final ResourceLocation BEACON_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/beacon.png");
+    private static final Logger LOGGER = LogUtils.getLogger();
 
 	private static final int SCROLLER_WIDTH = 12;
 	private static final int SCROLLER_HEIGHT = 15;
@@ -184,6 +187,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 		if (!this.displayRecipes) {
 			this.scrollOffs = 0.0F;
 			this.startIndex = 0;
+            confirmButton.active = false;
 		}
 	}
 
@@ -202,6 +206,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 		public void onPress() {
 			CuttingBoardRecipe result = CuttingBoardScreen.this.menu.getSelectedRecipe();
 			if (result == null) {
+                LOGGER.error("There was an attempted to cut, but there was no cutting board recipe selected. You will hurt the cutting board this way!");
 				return;
 			}
 			CuttingBoardScreen.this.confirmButton.setFocused(false);
