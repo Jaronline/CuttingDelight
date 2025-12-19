@@ -173,9 +173,16 @@ minecraft {
 //    accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
 
     runs {
-        create("client", Action<RunConfig> {
-            taskName("runClient")
-            workingDirectory(file("run/client"))
+        val client = create("client", Action<RunConfig> {
+            taskName("runClientDev")
+            workingDirectory(file("run/client/Dev"))
+        })
+
+        create("client_1", Action<RunConfig> {
+            taskName("runClientPlayer")
+            parent(client)
+            workingDirectory(file("run/client/Player1"))
+            args("--username", "Player")
         })
 
         create("server", Action<RunConfig> {
