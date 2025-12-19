@@ -15,5 +15,10 @@ jobs:
       - name: Setup Gradle
         uses: Jaronline/.github/actions/setup-java-gradle@main
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Build packages
+        run: |
+          ./gradlew :build
+          ./gradlew :Core:build
+          ./gradlew :Common:build
+          ./gradlew :Processor:build
+          ./gradlew :Forge:build
