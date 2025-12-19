@@ -1,6 +1,6 @@
 package dev.jaronline.cuttingdelight.common;
 
-import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
+import dev.jaronline.cuttingdelight.common.block.CuttingStationBlock;
 import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,13 +9,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
 
 public final class ModBlocks {
-	public static final CustomCuttingBoardBlock CUTTING_BOARD = register("cutting_board", new CustomCuttingBoardBlock(
+	public static final CuttingStationBlock CUTTING_STATION = register("cutting_station", new CuttingStationBlock(
 			BlockBehaviour.Properties.copy(ProviderManager.getObjectProvider(CuttingBoardBlock.class).getObject())
 	));
 
 	@SuppressWarnings("UnusedReturnValue")
 	static Block bootstrap() {
-		return CUTTING_BOARD;
+		return CUTTING_STATION;
 	}
 
 	static <B extends Block> B register(String id, B block) {

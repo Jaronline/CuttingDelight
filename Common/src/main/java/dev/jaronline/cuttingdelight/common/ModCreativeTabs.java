@@ -14,7 +14,7 @@ public final class ModCreativeTabs {
 
 	public static void registerItems(ResourceKey<CreativeModeTab> tabKey, Consumer<ItemLike> itemConsumer) {
 		if (tabKey == FARMERS_DELIGHT_TAB_KEY) {
-			itemConsumer.accept(ModItems.CUTTING_BOARD);
+			itemConsumer.accept(ModItems.CUTTING_STATION);
 		}
 	}
 }

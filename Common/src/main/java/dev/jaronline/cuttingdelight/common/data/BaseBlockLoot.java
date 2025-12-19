@@ -18,7 +18,7 @@ public abstract class BaseBlockLoot extends BlockLootSubProvider {
 
 	@Override
 	protected void generate() {
-		dropSelf(ModBlocks.CUTTING_BOARD);
+		dropSelf(ModBlocks.CUTTING_STATION);
 	}
 
 	@Override

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cuttingdelight:cutting_board"
+        "recipe": "cuttingdelight:cutting_station"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "cuttingdelight:cutting_board"
+      "cuttingdelight:cutting_station"
     ]
   },
   "sends_telemetry_event": false

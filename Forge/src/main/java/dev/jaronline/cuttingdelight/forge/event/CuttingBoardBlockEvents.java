@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.forge.event;
 
 import dev.jaronline.cuttingdelight.common.ModIds;
-import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
+import dev.jaronline.cuttingdelight.common.block.CuttingStationBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ public class CuttingBoardBlockEvents {
 		BlockPos pos = event.getPos();
 		Player player = event.getEntity();
 
-		InteractionResult result = CustomCuttingBoardBlock.ToolCarvingEvent.onSneakPlaceTool(level, pos, player);
+		InteractionResult result = CuttingStationBlock.ToolCarvingEvent.onSneakPlaceTool(level, pos, player);
 
 		if (result != InteractionResult.PASS) {
 			event.setCanceled(true);

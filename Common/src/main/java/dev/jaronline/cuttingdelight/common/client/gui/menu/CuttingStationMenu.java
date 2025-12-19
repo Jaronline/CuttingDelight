@@ -3,7 +3,7 @@ package dev.jaronline.cuttingdelight.common.client.gui.menu;
 import com.google.common.reflect.TypeToken;
 import dev.jaronline.cuttingdelight.common.ModBlocks;
 import dev.jaronline.cuttingdelight.common.ModMenuTypes;
-import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
+import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CuttingBoardMenu extends AbstractContainerMenu {
+public class CuttingStationMenu extends AbstractContainerMenu {
 	public static final int INPUT_SLOT = 0;
 	public static final int RESULT_SLOT = 1;
 	protected final ContainerLevelAccess access;
@@ -39,12 +39,12 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 	final ResultContainer resultContainer;
 	private final ItemStack usedTool;
 
-	public CuttingBoardMenu(int containerId, Inventory playerInventory) {
+	public CuttingStationMenu(int containerId, Inventory playerInventory) {
 		this(containerId, playerInventory, new SimpleContainer(1), ContainerLevelAccess.NULL);
 	}
 
-	public CuttingBoardMenu(int containerId, Inventory playerInventory, Container container, ContainerLevelAccess access) {
-		super(ModMenuTypes.CUTTING_BOARD_MENU, containerId);
+	public CuttingStationMenu(int containerId, Inventory playerInventory, Container container, ContainerLevelAccess access) {
+		super(ModMenuTypes.CUTTING_STATION_MENU, containerId);
 
 		this.usedTool = playerInventory.player.getMainHandItem();
 		this.selectedRecipeIndex = DataSlot.standalone();
@@ -63,8 +63,8 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 			@Override
 			public void setChanged() {
 				super.setChanged();
-				CuttingBoardMenu.this.slotsChanged(CuttingBoardMenu.this.container);
-				CuttingBoardMenu.this.slotUpdateListener.run();
+				CuttingStationMenu.this.slotsChanged(CuttingStationMenu.this.container);
+				CuttingStationMenu.this.slotUpdateListener.run();
 			}
 		});
 
@@ -115,7 +115,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(this.access, player, ModBlocks.CUTTING_BOARD);
+		return stillValid(this.access, player, ModBlocks.CUTTING_STATION);
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
 	@Override
 	public MenuType<?> getType() {
-		return ModMenuTypes.CUTTING_BOARD_MENU;
+		return ModMenuTypes.CUTTING_STATION_MENU;
 	}
 
 	@Override
@@ -172,16 +172,16 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 
 	public void clickCutButton(Player player, CuttingBoardRecipe recipe) {
 		this.access.execute((level, pos) -> {
-			CustomCuttingBoardBlockEntity blockEntity = getCuttingBoardBlockEntity(level, pos);
+			CuttingStationBlockEntity blockEntity = getCuttingBoardBlockEntity(level, pos);
 			blockEntity.processStoredStackOrItemUsingTool(recipe, player.getMainHandItem(), player);
 			this.inputSlot.set(blockEntity.getStoredItem());
 		});
 	}
 
-	private CustomCuttingBoardBlockEntity getCuttingBoardBlockEntity(Level level, BlockPos pos) {
+	private CuttingStationBlockEntity getCuttingBoardBlockEntity(Level level, BlockPos pos) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (!(blockEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardBlockEntity)) {
-			throw new IllegalArgumentException("Expected " + CustomCuttingBoardBlockEntity.class.getSimpleName() + " but found: " + blockEntity.getClass().getSimpleName());
+		if (!(blockEntity instanceof CuttingStationBlockEntity cuttingBoardBlockEntity)) {
+			throw new IllegalArgumentException("Expected " + CuttingStationBlockEntity.class.getSimpleName() + " but found: " + blockEntity.getClass().getSimpleName());
 		}
 		return cuttingBoardBlockEntity;
 	}

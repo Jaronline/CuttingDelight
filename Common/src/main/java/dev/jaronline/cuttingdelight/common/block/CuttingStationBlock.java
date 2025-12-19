@@ -1,8 +1,8 @@
 package dev.jaronline.cuttingdelight.common.block;
 
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
-import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
-import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
+import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
 import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,17 +20,17 @@ import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
-public class CustomCuttingBoardBlock extends CuttingBoardBlock {
-	public CustomCuttingBoardBlock(Properties properties) {
+public class CuttingStationBlock extends CuttingBoardBlock {
+	public CuttingStationBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-		CustomCuttingBoardBlockEntity blockEntity = (CustomCuttingBoardBlockEntity) level.getBlockEntity(pos);
+		CuttingStationBlockEntity blockEntity = (CuttingStationBlockEntity) level.getBlockEntity(pos);
 		Container container = ProviderManager.getInventoryProvider().asContainer(blockEntity);
 		return new SimpleMenuProvider((containerId, playerInventory, player) ->
-				new CuttingBoardMenu(containerId, playerInventory, container, ContainerLevelAccess.create(level, pos)),
+				new CuttingStationMenu(containerId, playerInventory, container, ContainerLevelAccess.create(level, pos)),
 				getName());
 	}
 
@@ -38,7 +38,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
 
-		if (tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardBlockEntity) {
+		if (tileEntity instanceof CuttingStationBlockEntity cuttingBoardBlockEntity) {
 			ItemStack heldStack = player.getItemInHand(hand);
 			ItemStack offhandStack = player.getOffhandItem();
 
@@ -88,7 +88,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ModBlockEntityTypes.CUTTING_BOARD.create(pos, state);
+		return ModBlockEntityTypes.CUTTING_STATION.create(pos, state);
 	}
 
 	public static class ToolCarvingEvent {
@@ -97,7 +97,7 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 			BlockEntity tileEntity = level.getBlockEntity(pos);
 
 			if (!player.isSecondaryUseActive() || heldStack.isEmpty() ||
-					!(tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoardBlockEntity)) {
+					!(tileEntity instanceof CuttingStationBlockEntity cuttingBoardBlockEntity)) {
 				return InteractionResult.PASS;
 			}
 

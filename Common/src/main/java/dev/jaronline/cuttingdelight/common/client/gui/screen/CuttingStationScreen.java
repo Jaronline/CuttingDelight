@@ -2,7 +2,7 @@ package dev.jaronline.cuttingdelight.common.client.gui.screen;
 
 import com.mojang.logging.LogUtils;
 import dev.jaronline.cuttingdelight.common.ModIds;
-import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.network.CutPacket;
 import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
@@ -26,8 +26,8 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu> {
-	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_board.png");
+public class CuttingStationScreen extends AbstractContainerScreen<CuttingStationMenu> {
+	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_station.png");
 	private static final ResourceLocation STONECUTTER_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/stonecutter.png");
 	private static final ResourceLocation BEACON_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/beacon.png");
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -46,9 +46,9 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 	private boolean scrolling;
 	private int startIndex;
 	private boolean displayRecipes;
-	private CuttingBoardScreenButton confirmButton;
+	private CuttingStationScreenButton confirmButton;
 
-	public CuttingBoardScreen(CuttingBoardMenu menu, Inventory playerInventory, Component title) {
+	public CuttingStationScreen(CuttingStationMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		menu.registerUpdateListener(this::containerChanged);
 		menu.registerSelectedRecipeUpdateListener(this::selectedRecipeChanged);
@@ -58,7 +58,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 	@Override
 	protected void init() {
 		super.init();
-		confirmButton = new CuttingBoardConfirmButton(this.leftPos + 140, this.topPos + 46);
+		confirmButton = new CuttingStationConfirmButton(this.leftPos + 140, this.topPos + 46);
 		confirmButton.active = false;
 		this.addRenderableWidget(confirmButton);
 	}
@@ -197,33 +197,33 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	class CuttingBoardConfirmButton extends CuttingBoardScreenButton {
-		protected CuttingBoardConfirmButton(int x, int y) {
+	class CuttingStationConfirmButton extends CuttingStationScreenButton {
+		protected CuttingStationConfirmButton(int x, int y) {
 			super(x, y, 0, 166, CommonComponents.EMPTY);
 		}
 
 		@Override
 		public void onPress() {
-			CuttingBoardRecipe result = CuttingBoardScreen.this.menu.getSelectedRecipe();
+			CuttingBoardRecipe result = CuttingStationScreen.this.menu.getSelectedRecipe();
 			if (result == null) {
-                LOGGER.error("There was an attempted to cut, but there was no cutting board recipe selected. You will hurt the cutting board this way!");
+                LOGGER.error("There was an attempted to cut, but there was no cutting station recipe selected. You will hurt the cutting station this way!");
 				return;
 			}
-			CuttingBoardScreen.this.confirmButton.setFocused(false);
-			if (ConfigManager.getConfig().shouldProcessStack() || CuttingBoardScreen.this.menu.hasSingleInputItem()) {
-				CuttingBoardScreen.this.confirmButton.active = false;
+			CuttingStationScreen.this.confirmButton.setFocused(false);
+			if (ConfigManager.getConfig().shouldProcessStack() || CuttingStationScreen.this.menu.hasSingleInputItem()) {
+				CuttingStationScreen.this.confirmButton.active = false;
 			}
-			ProviderManager.getClientPacketListenerProvider().send(new CutPacket(CuttingBoardScreen.this.menu.containerId, result));
+			ProviderManager.getClientPacketListenerProvider().send(new CutPacket(CuttingStationScreen.this.menu.containerId, result));
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	abstract static class CuttingBoardScreenButton extends AbstractButton {
+	abstract static class CuttingStationScreenButton extends AbstractButton {
 		private boolean selected;
 		private final int iconX;
 		private final int iconY;
 
-		public CuttingBoardScreenButton(int x, int y, int iconX, int iconY, Component message) {
+		public CuttingStationScreenButton(int x, int y, int iconX, int iconY, Component message) {
 			super(x, y, 22, 22, message);
 			this.iconX = iconX;
 			this.iconY = iconY;
@@ -240,12 +240,12 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 				j += this.width * 3;
 			}
 
-			guiGraphics.blit(CuttingBoardScreen.BEACON_SCREEN_LOCATION, this.getX(), this.getY(), j, 219, this.width, this.height);
+			guiGraphics.blit(CuttingStationScreen.BEACON_SCREEN_LOCATION, this.getX(), this.getY(), j, 219, this.width, this.height);
 			this.renderIcon(guiGraphics);
 		}
 
 		protected void renderIcon(GuiGraphics guiGraphics) {
-			guiGraphics.blit(CuttingBoardScreen.BG_LOCATION, this.getX() + 2, this.getY() + 2, this.iconX, this.iconY, 18, 18);
+			guiGraphics.blit(CuttingStationScreen.BG_LOCATION, this.getX() + 2, this.getY() + 2, this.iconX, this.iconY, 18, 18);
 		}
 
 		public boolean isSelected() {

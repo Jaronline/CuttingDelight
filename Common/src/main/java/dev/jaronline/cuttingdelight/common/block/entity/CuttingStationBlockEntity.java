@@ -2,7 +2,7 @@ package dev.jaronline.cuttingdelight.common.block.entity;
 
 import com.mojang.logging.LogUtils;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
-import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
+import dev.jaronline.cuttingdelight.common.block.CuttingStationBlock;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.mixin.CuttingBoardBlockEntityAccessor;
 import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
@@ -28,16 +28,16 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
+public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 	private static final Logger LOGGER = LogUtils.getLogger();
 
-	public CustomCuttingBoardBlockEntity(BlockPos pos, BlockState state) {
+	public CuttingStationBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
 	}
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return ModBlockEntityTypes.CUTTING_BOARD;
+		return ModBlockEntityTypes.CUTTING_STATION;
 	}
 
 	public boolean processStoredStackOrItemUsingTool(CuttingBoardRecipe recipe, ItemStack tool, @Nullable Player player) {
@@ -67,7 +67,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		}
 
 		if (itemCount < 1) {
-			LOGGER.warn("Cutting Board at {} tried to process with a broken tool!", worldPosition);
+			LOGGER.warn("Cutting station at {} tried to process with a broken tool!", worldPosition);
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		for (ItemStack resultStack : results) {
 			ItemStack stackToAdd = resultStack.copy();
 			if (player == null || !player.addItem(stackToAdd)) {
-				Direction direction = getBlockState().getValue(CustomCuttingBoardBlock.FACING).getCounterClockWise();
+				Direction direction = getBlockState().getValue(CuttingStationBlock.FACING).getCounterClockWise();
 				ItemUtils.spawnItemEntity(level, stackToAdd,
 						worldPosition.getX()  + 0.5 + (direction.getStepX() * 0.2), worldPosition.getY() + 0.2, worldPosition.getZ() + 0.5 + (direction.getStepZ() * 0.2),
 						direction.getStepX() * 0.2F, 0.0F, direction.getStepZ() * 0.2F);

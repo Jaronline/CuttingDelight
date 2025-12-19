@@ -2,7 +2,7 @@ package dev.jaronline.cuttingdelight.forge.data;
 
 import dev.jaronline.cuttingdelight.common.ModBlocks;
 import dev.jaronline.cuttingdelight.common.ModIds;
-import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
+import dev.jaronline.cuttingdelight.common.block.CuttingStationBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -43,8 +43,8 @@ public class BlockStates extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		customHorizontalBlock(ModBlocks.CUTTING_BOARD,
-				$ -> existingModel(ModBlocks.CUTTING_BOARD), CustomCuttingBoardBlock.WATERLOGGED);
+		customHorizontalBlock(ModBlocks.CUTTING_STATION,
+				$ -> existingModel(ModBlocks.CUTTING_STATION), CuttingStationBlock.WATERLOGGED);
 	}
 
 	public void customHorizontalBlock(Block block, Function<BlockState, ModelFile> modelFunc, Property<?>... ignored) {

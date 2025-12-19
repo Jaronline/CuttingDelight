@@ -18,7 +18,7 @@ public class BlockTags extends BlockTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider pProvider) {
-		tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CUTTING_BOARD);
-		tag(CompatibilityTags.CREATE_BRITTLE).add(ModBlocks.CUTTING_BOARD);
+		tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CUTTING_STATION);
+		tag(CompatibilityTags.CREATE_BRITTLE).add(ModBlocks.CUTTING_STATION);
 	}
 }

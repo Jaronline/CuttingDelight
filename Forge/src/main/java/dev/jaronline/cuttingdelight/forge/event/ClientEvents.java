@@ -3,7 +3,7 @@ package dev.jaronline.cuttingdelight.forge.event;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.ModMenuTypes;
-import dev.jaronline.cuttingdelight.common.client.gui.screen.CuttingBoardScreen;
+import dev.jaronline.cuttingdelight.common.client.gui.screen.CuttingStationScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -17,12 +17,12 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			MenuScreens.register(ModMenuTypes.CUTTING_BOARD_MENU, CuttingBoardScreen::new);
+			MenuScreens.register(ModMenuTypes.CUTTING_STATION_MENU, CuttingStationScreen::new);
 		});
 	}
 
 	@SubscribeEvent
 	public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(ModBlockEntityTypes.CUTTING_BOARD, CuttingBoardRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntityTypes.CUTTING_STATION, CuttingBoardRenderer::new);
 	}
 }

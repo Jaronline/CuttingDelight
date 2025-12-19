@@ -19,6 +19,6 @@ public class JEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(new ItemStack(ModItems.CUTTING_BOARD), FDRecipeTypes.CUTTING);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.CUTTING_STATION), FDRecipeTypes.CUTTING);
 	}
 }

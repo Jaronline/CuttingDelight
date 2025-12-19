@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cuttingdelight:cutting_board"
+          "name": "cuttingdelight:cutting_station"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "cuttingdelight:blocks/cutting_board"
+  "random_sequence": "cuttingdelight:blocks/cutting_station"
 }

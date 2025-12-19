@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.common.server;
 
 import com.mojang.logging.LogUtils;
-import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
+import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
 import dev.jaronline.cuttingdelight.common.network.CutPacket;
 import dev.jaronline.cuttingdelight.common.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,14 +32,14 @@ public class ServerPacketListener implements PacketListener {
 			throw new IllegalArgumentException("Expected CuttingBoardRecipe but found: " + recipe.getClass().getSimpleName());
 		}
 		AbstractContainerMenu containerMenu = player.containerMenu;
-		if (!(containerMenu.containerId == packet.getContainerId() && containerMenu instanceof CuttingBoardMenu cuttingBoardMenu)) {
+		if (!(containerMenu.containerId == packet.getContainerId() && containerMenu instanceof CuttingStationMenu cuttingStationMenu)) {
 			noCuttingBoardMenuWarning();
 			return;
 		}
-		cuttingBoardMenu.clickCutButton(player, cuttingBoardRecipe);
+		cuttingStationMenu.clickCutButton(player, cuttingBoardRecipe);
 	}
 
 	private void noCuttingBoardMenuWarning() {
-		LOGGER.warn("Player {} is not viewing CuttingBoardMenu while cutting on Cutting Board", player.getName());
+		LOGGER.warn("Player {} is not viewing {} while cutting on Cutting Station", player.getName(), CuttingStationMenu.class.getSimpleName());
 	}
 }

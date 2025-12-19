@@ -23,12 +23,12 @@ public class Recipes extends RecipeProvider {
 	protected void buildRecipes(Consumer<FinishedRecipe> recipeConsumer) {
 		FuelBlockItem cuttingBoardItem = ProviderManager.getObjectProvider(
 				FuelBlockItem.class, FarmersDelight.MODID + ":cutting_board").getObject();
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.CUTTING_BOARD)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.CUTTING_STATION)
 				.requires(cuttingBoardItem)
 				.unlockedBy("has_original_cutting_board", has(cuttingBoardItem))
 				.save(recipeConsumer);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ProviderManager.getObjectProvider(CuttingBoardBlock.class).getObject())
-				.requires(ModBlocks.CUTTING_BOARD)
+				.requires(ModBlocks.CUTTING_STATION)
 				.unlockedBy("has_original_cutting_board", has(cuttingBoardItem))
 				.save(recipeConsumer, ModIds.CUTTING_DELIGHT_ID + ":farmers_cutting_board");
 	}
