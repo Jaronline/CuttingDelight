@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+@FieldsAreNonnullByDefault
+@MethodsAreNonnullByDefault
+package dev.jaronline.cuttingdelight.core;

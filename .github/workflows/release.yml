@@ -1,0 +1,64 @@
+name: Release Mod
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      publish-type:
+        description: 'Type of release to publish'
+        required: true
+        default: 'STABLE'
+        type: choice
+        options:
+          - STABLE
+          - BETA
+          - ALPHA
+
+env:
+  ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
+  ORG_GRADLE_PROJECT_curseforgeApikey: ${{ secrets.CURSEFORGE_API_KEY }}
+
+jobs:
+  release:
+    name: Release Mod
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Determine publish type
+        id: set_publish_type
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "PUBLISH_TYPE=${{ github.event.inputs.publish-type }}" >> $GITHUB_ENV
+          elif [ "${{ github.event.release.prerelease }}" = "true" ]; then
+            echo "PUBLISH_TYPE=BETA" >> $GITHUB_ENV
+          else
+            echo "PUBLISH_TYPE=STABLE" >> $GITHUB_ENV
+          fi
+
+      - name: Setup Gradle
+        uses: Jaronline/.github/actions/setup-java-gradle@main
+
+      - name: Build packages
+        run: |
+          ./gradlew :Common:build
+          ./gradlew :NeoForge:build
+
+      - name: Publish packages
+        run: |
+          ./gradlew :Common:publish
+          ./gradlew :NeoForge:publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish CurseForge
+        run: ./gradlew :NeoForge:publishCurseforge
+
+      - name: Publish Modrinth
+        run: ./gradlew :NeoForge:publishModrinth

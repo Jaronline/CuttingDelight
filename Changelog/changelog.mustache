@@ -1,0 +1,73 @@
+{{#tags}}
+<h2>{{name}}</h2>
+
+    {{#ifContainsBreaking commits}}
+    <h3>Breaking changes</h3>
+
+    <ul>
+        {{#commits}}
+            {{#ifCommitBreaking .}}
+            <li>
+                {{#ifCommitScope . scope=".*"}}<strong>{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:</strong> {{/ifCommitScope}}<a href="https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}">{{commitDescription .}}</a> (by {{authorName}})
+            </li>
+            {{/ifCommitBreaking}}
+        {{/commits}}
+    </ul>
+    {{/ifContainsBreaking}}
+
+    {{#ifContainsType commits type="feat"}}
+    <h3>Features</h3>
+
+    <ul>
+        {{#commits}}
+            {{#ifCommitType . type="feat"}}
+            <li>
+                {{#ifCommitScope . scope=".*"}}<strong>{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:</strong> {{/ifCommitScope}}<a href="https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}">{{commitDescription .}}</a> (by {{authorName}})
+            </li>
+            {{/ifCommitType}}
+        {{/commits}}
+    </ul>
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="fix"}}
+    <h3>Bug Fixes</h3>
+
+    <ul>
+        {{#commits}}
+            {{#ifCommitType . type="fix"}}
+            <li>
+                {{#ifCommitScope . scope=".*"}}<strong>{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:</strong> {{/ifCommitScope}}<a href="https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}">{{commitDescription .}}</a> (by {{authorName}})
+            </li>
+            {{/ifCommitType}}
+        {{/commits}}
+    </ul>
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="perf"}}
+    <h3>Performance</h3>
+
+    <ul>
+        {{#commits}}
+            {{#ifCommitType . type="perf"}}
+            <li>
+                {{#ifCommitScope . scope=".*"}}<strong>{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:</strong> {{/ifCommitScope}}<a href="https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}">{{commitDescription .}}</a> (by {{authorName}})
+            </li>
+            {{/ifCommitType}}
+        {{/commits}}
+    </ul>
+    {{/ifContainsType}}
+
+    {{#ifContainsType commits type="docs"}}
+    <h3>Documentation</h3>
+
+    <ul>
+        {{#commits}}
+            {{#ifCommitType . type="docs"}}
+            <li>
+                {{#ifCommitScope . scope=".*"}}<strong>{{#eachCommitScope .}}{{.}}{{/eachCommitScope}}:</strong> {{/ifCommitScope}}<a href="https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}">{{commitDescription .}}</a> (by {{authorName}})
+            </li>
+            {{/ifCommitType}}
+        {{/commits}}
+    </ul>
+    {{/ifContainsType}}
+{{/tags}}

@@ -1,0 +1,8 @@
+@ParametersAreNonnullByDefault
+@FieldsAreNonnullByDefault
+@MethodsAreNonnullByDefault
+package dev.jaronline.cuttingdelight.processor;
+
+import dev.jaronline.cuttingdelight.core.FieldsAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.core.MethodsAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.core.ParametersAreNonnullByDefault;
