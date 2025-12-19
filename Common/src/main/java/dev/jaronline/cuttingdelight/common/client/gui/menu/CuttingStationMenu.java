@@ -97,7 +97,7 @@ public class CuttingStationMenu extends AbstractContainerMenu {
 		return this.selectedRecipeIndex.get();
 	}
 
-    @Nullable
+	@Nullable
 	public CuttingBoardRecipe getSelectedRecipe() {
 		if (this.isValidSlotIndex(this.selectedRecipeIndex.get()) && this.selectedRecipeIndex.get() != -1) {
 			return this.recipes.get(this.selectedRecipeIndex.get());

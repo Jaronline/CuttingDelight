@@ -30,7 +30,7 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_station.png");
 	private static final ResourceLocation STONECUTTER_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/stonecutter.png");
 	private static final ResourceLocation BEACON_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/beacon.png");
-    private static final Logger LOGGER = LogUtils.getLogger();
+	private static final Logger LOGGER = LogUtils.getLogger();
 
 	private static final int SCROLLER_WIDTH = 12;
 	private static final int SCROLLER_HEIGHT = 15;
@@ -187,7 +187,7 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 		if (!this.displayRecipes) {
 			this.scrollOffs = 0.0F;
 			this.startIndex = 0;
-            confirmButton.active = false;
+			confirmButton.active = false;
 		}
 	}
 
@@ -206,7 +206,7 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 		public void onPress() {
 			CuttingBoardRecipe result = CuttingStationScreen.this.menu.getSelectedRecipe();
 			if (result == null) {
-                LOGGER.error("There was an attempted to cut, but there was no cutting station recipe selected. You will hurt the cutting station this way!");
+				LOGGER.error("There was an attempted to cut, but there was no cutting station recipe selected. You will hurt the cutting station this way!");
 				return;
 			}
 			CuttingStationScreen.this.confirmButton.setFocused(false);
