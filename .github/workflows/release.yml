@@ -47,18 +47,21 @@ jobs:
 
       - name: Build packages
         run: |
+          ./gradlew :Core:build
           ./gradlew :Common:build
-          ./gradlew :NeoForge:build
+          ./gradlew :Processor:build
+          ./gradlew :Forge:build
 
       - name: Publish packages
         run: |
+          ./gradlew :Core:publish
           ./gradlew :Common:publish
-          ./gradlew :NeoForge:publish
+          ./gradlew :Forge:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish CurseForge
-        run: ./gradlew :NeoForge:publishCurseforge
+        run: ./gradlew :Forge:publishCurseforge
 
       - name: Publish Modrinth
-        run: ./gradlew :NeoForge:publishModrinth
+        run: ./gradlew :Forge:publishModrinth
