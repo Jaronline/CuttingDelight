@@ -9,6 +9,7 @@
 [![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/c7fd18efdadd1c3f12ae56b49afd834640d2d797/assets/compact/available/modrinth_vector.svg)][modrinth]
 [![CurseForge](https://raw.githubusercontent.com/intergrav/devins-badges/c7fd18efdadd1c3f12ae56b49afd834640d2d797/assets/compact/available/curseforge_vector.svg)][curseforge]
 <br/>
+![Forge](https://raw.githubusercontent.com/intergrav/devins-badges/c7fd18efdadd1c3f12ae56b49afd834640d2d797/assets/cozy/supported/forge_vector.svg)
 ![NeoForge](https://raw.githubusercontent.com/Hyperbole-Devs/vectors/8494ec1ac495cfb481dc7e458356325510933eb0/assets/cozy/supported/neoforge_vector.svg)
 <br/>
 [![Discord](https://raw.githubusercontent.com/intergrav/devins-badges/c7fd18efdadd1c3f12ae56b49afd834640d2d797/assets/compact/social/discord-plural_vector.svg)][discord]
@@ -31,11 +32,11 @@ You can put the item or tool on the cutting board like normal. The output menu o
 
 ## Mod Loaders
 
-Cutting Delight is currently only available for Neoforge, but modloader support can be expanded if it gets requested.
+Cutting Delight is currently only available for Forge and Neoforge, but modloader support can be expanded if it gets requested.
 
 ## Backports
 
-After releasing version 1.0.0, I'm going to work on a Forge 1.20.1 version. I'm currently not planning on backporting this mod to earlier Minecraft/Farmer's Delight versions than 1.20.1, but if you want you can try it yourself and open a pull-request on my github repository.
+I'm currently not planning on backporting this mod to earlier Minecraft/Farmer's Delight versions than 1.20.1, but if you want you can try it yourself and open a pull-request on my github repository.
 
 ## Credits
 
