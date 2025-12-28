@@ -8,14 +8,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
         with:
-          fetch-depth: 0
-          fetch-tags: true
-
-      - name: Setup Gradle
-        uses: Jaronline/.github/actions/setup-java-gradle@main
-        with:
+          distribution: microsoft
           java-version: '17'
-
+          cache: gradle
       - name: Build packages
-        run: ./gradlew :build
+        run: ./gradlew build
