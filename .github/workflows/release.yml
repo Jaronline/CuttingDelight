@@ -42,18 +42,18 @@ jobs:
             echo "PUBLISH_TYPE=STABLE" >> $GITHUB_ENV
           fi
 
-      - name: Setup Gradle
-        uses: Jaronline/.github/actions/setup-java-gradle@main
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
         with:
+          distribution: microsoft
           java-version: '17'
+          cache: gradle
 
       - name: Build packages
         run: |
-          ./gradlew :build
           ./gradlew :Core:build
-          ./gradlew :Common:build
-          ./gradlew :Processor:build
           ./gradlew :Forge:build
+          ./gradlew :Common:build
 
       - name: Publish packages
         run: |
