@@ -18,9 +18,4 @@ jobs:
           java-version: '17'
 
       - name: Build packages
-        run: |
-          ./gradlew :build
-          ./gradlew :Core:build
-          ./gradlew :Common:build
-          ./gradlew :Processor:build
-          ./gradlew :Forge:build
+        run: ./gradlew :build
