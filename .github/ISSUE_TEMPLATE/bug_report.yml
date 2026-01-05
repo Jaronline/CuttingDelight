@@ -1,0 +1,84 @@
+name: Bug Report
+description: Submit a bug report for Cutting Delight
+assignees: ["jaronz"]
+type: "Bug"
+title: "[FIX] "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out the following template to help us understand and resolve the issue.
+        
+  - type: checkboxes
+    id: new-issue
+    attributes:
+      label: Is there an existing issue for this bug?
+      description: Before creating a new issue, please check if the bug has already been reported.
+      options:
+        - label: There are no existing issues for this bug
+          required: true
+        
+  - type: dropdown
+    id: version
+    attributes:
+      label: In which Minecraft version are you experiencing this issue?
+      options:
+        - 1.21.1
+        - 1.20.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: In which mod loader are you experiencing this issue?
+      options:
+        - neoforge
+        - forge
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Description of the bug
+      description: Provide a detailed description of the bug you encountered.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps to reproduce the bug.
+      placeholder: |
+        Give a clear and concise list of steps that lead to the bug, for example:
+        1. Open the application
+        2. Click on the "Submit" button
+        3. Observe the error message
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+      placeholder: Explain what you expected to happen when following the steps above.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, please attach screenshots that demonstrate the bug.
+      placeholder: You can paste images directly into this field or upload them using the "Attach files" button.
+      
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: Any other information that might be relevant to the bug report.
+      placeholder: Include any logs, error messages, or other context that might help in diagnosing the issue.
