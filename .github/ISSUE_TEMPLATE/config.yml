@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Contact Support
+    url: https://discord.gg/VXUYxrB5dJ
+    about: "Send a message in the #support channel in my discord server for support."
+  - name: CurseForge
+    url: https://www.curseforge.com/minecraft/mc-mods/cutting-delight/comments
+    about: Add a comment to Cutting Delight in CurseForge.
