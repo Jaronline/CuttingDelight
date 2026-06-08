@@ -132,7 +132,7 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
-    runtimeOnly("maven.modrinth:hearth-and-harvest:6rnNHSe5")
+    runtimeOnly("maven.modrinth:hearth-and-harvest:9V85WPz7")
 
     testImplementation(
         group = "org.junit.jupiter",
