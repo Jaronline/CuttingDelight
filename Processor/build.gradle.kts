@@ -33,7 +33,7 @@ dependencies {
     implementation(
         group = "org.jetbrains",
         name = "annotations",
-        version = "26.0.2-1"
+        version = "26.1.0"
     )
 }
 
