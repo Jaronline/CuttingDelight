@@ -5,7 +5,7 @@ import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.common.network.CutPayload;
 import dev.jaronline.cuttingdelight.common.network.CuttingBoardFilledPayload;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -208,11 +208,11 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 
 	private void inputEmptied() {
 		confirmButton.active = false;
-		ProviderManager.getClientCommonPacketListenerProvider().send(new CuttingBoardFilledPayload(ItemStack.EMPTY));
+		Services.PLATFORM.getClientHelper().send(new CuttingBoardFilledPayload(ItemStack.EMPTY));
 	}
 
 	private void inputFilled(ItemStack itemStack) {
-		ProviderManager.getClientCommonPacketListenerProvider().send(new CuttingBoardFilledPayload(itemStack));
+		Services.PLATFORM.getClientHelper().send(new CuttingBoardFilledPayload(itemStack));
 	}
 
 	private void selectedRecipeChanged() {
@@ -236,7 +236,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 			if (ConfigManager.getConfig().shouldProcessStack() || CuttingBoardScreen.this.menu.hasSingleInputItem()) {
 				CuttingBoardScreen.this.confirmButton.active = false;
 			}
-			ProviderManager.getClientCommonPacketListenerProvider().send(new CutPayload(result));
+			Services.PLATFORM.getClientHelper().send(new CutPayload(result));
 		}
 	}
 

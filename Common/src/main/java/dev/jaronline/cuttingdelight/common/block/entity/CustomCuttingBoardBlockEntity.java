@@ -5,7 +5,7 @@ import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.CustomCuttingBoardBlock;
 import dev.jaronline.cuttingdelight.common.mixin.CuttingBoardBlockEntityAccessor;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -121,7 +121,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		if (!this.isEmpty() || itemStack.isEmpty()) {
 			return false;
 		}
-		ProviderManager.getInventoryProvider().setStackInSlot(this, 0, itemStack.split(itemStack.getCount()));
+		Services.PLATFORM.getInventoryHelper().setStackInSlot(this, 0, itemStack.split(itemStack.getCount()));
 		CuttingBoardBlockEntityAccessor accessor = (CuttingBoardBlockEntityAccessor) this;
 		accessor.setItemCarvingBoard(false);
 		this.inventoryChanged();
@@ -144,6 +144,6 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 	}
 
 	public void empty() {
-		ProviderManager.getInventoryProvider().setStackInSlot(this, 0, ItemStack.EMPTY);
+		Services.PLATFORM.getInventoryHelper().setStackInSlot(this, 0, ItemStack.EMPTY);
 	}
 }

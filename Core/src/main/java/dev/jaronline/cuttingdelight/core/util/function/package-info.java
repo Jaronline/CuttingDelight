@@ -1,0 +1,7 @@
+@ParametersAreNonnullByDefault
+@FieldsAndMethodsAreNonnullByDefault
+package dev.jaronline.cuttingdelight.core.util.function;
+
+import dev.jaronline.cuttingdelight.core.FieldsAndMethodsAreNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;
