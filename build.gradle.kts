@@ -50,7 +50,7 @@ spotless {
 
 tasks.withType<Wrapper> {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = "8.14.3"
+    gradleVersion = "8.14.5"
 }
 
 subprojects {
