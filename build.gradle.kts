@@ -4,7 +4,7 @@ plugins {
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.1")
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/vanillagradle/
-    id("org.spongepowered.gradle.vanilla") version ("0.2.2-SNAPSHOT") apply (false)
+    id("org.spongepowered.gradle.vanilla") version ("0.3.2") apply (false)
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
     id("org.spongepowered.mixin") version ("0.7.38") apply (false)
     // https://files.minecraftforge.net/net/minecraftforge/gradle/ForgeGradle/index.html
