@@ -8,7 +8,7 @@ plugins {
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
     id("org.spongepowered.mixin") version ("0.7.38") apply (false)
     // https://files.minecraftforge.net/net/minecraftforge/gradle/ForgeGradle/index.html
-    id("net.minecraftforge.gradle") version ("6.0.54") apply (false)
+    id("net.minecraftforge.gradle") version ("7.0.29") apply (false)
     // https://mvnrepository.com/artifact/org.parchmentmc.librarian.forgegradle/org.parchmentmc.librarian.forgegradle.gradle.plugin
     id("org.parchmentmc.librarian.forgegradle") version ("1.2.0") apply (false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
