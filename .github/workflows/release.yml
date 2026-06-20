@@ -69,7 +69,7 @@ jobs:
       - name: Build :Core
         run: ./gradlew :Core:build
       - name: Upload :Core artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: core-artifact
           path: Core/build
@@ -90,14 +90,14 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Core artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: core-artifact
           path: Core/build
       - name: Build :Common
         run: ./gradlew :Common:build
       - name: Upload :Common artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: common-artifact
           path: Common/build
@@ -120,19 +120,19 @@ jobs:
             java-version: '17'
             cache: gradle
       - name: Download :Core artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: core-artifact
           path: Core/build
       - name: Download :Common artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: common-artifact
           path: Common/build
       - name: Build :Forge
         run: ./gradlew :Forge:build
       - name: Upload :Forge artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: forge-artifact
           path: Forge/build
@@ -157,7 +157,7 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Core artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: core-artifact
           path: Core/build
@@ -186,7 +186,7 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Common artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: common-artifact
           path: Common/build
@@ -215,7 +215,7 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Forge artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: forge-artifact
           path: Forge/build
@@ -262,7 +262,7 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Forge artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: forge-artifact
           path: Forge/build
@@ -290,7 +290,7 @@ jobs:
           java-version: '17'
           cache: gradle
       - name: Download :Forge artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: forge-artifact
       - name: Publish Modrinth
