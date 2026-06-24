@@ -19,7 +19,7 @@ public class LazySupplier<T> implements Supplier<T> {
 	@Override
 	@Nullable
 	public T get() {
-		if (initialized) {
+		if (!initialized) {
 			cachedResult = supplier.get();
 			initialized = true;
 		}
