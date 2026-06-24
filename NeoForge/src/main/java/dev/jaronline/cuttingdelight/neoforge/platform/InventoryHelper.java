@@ -1,11 +1,11 @@
-package dev.jaronline.cuttingdelight.neoforge.provider;
+package dev.jaronline.cuttingdelight.neoforge.platform;
 
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
-import dev.jaronline.cuttingdelight.common.provider.IInventoryProvider;
+import dev.jaronline.cuttingdelight.common.platform.PlatformInventoryHelper;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
-public class InventoryProvider implements IInventoryProvider {
+public class InventoryHelper implements PlatformInventoryHelper {
 	@Override
 	public void setStackInSlot(Object inventory, int slot, ItemStack stack) {
 		CustomCuttingBoardBlockEntity blockEntity = (CustomCuttingBoardBlockEntity) inventory;

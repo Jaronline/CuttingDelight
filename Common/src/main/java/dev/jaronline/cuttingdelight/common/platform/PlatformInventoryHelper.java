@@ -1,7 +1,7 @@
-package dev.jaronline.cuttingdelight.common.provider;
+package dev.jaronline.cuttingdelight.common.platform;
 
 import net.minecraft.world.item.ItemStack;
 
-public interface IInventoryProvider {
+public interface PlatformInventoryHelper {
 	void setStackInSlot(Object inventory, int slot, ItemStack stack);
 }
