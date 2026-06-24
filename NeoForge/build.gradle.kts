@@ -98,6 +98,14 @@ tasks.withType<ProcessResources> {
     }
 }
 
+tasks.withType<ProcessResources> {
+    dependencyProjects.forEach {
+        if (it.sourceSets.findByName("dev") != null) {
+            from(it.sourceSets.getByName("dev").resources)
+        }
+    }
+}
+
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion)
     withSourcesJar()
@@ -132,7 +140,6 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
-    runtimeOnly("maven.modrinth:hearth-and-harvest:6rnNHSe5")
 
     testImplementation(
         group = "org.junit.jupiter",

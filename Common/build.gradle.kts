@@ -53,6 +53,13 @@ sourceSets {
             setSrcDirs(listOf("src/main/resources"))
         }
     }
+    create("dev", Action<SourceSet> {
+        resources {
+            setSrcDirs(listOf("src/dev/resources"))
+        }
+        compileClasspath += main.get().output + configurations.compileClasspath.get()
+        runtimeClasspath += main.get().output + configurations.runtimeClasspath.get()
+    })
     named("test") {
         resources {
             //The test module has no resources
