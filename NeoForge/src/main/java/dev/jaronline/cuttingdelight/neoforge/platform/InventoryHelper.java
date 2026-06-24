@@ -6,9 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 public class InventoryHelper implements PlatformInventoryHelper {
-    @Override
-    public void setStackInSlot(Object inventory, int slot, ItemStack stack) {
-        CustomCuttingBoardBlockEntity blockEntity = (CustomCuttingBoardBlockEntity) inventory;
+	@Override
+	public void setStackInSlot(Object inventory, int slot, ItemStack stack) {
+		CustomCuttingBoardBlockEntity blockEntity = (CustomCuttingBoardBlockEntity) inventory;
 		((IItemHandlerModifiable) blockEntity.getInventory()).setStackInSlot(slot, stack);
-    }
+	}
 }
