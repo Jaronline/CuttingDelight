@@ -3,6 +3,7 @@ package dev.jaronline.cuttingdelight.common.platform;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 public final class Services {
@@ -14,7 +15,7 @@ public final class Services {
     public static <T> T load(Class<T> serviceClass) {
         T loadedService = ServiceLoader.load(serviceClass)
                 .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + serviceClass.getName()));
+                .orElseThrow(() -> new ServiceConfigurationError("Failed to load service for " + serviceClass.getName()));
         LOGGER.debug("Loaded {} for service {}", loadedService, serviceClass);
         return loadedService;
     }
