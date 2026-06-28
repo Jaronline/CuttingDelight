@@ -56,7 +56,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		if (level == null) return false;
 		if (isItemCarvingBoard()) return false;
 
-		List<ItemStack> results = recipe.rollResults(this.level.random, getFortuneLevel(toolStack));
+		List<ItemStack> results = Services.PLATFORM.getRecipeHelper().rollResults(recipe, this.level.random, getFortuneLevel(toolStack), this);
 		processToolResults(results, recipe.getSoundEvent().orElse(null), toolStack, player);
 
 		return true;
@@ -79,7 +79,7 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		List<ItemStack> results = new ArrayList<>();
 		int fortuneLevel = getFortuneLevel(toolStack);
 		for (int i = 0; i < itemCount; i++) {
-			results.addAll(recipe.rollResults(level.random, fortuneLevel));
+			results.addAll(Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, fortuneLevel, this));
 		}
 
 		processToolResults(results, itemCount, recipe.getSoundEvent().orElse(null), toolStack, player);
