@@ -12,7 +12,7 @@ plugins {
     // https://mvnrepository.com/artifact/org.parchmentmc.librarian.forgegradle/org.parchmentmc.librarian.forgegradle.gradle.plugin
     id("org.parchmentmc.librarian.forgegradle") version ("1.2.0") apply (false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
-    id("me.modmuss50.mod-publish-plugin") version ("2.0.1") apply (false)
+    id("me.modmuss50.mod-publish-plugin") version ("2.1.1") apply (false)
 }
 
 // gradle.properties
