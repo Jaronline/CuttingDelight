@@ -6,7 +6,7 @@ plugins {
     // https://projects.neoforged.net/neoforged/moddevgradle
     id("net.neoforged.moddev") version ("2.0.141") apply (false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
-    id("me.modmuss50.mod-publish-plugin") version ("2.0.1") apply (false)
+    id("me.modmuss50.mod-publish-plugin") version ("2.1.1") apply (false)
 }
 
 repositories {
