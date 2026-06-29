@@ -37,7 +37,7 @@ pluginManagement {
 
 plugins {
     // https://plugins.gradle.org/plugin/org.danilopianini.gradle-pre-commit-git-hooks
-    id("org.danilopianini.gradle-pre-commit-git-hooks") version ("2.1.19")
+    id("org.danilopianini.gradle-pre-commit-git-hooks") version ("2.1.20")
 }
 
 gitHooks {
