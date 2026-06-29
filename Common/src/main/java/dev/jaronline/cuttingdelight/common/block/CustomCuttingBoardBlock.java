@@ -81,7 +81,6 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 	}
 
     public static class ToolCarvingEvent {
-        // FIXME: The parameters should be changed in a future version after 1.1.0 to use something more event-like
         public static InteractionResult onSneakPlaceTool(Level level, BlockPos pos, Player player) {
             ItemStack heldStack = player.getMainHandItem();
             BlockEntity tileEntity = level.getBlockEntity(pos);
