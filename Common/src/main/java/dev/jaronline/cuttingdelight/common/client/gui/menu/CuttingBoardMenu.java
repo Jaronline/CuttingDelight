@@ -215,7 +215,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 		this.access.execute((level, pos) -> {
 			CustomCuttingBoardBlockEntity blockEntity = getCuttingBoardBlockEntity(level, pos);
 			if (itemStack.isEmpty()) {
-				blockEntity.empty();
+				blockEntity.removeItem();
 			} else {
 				blockEntity.addStack(itemStack);
 			}

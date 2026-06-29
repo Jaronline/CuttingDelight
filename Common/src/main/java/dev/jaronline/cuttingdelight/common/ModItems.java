@@ -2,12 +2,12 @@ package dev.jaronline.cuttingdelight.common;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import vectorwing.farmersdelight.common.item.FuelBlockItem;
 
 public final class ModItems {
-	public static final FuelBlockItem CUTTING_BOARD = register("cutting_board",
-			new FuelBlockItem(ModBlocks.CUTTING_BOARD, new Item.Properties(), 200));
+	public static final BlockItem CUTTING_BOARD = register("cutting_board",
+			new BlockItem(ModBlocks.CUTTING_BOARD, new Item.Properties()));
 
 	@SuppressWarnings("UnusedReturnValue")
 	static Item boostrap() {
