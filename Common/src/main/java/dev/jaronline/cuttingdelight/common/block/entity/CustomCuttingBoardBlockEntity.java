@@ -45,6 +45,10 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		return ModBlockEntityTypes.CUTTING_BOARD;
 	}
 
+	@Deprecated(
+		forRemoval = true,
+		since = "1.1.0"
+	)
 	public boolean processStoredStackOrItemUsingTool(CuttingBoardRecipe recipe, ItemStack tool, @Nullable Player player) {
 		if (ConfigManager.getConfig().shouldProcessStack()) {
 			return processStoredStackUsingTool(recipe, tool, player);
@@ -52,11 +56,15 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		return processStoredItemUsingTool(recipe, tool, player);
 	}
 
+	@Deprecated(
+		forRemoval = true,
+		since = "1.1.0"
+	)
 	private boolean processStoredItemUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
 		if (level == null) return false;
 		if (isItemCarvingBoard()) return false;
 
-		List<ItemStack> results = recipe.rollResults(this.level.random, getFortuneLevel(toolStack));
+		List<ItemStack> results = Services.PLATFORM.getRecipeHelper().rollResults(recipe, this.level.random, getFortuneLevel(toolStack), this);
 		processToolResults(results, recipe.getSoundEvent().orElse(null), toolStack, player);
 
 		return true;
@@ -79,13 +87,17 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		List<ItemStack> results = new ArrayList<>();
 		int fortuneLevel = getFortuneLevel(toolStack);
 		for (int i = 0; i < itemCount; i++) {
-			results.addAll(recipe.rollResults(level.random, fortuneLevel));
+			results.addAll(Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, fortuneLevel, this));
 		}
 
 		processToolResults(results, itemCount, recipe.getSoundEvent().orElse(null), toolStack, player);
 		return true;
 	}
 
+	@Deprecated(
+		forRemoval = true,
+		since = "1.1.0"
+	)
 	private void processToolResults(List<ItemStack> results, @Nullable SoundEvent soundEvent, ItemStack toolStack, @Nullable Player player) {
 		processToolResults(results, 1, soundEvent, toolStack, player);
 	}
@@ -137,13 +149,5 @@ public class CustomCuttingBoardBlockEntity extends CuttingBoardBlockEntity {
 		ItemStack item = this.getStoredItem().split(count);
 		this.inventoryChanged();
 		return item;
-	}
-
-	public ItemStack removeStack() {
-		return removeItem(this.getStoredItem().getCount());
-	}
-
-	public void empty() {
-		Services.PLATFORM.getInventoryHelper().setStackInSlot(this, 0, ItemStack.EMPTY);
 	}
 }

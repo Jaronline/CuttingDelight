@@ -36,5 +36,7 @@ public class DataGenerators {
 		BlockStates blockStates = new BlockStates(output, existingFileHelper);
 		generator.addProvider(event.includeClient(), blockStates);
 		generator.addProvider(event.includeClient(), new ItemModels(output, blockStates.models().existingFileHelper));
+
+		event.createProvider(DataMaps::new);
 	}
 }
