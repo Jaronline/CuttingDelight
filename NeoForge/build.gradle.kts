@@ -253,6 +253,9 @@ publishMods {
                 end = minecraftVersion
             }
             javaVersions.add(JavaVersion.toVersion(modJavaVersion))
+            requires("farmers-delight")
+            client = true
+            server = true
         }
 
         modrinth {
@@ -263,6 +266,7 @@ publishMods {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
             }
+            requires("farmers-delight")
         }
     }
 }
