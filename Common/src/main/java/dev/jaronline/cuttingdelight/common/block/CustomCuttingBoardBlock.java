@@ -34,73 +34,73 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        BlockEntity tileEntity = level.getBlockEntity(pos);
+		BlockEntity tileEntity = level.getBlockEntity(pos);
 
-        if (!(tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoard))
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		if (!(tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoard))
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        ItemStack mainHandStack = player.getMainHandItem();
+		ItemStack mainHandStack = player.getMainHandItem();
 
-        if (mainHandStack.isEmpty()) {
-            if (cuttingBoard.isEmpty() || level.isClientSide)
-                return ItemInteractionResult.CONSUME;
+		if (mainHandStack.isEmpty()) {
+			if (cuttingBoard.isEmpty() || level.isClientSide)
+				return ItemInteractionResult.CONSUME;
 
-            ItemStack removedStack = cuttingBoard.removeItem();
-            if (!player.isCreative()) {
-                player.getInventory().add(removedStack);
-            }
+			ItemStack removedStack = cuttingBoard.removeItem();
+			if (!player.isCreative()) {
+				player.getInventory().add(removedStack);
+			}
 
-            Vec3 centerPos = pos.getCenter();
-            level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_REMOVE.get(), SoundSource.BLOCKS, 0.25F, 0.5F);
-            return ItemInteractionResult.SUCCESS;
-        }
+			Vec3 centerPos = pos.getCenter();
+			level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_REMOVE.get(), SoundSource.BLOCKS, 0.25F, 0.5F);
+			return ItemInteractionResult.SUCCESS;
+		}
 
-        if (cuttingBoard.canAddItem(mainHandStack)) {
-            if (level.isClientSide)
-                return ItemInteractionResult.CONSUME;
+		if (cuttingBoard.canAddItem(mainHandStack)) {
+			if (level.isClientSide)
+				return ItemInteractionResult.CONSUME;
 
-            ItemStack remainderStack = cuttingBoard.addItem(player.getAbilities().instabuild ? mainHandStack.copy() : mainHandStack);
-            if (!player.isCreative()) {
-                player.setItemSlot(EquipmentSlot.MAINHAND, remainderStack);
-            }
+			ItemStack remainderStack = cuttingBoard.addItem(player.getAbilities().instabuild ? mainHandStack.copy() : mainHandStack);
+			if (!player.isCreative()) {
+				player.setItemSlot(EquipmentSlot.MAINHAND, remainderStack);
+			}
 
-            Vec3 centerPos = pos.getCenter();
-            level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_PLACE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
-            return ItemInteractionResult.SUCCESS;
-        }
+			Vec3 centerPos = pos.getCenter();
+			level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_PLACE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
+			return ItemInteractionResult.SUCCESS;
+		}
 
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-            serverPlayer.openMenu(state.getMenuProvider(level, pos));
-        }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-    }
+		if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+			serverPlayer.openMenu(state.getMenuProvider(level, pos));
+		}
+		return ItemInteractionResult.sidedSuccess(level.isClientSide);
+	}
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ModBlockEntityTypes.CUTTING_BOARD.create(pos, state);
 	}
 
-    public static class ToolCarvingEvent {
-        public static InteractionResult onSneakPlaceTool(Level level, BlockPos pos, Player player) {
-            ItemStack heldStack = player.getMainHandItem();
-            BlockEntity tileEntity = level.getBlockEntity(pos);
+	public static class ToolCarvingEvent {
+		public static InteractionResult onSneakPlaceTool(Level level, BlockPos pos, Player player) {
+			ItemStack heldStack = player.getMainHandItem();
+			BlockEntity tileEntity = level.getBlockEntity(pos);
 
 			if (!player.isSecondaryUseActive() || heldStack.isEmpty() ||
 					!(tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoard)) {
 				return InteractionResult.PASS;
 			}
 
-            if (cuttingBoard.carveToolOnBoard(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
-                if (!player.isCreative()) {
-                    player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                }
+			if (cuttingBoard.carveToolOnBoard(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
+				if (!player.isCreative()) {
+					player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+				}
 
-                Vec3 centerPos = pos.getCenter();
-                level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_CARVE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
-                return InteractionResult.SUCCESS;
-            }
+				Vec3 centerPos = pos.getCenter();
+				level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_CARVE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
+				return InteractionResult.SUCCESS;
+			}
 
-            return cuttingBoard.processStoredItemUsingTool(heldStack, player) ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
-        }
-    }
+			return cuttingBoard.processStoredItemUsingTool(heldStack, player) ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+		}
+	}
 }

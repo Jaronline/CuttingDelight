@@ -8,5 +8,5 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import java.util.List;
 
 public interface PlatformRecipeHelper {
-    List<ItemStack> rollResults(CuttingBoardRecipe recipe, RandomSource random, int fortuneLevel, CuttingBoardBlockEntity cuttingBoard);
+	List<ItemStack> rollResults(CuttingBoardRecipe recipe, RandomSource random, int fortuneLevel, CuttingBoardBlockEntity cuttingBoard);
 }

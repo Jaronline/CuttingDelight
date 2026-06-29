@@ -10,8 +10,8 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import java.util.List;
 
 public class RecipeHelper implements PlatformRecipeHelper {
-    @Override
-    public List<ItemStack> rollResults(CuttingBoardRecipe recipe, RandomSource random, int fortuneLevel, CuttingBoardBlockEntity cuttingBoard) {
-        return recipe.rollResults(random, fortuneLevel, new RecipeWrapper(cuttingBoard.getInventory()));
-    }
+	@Override
+	public List<ItemStack> rollResults(CuttingBoardRecipe recipe, RandomSource random, int fortuneLevel, CuttingBoardBlockEntity cuttingBoard) {
+		return recipe.rollResults(random, fortuneLevel, new RecipeWrapper(cuttingBoard.getInventory()));
+	}
 }
