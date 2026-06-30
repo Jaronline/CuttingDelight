@@ -5,6 +5,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
 public interface PlatformInventoryHelper {
-    void setStackInSlot(CuttingStationBlockEntity inventorySource, int slot, ItemStack stack);
-    Container asContainer(CuttingStationBlockEntity inventorySource);
+	void setStackInSlot(CuttingStationBlockEntity inventorySource, int slot, ItemStack stack);
+	Container asContainer(CuttingStationBlockEntity inventorySource);
 }

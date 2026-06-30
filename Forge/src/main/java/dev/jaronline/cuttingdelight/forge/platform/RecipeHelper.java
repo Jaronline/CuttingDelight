@@ -13,26 +13,26 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import java.util.List;
 
 public final class RecipeHelper implements PlatformRecipeHelper<RecipeWrapper> {
-    @Override
-    public <T extends Recipe<RecipeWrapper>> List<T> getRecipesFor(RecipeType<T> recipeType, Container container, Level level) {
-        return level.getRecipeManager().getRecipesFor(recipeType, createWrapper(container), level);
-    }
+	@Override
+	public <T extends Recipe<RecipeWrapper>> List<T> getRecipesFor(RecipeType<T> recipeType, Container container, Level level) {
+		return level.getRecipeManager().getRecipesFor(recipeType, createWrapper(container), level);
+	}
 
-    @Override
-    public ItemStack assemble(Recipe<RecipeWrapper> recipe, Container container, RegistryAccess registryAccess) {
-        return recipe.assemble(createWrapper(container), registryAccess);
-    }
+	@Override
+	public ItemStack assemble(Recipe<RecipeWrapper> recipe, Container container, RegistryAccess registryAccess) {
+		return recipe.assemble(createWrapper(container), registryAccess);
+	}
 
-    @Override
-    public ItemStack getResultItem(Recipe<RecipeWrapper> recipe, RegistryAccess registryAccess) {
-        return recipe.getResultItem(registryAccess);
-    }
+	@Override
+	public ItemStack getResultItem(Recipe<RecipeWrapper> recipe, RegistryAccess registryAccess) {
+		return recipe.getResultItem(registryAccess);
+	}
 
-    private RecipeWrapper createWrapper(Container container) {
-        ItemStackHandler itemStackHandler = new ItemStackHandler(container.getContainerSize());
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            itemStackHandler.setStackInSlot(i, container.getItem(i));
-        }
-        return new RecipeWrapper(itemStackHandler);
-    }
+	private RecipeWrapper createWrapper(Container container) {
+		ItemStackHandler itemStackHandler = new ItemStackHandler(container.getContainerSize());
+		for (int i = 0; i < container.getContainerSize(); i++) {
+			itemStackHandler.setStackInSlot(i, container.getItem(i));
+		}
+		return new RecipeWrapper(itemStackHandler);
+	}
 }

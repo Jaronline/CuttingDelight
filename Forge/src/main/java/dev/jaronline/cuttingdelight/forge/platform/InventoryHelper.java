@@ -8,13 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public final class InventoryHelper implements PlatformInventoryHelper {
-    @Override
-    public void setStackInSlot(CuttingStationBlockEntity inventorySource, int slot, ItemStack stack) {
-        ((IItemHandlerModifiable) inventorySource.getInventory()).setStackInSlot(slot, stack);
-    }
+	@Override
+	public void setStackInSlot(CuttingStationBlockEntity inventorySource, int slot, ItemStack stack) {
+		((IItemHandlerModifiable) inventorySource.getInventory()).setStackInSlot(slot, stack);
+	}
 
-    @Override
-    public Container asContainer(CuttingStationBlockEntity inventorySource) {
-        return new ItemHandlerContainer(inventorySource.getInventory());
-    }
+	@Override
+	public Container asContainer(CuttingStationBlockEntity inventorySource) {
+		return new ItemHandlerContainer(inventorySource.getInventory());
+	}
 }

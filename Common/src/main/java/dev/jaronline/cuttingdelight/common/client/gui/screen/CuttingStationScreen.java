@@ -97,8 +97,8 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 				int j1 = i + i1 % 4 * RECIPES_IMAGE_SIZE_WIDTH;
 				int k1 = j + i1 / 4 * RECIPES_IMAGE_SIZE_HEIGHT + 2;
 				if (x >= j1 && x < j1 + RECIPES_IMAGE_SIZE_WIDTH && y >= k1 && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-                    //noinspection unchecked
-                    guiGraphics.renderTooltip(this.font, Services.PLATFORM.getRecipeHelper().getResultItem(list.get(l), this.minecraft.level.registryAccess()), x, y);
+					//noinspection unchecked
+					guiGraphics.renderTooltip(this.font, Services.PLATFORM.getRecipeHelper().getResultItem(list.get(l), this.minecraft.level.registryAccess()), x, y);
 				}
 			}
 		}
@@ -129,8 +129,8 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 			int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
 			int l = j / RECIPES_COLUMNS;
 			int i1 = y + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
-            //noinspection unchecked
-            guiGraphics.renderItem(Services.PLATFORM.getRecipeHelper().getResultItem(list.get(i), this.minecraft.level.registryAccess()), k, i1);
+			//noinspection unchecked
+			guiGraphics.renderItem(Services.PLATFORM.getRecipeHelper().getResultItem(list.get(i), this.minecraft.level.registryAccess()), k, i1);
 		}
 	}
 

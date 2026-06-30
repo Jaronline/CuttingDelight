@@ -197,8 +197,8 @@ public class CuttingStationMenu extends AbstractContainerMenu {
 		if (!stack.isEmpty()) {
 			RecipeType<CuttingBoardRecipe> cuttingBoardRecipeRecipeType = Services.PLATFORM.getObjectHelper()
 					.getObject(new TypeToken<>() {});
-            //noinspection unchecked
-            this.recipes = Services.PLATFORM.getRecipeHelper().getRecipesFor(cuttingBoardRecipeRecipeType, container, this.level);
+			//noinspection unchecked
+			this.recipes = Services.PLATFORM.getRecipeHelper().getRecipesFor(cuttingBoardRecipeRecipeType, container, this.level);
 			this.recipes = this.recipes.stream().filter(cuttingRecipe -> cuttingRecipe.getTool().test(this.usedTool)).collect(Collectors.toList());
 		}
 	}

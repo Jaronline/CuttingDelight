@@ -11,11 +11,11 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
 public final class ObjectHelper extends PlatformObjectHelper {
-    @Override
-    protected void setObjects(ObjectMap objects) {
-        objects.put(CuttingBoardBlock.class, () -> (CuttingBoardBlock)ModBlocks.CUTTING_BOARD.get());
-        objects.put(FuelBlockItem.class, FarmersDelight.MODID + ":cutting_board",
-                () -> (FuelBlockItem)ModItems.CUTTING_BOARD.get());
-        objects.put(new TypeToken<>() {}, ModRecipeTypes.CUTTING);
-    }
+	@Override
+	protected void setObjects(ObjectMap objects) {
+		objects.put(CuttingBoardBlock.class, () -> (CuttingBoardBlock)ModBlocks.CUTTING_BOARD.get());
+		objects.put(FuelBlockItem.class, FarmersDelight.MODID + ":cutting_board",
+				() -> (FuelBlockItem)ModItems.CUTTING_BOARD.get());
+		objects.put(new TypeToken<>() {}, ModRecipeTypes.CUTTING);
+	}
 }
