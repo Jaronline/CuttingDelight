@@ -1,11 +1,12 @@
 package dev.jaronline.cuttingdelight.core.util.function;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.function.Supplier;
 
 public class LazySupplier<T> implements Supplier<T> {
-	@Nonnull
 	private final Supplier<T> supplier;
+	@Nullable
 	private T cachedResult;
 	private boolean initialized;
 
@@ -14,6 +15,7 @@ public class LazySupplier<T> implements Supplier<T> {
 	}
 
 	@Override
+	@Nullable
 	public T get() {
 		if (!initialized) {
 			cachedResult = supplier.get();

@@ -27,19 +27,19 @@ public final class ObjectMap {
 		return (Supplier<T>) internalMap.put(new KeyNode(key, id), value);
 	}
 
-	public <T> Supplier<T> get(Class<T> key) {
+	public @Nullable <T> Supplier<T> get(Class<T> key) {
 		return get(TypeToken.of(key));
 	}
 
-	public <T> Supplier<T> get(TypeToken<T> key) {
+	public @Nullable <T> Supplier<T> get(TypeToken<T> key) {
 		return (Supplier<T>) internalMap.get(new KeyNode(key));
 	}
 
-	public <T> Supplier<T> get(Class<T> key, String id) {
+	public @Nullable <T> Supplier<T> get(Class<T> key, String id) {
 		return get(TypeToken.of(key), id);
 	}
 
-	public <T> Supplier<T> get(TypeToken<T> key, String id) {
+	public @Nullable <T> Supplier<T> get(TypeToken<T> key, String id) {
 		return (Supplier<T>) internalMap.get(new KeyNode(key, id));
 	}
 
