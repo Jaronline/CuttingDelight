@@ -51,7 +51,8 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		if (level == null) return false;
 		if (isItemCarvingBoard()) return false;
 
-		List<ItemStack> results = recipe.rollResults(level.random, getFortuneLevel(toolStack));
+		@SuppressWarnings("unchecked")
+		List<ItemStack> results = Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, getFortuneLevel(toolStack), this);
 		processToolResults(results, recipe.getSoundEventID(), toolStack, player);
 
 		return true;
@@ -74,7 +75,8 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		List<ItemStack> results = new ArrayList<>();
 		int fortuneLevel = getFortuneLevel(toolStack);
 		for (int i = 0; i < itemCount; i++) {
-			results.addAll(recipe.rollResults(level.random, fortuneLevel));
+            //noinspection unchecked
+            results.addAll(Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, fortuneLevel, this));
 		}
 
 		processToolResults(results, itemCount, recipe.getSoundEventID(), toolStack, player);

@@ -1,14 +1,18 @@
 package dev.jaronline.cuttingdelight.forge.platform;
 
+import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
 import dev.jaronline.cuttingdelight.common.platform.PlatformRecipeHelper;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 import java.util.List;
 
@@ -26,6 +30,11 @@ public final class RecipeHelper implements PlatformRecipeHelper<RecipeWrapper> {
 	@Override
 	public ItemStack getResultItem(Recipe<RecipeWrapper> recipe, RegistryAccess registryAccess) {
 		return recipe.getResultItem(registryAccess);
+	}
+
+	@Override
+	public List<ItemStack> rollResults(CuttingBoardRecipe recipe, RandomSource random, int fortuneLevel, CuttingStationBlockEntity cuttingStation) {
+		return recipe.rollResults(random, fortuneLevel, new RecipeWrapper((IItemHandlerModifiable)cuttingStation.getInventory()));
 	}
 
 	private RecipeWrapper createWrapper(Container container) {
