@@ -5,7 +5,7 @@ import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.network.CutPacket;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -97,7 +97,8 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 				int j1 = i + i1 % 4 * RECIPES_IMAGE_SIZE_WIDTH;
 				int k1 = j + i1 / 4 * RECIPES_IMAGE_SIZE_HEIGHT + 2;
 				if (x >= j1 && x < j1 + RECIPES_IMAGE_SIZE_WIDTH && y >= k1 && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-					guiGraphics.renderTooltip(this.font, ProviderManager.getRecipeProvider().getResultItem(list.get(l), this.minecraft.level.registryAccess()), x, y);
+                    //noinspection unchecked
+                    guiGraphics.renderTooltip(this.font, Services.PLATFORM.getRecipeHelper().getResultItem(list.get(l), this.minecraft.level.registryAccess()), x, y);
 				}
 			}
 		}
@@ -128,7 +129,8 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 			int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
 			int l = j / RECIPES_COLUMNS;
 			int i1 = y + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
-			guiGraphics.renderItem(ProviderManager.getRecipeProvider().getResultItem(list.get(i), this.minecraft.level.registryAccess()), k, i1);
+            //noinspection unchecked
+            guiGraphics.renderItem(Services.PLATFORM.getRecipeHelper().getResultItem(list.get(i), this.minecraft.level.registryAccess()), k, i1);
 		}
 	}
 
@@ -213,7 +215,7 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 			if (ConfigManager.getConfig().shouldProcessStack() || CuttingStationScreen.this.menu.hasSingleInputItem()) {
 				CuttingStationScreen.this.confirmButton.active = false;
 			}
-			ProviderManager.getClientPacketListenerProvider().send(new CutPacket(CuttingStationScreen.this.menu.containerId, result));
+			Services.PLATFORM.getClientHelper().send(new CutPacket(CuttingStationScreen.this.menu.containerId, result));
 		}
 	}
 

@@ -5,7 +5,7 @@ import dev.jaronline.cuttingdelight.common.ModBlocks;
 import dev.jaronline.cuttingdelight.common.ModMenuTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
 import dev.jaronline.cuttingdelight.common.config.ConfigManager;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -195,10 +195,10 @@ public class CuttingStationMenu extends AbstractContainerMenu {
 		this.selectedRecipeIndex.set(-1);
 		this.resultSlot.set(ItemStack.EMPTY);
 		if (!stack.isEmpty()) {
-			RecipeType<CuttingBoardRecipe> cuttingBoardRecipeRecipeType =
-					ProviderManager.getObjectProvider(new TypeToken<RecipeType<CuttingBoardRecipe>>() {
-					}).getObject();
-			this.recipes = ProviderManager.getRecipeProvider().getRecipesFor(cuttingBoardRecipeRecipeType, container, this.level);
+			RecipeType<CuttingBoardRecipe> cuttingBoardRecipeRecipeType = Services.PLATFORM.getObjectHelper()
+					.getObject(new TypeToken<>() {});
+            //noinspection unchecked
+            this.recipes = Services.PLATFORM.getRecipeHelper().getRecipesFor(cuttingBoardRecipeRecipeType, container, this.level);
 			this.recipes = this.recipes.stream().filter(cuttingRecipe -> cuttingRecipe.getTool().test(this.usedTool)).collect(Collectors.toList());
 		}
 	}
@@ -206,7 +206,8 @@ public class CuttingStationMenu extends AbstractContainerMenu {
 	private void setupResultSlot() {
 		if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
 			CuttingBoardRecipe recipe = this.recipes.get(this.selectedRecipeIndex.get());
-			ItemStack itemStack = ProviderManager.getRecipeProvider().assemble(recipe, this.container, this.level.registryAccess());
+			//noinspection unchecked
+			ItemStack itemStack = Services.PLATFORM.getRecipeHelper().assemble(recipe, this.container, this.level.registryAccess());
 			if (ConfigManager.getConfig().shouldProcessStack()) {
 				itemStack.setCount(itemStack.getCount() * this.inputSlot.getItem().getCount());
 			}
