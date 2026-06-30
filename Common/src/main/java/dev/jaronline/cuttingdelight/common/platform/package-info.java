@@ -1,7 +1,7 @@
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
 @MethodsAreNonnullByDefault
-package dev.jaronline.cuttingdelight.forge.provider;
+package dev.jaronline.cuttingdelight.common.platform;
 
 import dev.jaronline.cuttingdelight.core.FieldsAreNonnullByDefault;
 import dev.jaronline.cuttingdelight.core.MethodsAreNonnullByDefault;

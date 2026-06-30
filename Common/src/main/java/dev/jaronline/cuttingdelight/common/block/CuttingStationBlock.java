@@ -3,7 +3,7 @@ package dev.jaronline.cuttingdelight.common.block;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
-import dev.jaronline.cuttingdelight.common.provider.ProviderManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -28,7 +28,7 @@ public class CuttingStationBlock extends CuttingBoardBlock {
 	@Override
 	public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		CuttingStationBlockEntity blockEntity = (CuttingStationBlockEntity) level.getBlockEntity(pos);
-		Container container = ProviderManager.getInventoryProvider().asContainer(blockEntity);
+		Container container = Services.PLATFORM.getInventoryHelper().asContainer(blockEntity);
 		return new SimpleMenuProvider((containerId, playerInventory, player) ->
 				new CuttingStationMenu(containerId, playerInventory, container, ContainerLevelAccess.create(level, pos)),
 				getName());

@@ -1,7 +1,6 @@
-package dev.jaronline.cuttingdelight.forge.provider;
+package dev.jaronline.cuttingdelight.forge.platform;
 
-import dev.jaronline.cuttingdelight.common.provider.RecipeProvider;
-import dev.jaronline.cuttingdelight.core.provider.AutoProvider;
+import dev.jaronline.cuttingdelight.common.platform.PlatformRecipeHelper;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +12,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import java.util.List;
 
-@AutoProvider
-public class CDRecipeProvider implements RecipeProvider<RecipeWrapper> {
+public final class RecipeHelper implements PlatformRecipeHelper<RecipeWrapper> {
 	@Override
 	public <T extends Recipe<RecipeWrapper>> List<T> getRecipesFor(RecipeType<T> recipeType, Container container, Level level) {
 		return level.getRecipeManager().getRecipesFor(recipeType, createWrapper(container), level);
