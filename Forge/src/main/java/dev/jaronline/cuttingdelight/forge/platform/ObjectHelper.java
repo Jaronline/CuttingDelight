@@ -16,23 +16,23 @@ public final class ObjectHelper extends PlatformObjectHelper {
 	protected void setObjects() {
 		block(CuttingBoardBlock.class).save(() -> (CuttingBoardBlock)ModBlocks.CUTTING_BOARD.get());
 
-        assert ModItems.CUTTING_BOARD.getId() != null;
-        blockItem(FuelBlockItem.class)
+		assert ModItems.CUTTING_BOARD.getId() != null;
+		blockItem(FuelBlockItem.class)
 				.id(ModItems.CUTTING_BOARD.getId())
 				.save(() -> (FuelBlockItem)ModItems.CUTTING_BOARD.get());
 
 		recipeType(new TypeToken<RecipeType<CuttingBoardRecipe>>() {}).save(ModRecipeTypes.CUTTING);
 
-        assert ModSounds.BLOCK_CUTTING_BOARD_REMOVE.getId() != null;
-        soundEvent()
+		assert ModSounds.BLOCK_CUTTING_BOARD_REMOVE.getId() != null;
+		soundEvent()
 				.id(ModSounds.BLOCK_CUTTING_BOARD_REMOVE.getId())
 				.save(ModSounds.BLOCK_CUTTING_BOARD_REMOVE);
-        assert ModSounds.BLOCK_CUTTING_BOARD_PLACE.getId() != null;
-        soundEvent()
+		assert ModSounds.BLOCK_CUTTING_BOARD_PLACE.getId() != null;
+		soundEvent()
 				.id(ModSounds.BLOCK_CUTTING_BOARD_PLACE.getId())
 				.save(ModSounds.BLOCK_CUTTING_BOARD_PLACE);
-        assert ModSounds.BLOCK_CUTTING_BOARD_CARVE.getId() != null;
-        soundEvent()
+		assert ModSounds.BLOCK_CUTTING_BOARD_CARVE.getId() != null;
+		soundEvent()
 				.id(ModSounds.BLOCK_CUTTING_BOARD_CARVE.getId())
 				.save(ModSounds.BLOCK_CUTTING_BOARD_CARVE);
 	}

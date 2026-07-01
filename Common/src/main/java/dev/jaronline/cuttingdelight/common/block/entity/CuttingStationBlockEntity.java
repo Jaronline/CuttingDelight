@@ -83,8 +83,8 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		List<ItemStack> results = new ArrayList<>();
 		int fortuneLevel = getFortuneLevel(toolStack);
 		for (int i = 0; i < itemCount; i++) {
-            //noinspection unchecked
-            results.addAll(Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, fortuneLevel, this));
+			//noinspection unchecked
+			results.addAll(Services.PLATFORM.getRecipeHelper().rollResults(recipe, level.random, fortuneLevel, this));
 		}
 
 		processToolResults(results, itemCount, recipe.getSoundEventID(), toolStack, player);
