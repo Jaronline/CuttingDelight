@@ -149,12 +149,4 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		this.inventoryChanged();
 		return item;
 	}
-
-	public ItemStack removeStack() {
-		return removeItem(this.getStoredItem().getCount());
-	}
-
-	public void empty() {
-		Services.PLATFORM.getInventoryHelper().setStackInSlot(this, 0, ItemStack.EMPTY);
-	}
 }
