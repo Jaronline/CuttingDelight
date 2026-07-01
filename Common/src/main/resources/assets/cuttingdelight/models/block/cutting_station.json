@@ -2,6 +2,6 @@
   "parent": "farmersdelight:block/cutting_board",
   "textures": {
     "particle": "cuttingdelight:block/cutting_station",
-    "top": "cuttingdelight:block/cutting_station"
+    "main": "cuttingdelight:block/cutting_station"
   }
 }
