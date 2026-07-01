@@ -40,6 +40,10 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		return ModBlockEntityTypes.CUTTING_STATION;
 	}
 
+	@Deprecated(
+			forRemoval = true,
+			since = "1.1.0"
+	)
 	public boolean processStoredStackOrItemUsingTool(CuttingBoardRecipe recipe, ItemStack tool, @Nullable Player player) {
 		if (ConfigManager.getConfig().shouldProcessStack()) {
 			return processStoredStackUsingTool(recipe, tool, player);
@@ -47,6 +51,10 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		return processStoredItemUsingTool(recipe, tool, player);
 	}
 
+	@Deprecated(
+			forRemoval = true,
+			since = "1.1.0"
+	)
 	private boolean processStoredItemUsingTool(CuttingBoardRecipe recipe, ItemStack toolStack, @Nullable Player player) {
 		if (level == null) return false;
 		if (isItemCarvingBoard()) return false;
@@ -83,6 +91,10 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 		return true;
 	}
 
+	@Deprecated(
+			forRemoval = true,
+			since = "1.1.0"
+	)
 	private void processToolResults(List<ItemStack> results, String soundEventID, ItemStack toolStack, @Nullable Player player) {
 		processToolResults(results, 1, soundEventID, toolStack, player);
 	}
