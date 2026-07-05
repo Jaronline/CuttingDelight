@@ -3,6 +3,7 @@ package dev.jaronline.cuttingdelight.common.block;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
+import dev.jaronline.cuttingdelight.common.event.RightClickBlockEvent;
 import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -89,15 +90,19 @@ public class CuttingStationBlock extends CuttingBoardBlock {
 	}
 
 	public static class ToolCarvingEvent {
-		public static InteractionResult onSneakPlaceTool(Level level, BlockPos pos, Player player) {
+		public static void onSneakPlaceTool(RightClickBlockEvent event) {
+			Level level = event.getLevel();
+			BlockPos pos = event.getPos();
+
 			if (!(level.getBlockEntity(pos) instanceof CuttingStationBlockEntity cuttingBoard)) {
-				return InteractionResult.PASS;
+				return;
 			}
 
+			Player player = event.getEntity();
 			ItemStack heldStack = player.getMainHandItem();
 
 			if (!player.isSecondaryUseActive() || heldStack.isEmpty()) {
-				return InteractionResult.PASS;
+				return;
 			}
 
 			if (cuttingBoard.carveToolOnBoard(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
@@ -109,11 +114,15 @@ public class CuttingStationBlock extends CuttingBoardBlock {
 						Services.PLATFORM.getObjectHelper()
 								.getSoundEvent(FarmersDelight.MODID + ":block.cutting_board.carve_tool"),
 						SoundSource.BLOCKS, 1.0F, 0.8F);
-				return InteractionResult.SUCCESS;
+				event.setCanceled(true);
+				event.setCancellationResult(InteractionResult.SUCCESS);
+				return;
 			}
 
-			return cuttingBoard.processStoredItemUsingTool(heldStack, player) ?
-				InteractionResult.SUCCESS : InteractionResult.CONSUME;
+			if (cuttingBoard.processStoredItemUsingTool(heldStack, player)) {
+				event.setCanceled(true);
+				event.setCancellationResult(InteractionResult.SUCCESS);
+			}
 		}
 	}
 }
