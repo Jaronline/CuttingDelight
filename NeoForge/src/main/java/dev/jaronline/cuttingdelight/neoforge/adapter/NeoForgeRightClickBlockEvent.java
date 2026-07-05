@@ -10,38 +10,38 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import java.util.function.Consumer;
 
 public class NeoForgeRightClickBlockEvent implements RightClickBlockEvent {
-    private final PlayerInteractEvent.RightClickBlock event;
+	private final PlayerInteractEvent.RightClickBlock event;
 
-    private NeoForgeRightClickBlockEvent(PlayerInteractEvent.RightClickBlock event) {
-        this.event = event;
-    }
+	private NeoForgeRightClickBlockEvent(PlayerInteractEvent.RightClickBlock event) {
+		this.event = event;
+	}
 
-    public static Consumer<PlayerInteractEvent.RightClickBlock> withMethod(Consumer<RightClickBlockEvent> method) {
-        return event -> method.accept(new NeoForgeRightClickBlockEvent(event));
-    }
+	public static Consumer<PlayerInteractEvent.RightClickBlock> withMethod(Consumer<RightClickBlockEvent> method) {
+		return event -> method.accept(new NeoForgeRightClickBlockEvent(event));
+	}
 
-    @Override
-    public Level getLevel() {
-        return event.getLevel();
-    }
+	@Override
+	public Level getLevel() {
+		return event.getLevel();
+	}
 
-    @Override
-    public BlockPos getPos() {
-        return event.getPos();
-    }
+	@Override
+	public BlockPos getPos() {
+		return event.getPos();
+	}
 
-    @Override
-    public Player getEntity() {
-        return event.getEntity();
-    }
+	@Override
+	public Player getEntity() {
+		return event.getEntity();
+	}
 
-    @Override
-    public void setCanceled(boolean canceled) {
-        event.setCanceled(canceled);
-    }
+	@Override
+	public void setCanceled(boolean canceled) {
+		event.setCanceled(canceled);
+	}
 
-    @Override
-    public void setCancellationResult(InteractionResult result) {
-        event.setCancellationResult(result);
-    }
+	@Override
+	public void setCancellationResult(InteractionResult result) {
+		event.setCancellationResult(result);
+	}
 }
