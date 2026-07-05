@@ -9,6 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.slf4j.Logger;
 
@@ -19,7 +20,7 @@ public class CuttingDelight {
 	public CuttingDelight(IEventBus modEventBus, ModContainer modContainer) {
 		ConfigManager.setConfig(new Config());
 		modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
-		modEventBus.addListener(PlayerInteractEvent.RightClickBlock.class, event ->
-				CustomCuttingBoardBlock.ToolCarvingEvent.onSneakPlaceTool(new NeoForgeRightClickBlockEvent(event)));
+		NeoForge.EVENT_BUS.addListener(NeoForgeRightClickBlockEvent.withMethod(CustomCuttingBoardBlock
+				.ToolCarvingEvent::onSneakPlaceTool));
 	}
 }
