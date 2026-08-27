@@ -1,0 +1,24 @@
+1.21.1:
+  - base-branch: 1.21.1
+1.20.1:
+  - base-branch: 1.20.1
+neoforge:
+  - changed-files:
+      - any-glob-to-any-file:
+          - NeoForge/*
+          - NeoForge/**/*
+forge:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Forge/*
+          - Forge/**/*
+fabric:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Fabric/*
+          - Fabric/**/*
+quilt:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Quilt/*
+          - Quilt/**/*
