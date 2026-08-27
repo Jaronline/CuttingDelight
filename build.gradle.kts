@@ -4,7 +4,7 @@ plugins {
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.2")
     // https://projects.neoforged.net/neoforged/moddevgradle
-    id("net.neoforged.moddev") version ("2.0.141") apply (false)
+    id("net.neoforged.moddev") version ("2.0.144") apply (false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
     id("me.modmuss50.mod-publish-plugin") version ("2.1.1") apply (false)
 }
