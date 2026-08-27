@@ -1,0 +1,15 @@
+labels:
+  # Versions
+  - name: "1.20.1"
+    color: "95e516"
+  - name: "1.21.1"
+    color: "95e516"
+  # Modloaders
+  - name: "fabric"
+    color: "dfd0b4"
+  - name: "forge"
+    color: "17293f"
+  - name: "neoforge"
+    color: "d66f37"
+  - name: "quilt"
+    color: "9722ff"
