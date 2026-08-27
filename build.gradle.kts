@@ -77,6 +77,18 @@ subprojects {
                 )
             )
         }
+
+        // usage: -PjarName=<value>. should only be used in CI.
+        val customName = providers.gradleProperty("jarName")
+
+        if (customName.isPresent)
+            archiveFileName.set(
+                customName.zip(archiveClassifier) { name, classifier ->
+                    if (classifier.isEmpty()) name else "$name-$classifier"
+                }.zip(archiveExtension) { name, extension ->
+                    "$name.$extension"
+                }
+            )
     }
 
     tasks.withType<ProcessResources> {
