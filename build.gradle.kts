@@ -1,6 +1,6 @@
 plugins {
     // https://plugins.gradle.org/plugin/com.diffplug.gradle.spoittless
-    id("com.diffplug.spotless") version ("8.10.0")
+    id("com.diffplug.spotless") version ("8.10.1")
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.2")
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/vanillagradle/
