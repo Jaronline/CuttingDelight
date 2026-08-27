@@ -1,6 +1,6 @@
 plugins {
     // https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless
-	id("com.diffplug.spotless") version ("8.10.0")
+    id("com.diffplug.spotless") version ("8.10.0")
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     id("com.dorongold.task-tree") version ("4.0.2")
     // https://projects.neoforged.net/neoforged/moddevgradle
@@ -68,6 +68,18 @@ subprojects {
                 )
             )
         }
+
+        // usage: -PjarName=<value>. should only be used in CI.
+        val customName = providers.gradleProperty("jarName")
+
+        if (customName.isPresent)
+            archiveFileName.set(
+                customName.zip(archiveClassifier) { name, classifier ->
+                    if (classifier.isEmpty()) name else "$name-$classifier"
+                }.zip(archiveExtension) { name, extension ->
+                    "$name.$extension"
+                }
+            )
     }
 
     tasks.withType<ProcessResources> {

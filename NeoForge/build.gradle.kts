@@ -233,19 +233,6 @@ val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
     archiveClassifier.set("sources")
 }
 
-tasks.withType<Jar>().configureEach {
-    val customName = providers.gradleProperty("jarName")
-
-    if (customName.isPresent)
-        archiveFileName.set(
-            customName.zip(archiveClassifier) { name, classifier ->
-                if (classifier.isEmpty()) name else "$name-$classifier"
-            }.zip(archiveExtension) { name, extension ->
-                "$name.$extension"
-            }
-        )
-}
-
 publishMods {
     val publishType = System.getenv("PUBLISH_TYPE")
 
