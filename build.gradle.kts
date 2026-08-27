@@ -2,7 +2,7 @@ plugins {
     // https://plugins.gradle.org/plugin/com.diffplug.gradle.spoittless
     id("com.diffplug.spotless") version ("8.10.0")
     // https://plugins.gradle.org/plugin/com.dorongold.task-tree
-    id("com.dorongold.task-tree") version ("4.0.1")
+    id("com.dorongold.task-tree") version ("4.0.2")
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/vanillagradle/
     id("org.spongepowered.gradle.vanilla") version ("0.2.2-SNAPSHOT") apply (false)
     // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
