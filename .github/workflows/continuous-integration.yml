@@ -97,7 +97,7 @@ jobs:
       - name: Run MC Runtime Test
         if: matrix.env == 'client'
         timeout-minutes: 10
-        uses: headlesshq/mc-runtime-test@2a5a5bcc9d833cf22a817f3561915421dfd6a287 # 4.1.0
+        uses: headlesshq/mc-runtime-test@fbafe02f89f4f13682e7b16dbcee6b6a43f4faca # 4.5.1
         with:
           mc: ${{ env.MC_VERSION }}
           modloader: ${{ matrix.modloader }}
