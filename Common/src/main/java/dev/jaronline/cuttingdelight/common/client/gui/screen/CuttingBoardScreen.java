@@ -20,13 +20,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu> {
 	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_board.png");
 	private static final ResourceLocation CONFIRM_SPRITE = ModIds.cuttingDelightResource("container/cutting_board/confirm");
@@ -220,7 +217,6 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 		confirmButton.setFocused(false);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	class CuttingBoardConfirmButton extends CuttingBoardScreenButton {
 		protected CuttingBoardConfirmButton(int x, int y) {
 			super(x, y, CuttingBoardScreen.CONFIRM_SPRITE, CommonComponents.GUI_DONE);
@@ -240,7 +236,6 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	abstract static class CuttingBoardScreenButton extends AbstractButton {
 		private boolean selected;
 		private final ResourceLocation sprite;
