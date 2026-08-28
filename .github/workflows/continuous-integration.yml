@@ -115,3 +115,20 @@ jobs:
           modloader: ${{ matrix.modloader }}
           java: ${{ env.JAVA_VERSION }}
           fabric-api: ${{ matrix.fabric-api }}
+
+  summary:
+    name: CI Summary
+    needs:
+      - build
+      - test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Build Result
+        uses: Jaronline/.github/actions/check-job-or-step-result@main
+        with:
+          result: ${{ needs.build.result }}
+      - name: Check Test Result
+        uses: Jaronline/.github/actions/check-job-or-step-result@main
+        with:
+          result: ${{ needs.test.result }}
