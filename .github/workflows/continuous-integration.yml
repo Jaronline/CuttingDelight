@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 1.20.1
+  pull_request:
+    branches:
+      - 1.20.1
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: "17"
+  MC_VERSION: "1.20.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup gradle
+        uses: Jaronline/.github/actions/setup-java-gradle@main
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+
+      - name: Prepare artifacts for upload
+        run: |
+          mkdir -p dist
+          cp {Core,Common,Forge}/build/libs/*.jar dist
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mod-build
+          path: dist
+          retention-days: 30
+
+  test:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        modloader: [forge]
+        env: [client, server]
+        include:
+          - fabric-api: none
+          - modloader: forge
+            module: Forge
+            mc-runtime-test: lexforge
+            dependencies: >-
+              'https://cdn.modrinth.com/data/R2OftAxM/versions/CsjS7EkP/FarmersDelight-1.20.1-1.3.2.jar'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup gradle
+        uses: Jaronline/.github/actions/setup-java-gradle@main
+
+      - name: Create cache key
+        run: |
+          cat <<END_OF_FILE > dependencies.txt
+          ${{ matrix.dependencies }}
+          END_OF_FILE
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: run/mods
+          key: ${{ hashFiles('dependencies.txt') }}
+
+      - name: Download dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          for url in ${{ matrix.dependencies }}; do
+            wget --directory-prefix=run/mods/ "$url"
+          done
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: mod-build
+          path: dist
+
+      - name: Prepare mod jar
+        run: |
+          rm -f dist/*-javadoc.jar dist/*-sources.jar
+          cp dist/cuttingdelight-${{ matrix.modloader }}-*.jar run/mods
+
+      - name: Run MC Runtime Test
+        if: matrix.env == 'client'
+        timeout-minutes: 10
+        uses: headlesshq/mc-runtime-test@2a5a5bcc9d833cf22a817f3561915421dfd6a287 # 4.1.0
+        with:
+          mc: ${{ env.MC_VERSION }}
+          modloader: ${{ matrix.modloader }}
+          regex: ${{ format('.*{0}.*', matrix.modloader) }}
+          mc-runtime-test: ${{ matrix.mc-runtime-test }}
+          java: ${{ env.JAVA_VERSION }}
+          fabric-api: ${{ matrix.fabric-api }}
+
+      - name: Run MC Server Test
+        if: matrix.env == 'server'
+        timeout-minutes: 10
+        uses: headlesshq/mc-server-test@42de00da95e997b046a43eb9beb516494e542ba9 # 1.1.1
+        with:
+          mc: ${{ env.MC_VERSION }}
+          modloader: ${{ matrix.modloader }}
+          java: ${{ env.JAVA_VERSION }}
+          fabric-api: ${{ matrix.fabric-api }}
