@@ -44,13 +44,15 @@ jobs:
         run: |
           mkdir -p run/mods
           cp ${{ matrix.module }}/build/libs/cuttingdelight.jar run/mods
-
-      - name: Run MC test client
-        uses: touchtheduck/.github/actions/mc-runtime-test@main
+          
+      - name: Run MC Runtime Test
+        uses: headlesshq/mc-runtime-test@2a5a5bcc9d833cf22a817f3561915421dfd6a287 # 4.1.0
         with:
-          java-version: ${{ env.java-version }}
-          minecraft-version: ${{ env.mc-version }}
+          mc: ${{ env.mc-version }}
           modloader: ${{ matrix.modloader }}
+          regex: ${{ format('.*{0}.*', matrix.modloader) }}
+          mc-runtime-test: ${{ (matrix.modloader == 'forge' && 'lexforge') || matrix.modloader }}
+          java: ${{ env.java-version }}
           fabric-api: ${{ matrix.fabric-api }}
 
   server-test:
@@ -82,10 +84,10 @@ jobs:
           mkdir -p run/mods
           cp ${{ matrix.module }}/build/libs/cuttingdelight.jar run/mods
 
-      - name: Run MC test client
-        uses: touchtheduck/.github/actions/mc-server-test@main
+      - name: Run MC Server Test
+        uses: headlesshq/mc-server-test@42de00da95e997b046a43eb9beb516494e542ba9 # 1.1.1
         with:
-          java-version: ${{ env.java-version }}
-          minecraft-version: ${{ env.mc-version }}
+          mc: ${{ env.mc-version }}
           modloader: ${{ matrix.modloader }}
+          java: ${{ env.java-version }}
           fabric-api: ${{ matrix.fabric-api }}
