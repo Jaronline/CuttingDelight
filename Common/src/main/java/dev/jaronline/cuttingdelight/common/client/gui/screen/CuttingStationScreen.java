@@ -18,14 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.slf4j.Logger;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class CuttingStationScreen extends AbstractContainerScreen<CuttingStationMenu> {
 	private static final ResourceLocation BG_LOCATION = ModIds.cuttingDelightResource("textures/gui/container/cutting_station.png");
 	private static final ResourceLocation STONECUTTER_SCREEN_LOCATION = new ResourceLocation("textures/gui/container/stonecutter.png");
@@ -198,7 +195,6 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 		confirmButton.setFocused(false);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	class CuttingStationConfirmButton extends CuttingStationScreenButton {
 		protected CuttingStationConfirmButton(int x, int y) {
 			super(x, y, 0, 166, CommonComponents.EMPTY);
@@ -219,7 +215,6 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	abstract static class CuttingStationScreenButton extends AbstractButton {
 		private boolean selected;
 		private final int iconX;
