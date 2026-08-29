@@ -12,27 +12,29 @@ plugins {
 }
 
 // gradle.properties
-val parchmentMinecraftVersion: String by extra
-val parchmentMappingsVersion: String by extra
-val minecraftVersion: String by extra
-val minecraftVersionRangeStart: String by extra
-val neoVersion: String by extra
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
+val minecraftVersionRangeStart = providers.gradleProperty("minecraftVersionRangeStart")
+    .orElse(minecraftVersion)
+val parchmentMinecraftVersion = providers.gradleProperty("parchmentMinecraftVersion")
+    .orElse(minecraftVersion)
+val parchmentMappingsVersion = providers.gradleProperty("parchmentMappingsVersion")
+val neoVersion = providers.gradleProperty("neoVersion")
 
-val modId: String by extra
-val modVersion: String by extra
-val modJavaVersion: String by extra
+val modId = providers.gradleProperty("modId")
+val modVersion = providers.gradleProperty("modVersion")
+val modJavaVersion = providers.gradleProperty("modJavaVersion")
 
-val jeiVersion: String by extra
-val farmersDelightVersion: String by extra
-val jUnitVersion: String by extra
+val jeiVersion = providers.gradleProperty("jeiVersion")
+val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
 
-val curseProjectId: String by extra
-val modrinthId: String by extra
+val curseProjectId = providers.gradleProperty("curseProjectId")
+val modrinthId = providers.gradleProperty("modrinthId")
 
 // set by ORG_GRADLE_PROJECT_modrinthToken
-val modrinthToken: String? by project
+val modrinthToken = providers.gradleProperty("modrinthToken")
 // set by ORG_GRADLE_PROJECT_curseforgeApikey
-val curseforgeApikey: String? by project
+val curseforgeApikey = providers.gradleProperty("curseforgeApikey").orElse("0")
 
 repositories {
     mavenCentral()
@@ -60,7 +62,7 @@ repositories {
 }
 
 base {
-    archivesName = "${modId}-neoforge"
+    archivesName = "${modId.get()}-neoforge"
 }
 
 sourceSets {
@@ -107,7 +109,7 @@ tasks.withType<ProcessResources> {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion)
+    toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion.get())
     withSourcesJar()
 }
 
@@ -137,26 +139,21 @@ dependencies {
         implementation(it)
     }
 
-    runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+    runtimeOnly("mezz.jei:jei-${minecraftVersion.get()}-neoforge:${jeiVersion.get()}")
 
-    implementation("maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}")
+    implementation("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
 
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    @Suppress("AvoidDuplicateDependencies")
     changelogHtml(project(":Changelog"))
+    @Suppress("AvoidDuplicateDependencies")
     changelogMarkdown(project(":Changelog"))
 }
 
 neoForge {
-    version = neoVersion
+    version = neoVersion.get()
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
     addModdingDependenciesTo(sourceSets.test.get())
@@ -167,7 +164,7 @@ neoForge {
     }
 
     mods {
-        create(modId) {
+        create(modId.get()) {
             sourceSet(sourceSets.main.get())
             for (dependencyProject in dependencyProjects) {
                 sourceSet(dependencyProject.sourceSets.main.get())
@@ -179,24 +176,24 @@ neoForge {
         val client = create("client")
         client.client()
         client.gameDirectory = file("run/client")
-        client.systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        client.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
 
         val server = create("server")
         server.server()
         server.gameDirectory = file("run/server")
         server.programArgument("--nogui")
-        server.systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        server.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
 
         val gameTestServer = create("gameTestServer")
         gameTestServer.type = "gameTestServer"
-        gameTestServer.systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        gameTestServer.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
 
         val data = create("data")
         data.data()
         data.gameDirectory = file("run-data")
         data.programArguments.addAll(
             "--mod",
-            modId,
+            modId.get(),
             "--all",
             "--output",
             file("src/generated/resources/").absolutePath,
@@ -240,19 +237,19 @@ publishMods {
         file.set(tasks.jar.get().archiveFile)
         type.set(ReleaseType.of(publishType.uppercase()))
         modLoaders.add("neoforge")
-        displayName.set("$modVersion for NeoForge $minecraftVersion")
+        displayName.set("${modVersion.get()} for NeoForge ${minecraftVersion.get()}")
         version.set(project.version.toString())
 
         curseforge {
             projectId = curseProjectId
-            accessToken.set(curseforgeApikey ?: "0")
+            accessToken = curseforgeApikey
             changelog.set(changelogHtml.singleFileContents())
             changelogType = "html"
             minecraftVersionRange {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
             }
-            javaVersions.add(JavaVersion.toVersion(modJavaVersion))
+            javaVersions.add(JavaVersion.toVersion(modJavaVersion.get()))
             requires("farmers-delight")
             client = true
             server = true
