@@ -14,22 +14,22 @@ repositories {
 }
 
 // gradle.properties
-val minecraftVersion: String by extra
-val minecraftVersionRange: String by extra
-val neoVersionRange: String by extra
-val loaderVersionRange: String by extra
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
+val minecraftVersionRange = providers.gradleProperty("minecraftVersionRange")
+val neoVersionRange = providers.gradleProperty("neoVersionRange")
+val loaderVersionRange = providers.gradleProperty("loaderVersionRange")
 
-val modId: String by extra
-val modName: String by extra
-val modLicense: String by extra
-val modVersion: String by extra
-val modGroupId: String by extra
-val modAuthors: String by extra
-val modCredits: String by extra
-val modDescription: String by extra
-val modJavaVersion: String by extra
+val modId = providers.gradleProperty("modId")
+val modName = providers.gradleProperty("modName")
+val modLicense = providers.gradleProperty("modLicense")
+val modVersion = providers.gradleProperty("modVersion")
+val modGroupId = providers.gradleProperty("modGroupId")
+val modAuthors = providers.gradleProperty("modAuthors")
+val modCredits = providers.gradleProperty("modCredits")
+val modDescription = providers.gradleProperty("modDescription")
+val modJavaVersion = providers.gradleProperty("modJavaVersion")
 
-val farmersDelightVersionRange: String by extra
+val farmersDelightVersionRange = providers.gradleProperty("farmersDelightVersionRange")
 
 spotless {
     java {
@@ -45,12 +45,13 @@ spotless {
 }
 
 subprojects {
-    version = "${minecraftVersion}-${modVersion}"
-    group = modGroupId
+    version = minecraftVersion.zip(modVersion) { minecraftVersion, modVersion -> "$minecraftVersion-$modVersion" }
+        .get()
+    group = modGroupId.get()
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(JavaLanguageVersion.of(modJavaVersion).asInt())
+        options.release.set(JavaLanguageVersion.of(modJavaVersion.get()).asInt())
         options.isDeprecation = true
         options.compilerArgs.add("-Xlint:unchecked")
     }
@@ -59,12 +60,12 @@ subprojects {
         manifest {
             attributes(
                 mapOf(
-                    "Specification-Title" to modName,
-                    "Specification-Vendor" to modAuthors,
-                    "Specification-Version" to modVersion,
+                    "Specification-Title" to modName.get(),
+                    "Specification-Vendor" to modAuthors.get(),
+                    "Specification-Version" to modVersion.get(),
                     "Implementation-Title" to name,
                     "Implementation-Version" to archiveVersion,
-                    "Implementation-Vendor" to modAuthors
+                    "Implementation-Vendor" to modAuthors.get()
                 )
             )
         }
@@ -84,11 +85,11 @@ subprojects {
 
     tasks.withType<ProcessResources> {
         var replaceProperties = mapOf(
-            "minecraft_version" to minecraftVersion, "minecraft_version_range" to minecraftVersionRange,
-            "neo_version_range" to neoVersionRange, "loader_version_range" to loaderVersionRange,
-            "mod_id" to modId, "mod_name" to modName, "mod_license" to modLicense, "mod_version" to modVersion,
-            "mod_authors" to modAuthors, "mod_credits" to modCredits, "mod_description" to modDescription,
-            "farmers_delight_version_range" to farmersDelightVersionRange
+            "minecraft_version" to minecraftVersion.get(), "minecraft_version_range" to minecraftVersionRange.get(),
+            "neo_version_range" to neoVersionRange.get(), "loader_version_range" to loaderVersionRange.get(),
+            "mod_id" to modId.get(), "mod_name" to modName.get(), "mod_license" to modLicense.get(), "mod_version" to modVersion.get(),
+            "mod_authors" to modAuthors.get(), "mod_credits" to modCredits.get(), "mod_description" to modDescription.get(),
+            "farmers_delight_version_range" to farmersDelightVersionRange.get()
         )
         inputs.properties(replaceProperties)
         filesMatching(listOf("META-INF/neoforge.mods.toml")) {

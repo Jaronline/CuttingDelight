@@ -12,30 +12,15 @@ repositories {
 }
 
 // gradle.properties
-val jUnitVersion: String by extra
-val modId: String by extra
-val modJavaVersion: String by extra
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
+val modId = providers.gradleProperty("modId")
+val modJavaVersion = providers.gradleProperty("modJavaVersion")
 
 dependencies {
-    implementation(
-        group = "com.google.guava",
-        name = "guava",
-        version = "32.0.1-jre"
-    )
-    implementation(
-        group = "org.jetbrains",
-        name = "annotations",
-        version = "26.1.0"
-    )
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    implementation("com.google.guava:guava:32.0.1-jre")
+    implementation("org.jetbrains:annotations:26.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 sourceSets {
@@ -64,7 +49,7 @@ tasks.test {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
+        languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
     }
     withSourcesJar()
 }
@@ -73,16 +58,15 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     javaToolchains {
         compilerFor {
-            languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
+            languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
         }
     }
 }
 
 val sourcesJarTask = tasks.named<Jar>("sourcesJar")
 
-val baseArchivesName = "${modId}-core"
 base {
-    archivesName.set(baseArchivesName)
+    archivesName = "${modId.get()}-core"
 }
 
 artifacts {

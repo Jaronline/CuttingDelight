@@ -9,13 +9,13 @@ plugins {
 }
 
 // gradle.properties
-val minecraftVersion: String by extra
-val neoformVersionAndTimestamp: String by extra
-val modId: String by extra
-val modJavaVersion: String by extra
-val jeiVersion: String by extra
-val farmersDelightVersion: String by extra
-val jUnitVersion: String by extra
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
+val neoformVersionAndTimestamp = providers.gradleProperty("neoformVersionAndTimestamp")
+val modId = providers.gradleProperty("modId")
+val modJavaVersion = providers.gradleProperty("modJavaVersion")
+val jeiVersion = providers.gradleProperty("jeiVersion")
+val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
 
 repositories {
     mavenCentral()
@@ -42,7 +42,7 @@ repositories {
     }
 }
 
-val baseArchivesName = "${modId}-common"
+val baseArchivesName = "${modId.get()}-common"
 base {
     archivesName.set(baseArchivesName)
 }
@@ -77,39 +77,20 @@ dependencyProjects.forEach {
 }
 
 neoForge {
-    neoFormVersion = neoformVersionAndTimestamp
+    neoFormVersion = neoformVersionAndTimestamp.get()
     addModdingDependenciesTo(sourceSets.test.get())
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 }
 
 dependencies {
-    compileOnly(
-        group = "org.spongepowered",
-        name = "mixin",
-        version = "0.8.7"
-    )
+    compileOnly("org.spongepowered:mixin:0.8.7")
     dependencyProjects.forEach {
         implementation(it)
     }
-    api(
-        group = "mezz.jei",
-        name = "jei-$minecraftVersion-common-api",
-        version = jeiVersion
-    )
-    implementation(
-        group = "maven.modrinth",
-        name = "farmers-delight",
-        version = "$minecraftVersion-$farmersDelightVersion"
-    )
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    api("mezz.jei:jei-${minecraftVersion.get()}-common-api:${jeiVersion.get()}")
+    implementation("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.test {
@@ -126,14 +107,14 @@ tasks.test {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
     withSourcesJar()
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     javaToolchains.compilerFor {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
+        languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
     }
 }
 
