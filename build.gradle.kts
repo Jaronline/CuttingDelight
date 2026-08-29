@@ -27,7 +27,7 @@ val modGroupId = providers.gradleProperty("modGroupId")
 val modAuthors = providers.gradleProperty("modAuthors")
 val modCredits = providers.gradleProperty("modCredits")
 val modDescription = providers.gradleProperty("modDescription")
-val modJavaVersion = providers.gradleProperty("modJavaVersion")
+val javaVersion = providers.gradleProperty("javaVersion")
 
 val farmersDelightVersionRange = providers.gradleProperty("farmersDelightVersionRange")
 
@@ -51,7 +51,7 @@ subprojects {
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(JavaLanguageVersion.of(modJavaVersion.get()).asInt())
+        options.release = JavaLanguageVersion.of(javaVersion.get()).asInt()
         options.isDeprecation = true
         options.compilerArgs.add("-Xlint:unchecked")
     }

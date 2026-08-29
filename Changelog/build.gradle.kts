@@ -7,7 +7,7 @@ plugins {
 
 // gradle.properties
 val modVersion = providers.gradleProperty("modVersion")
-val changelogUntaggedName = "Version ${modVersion.get()}"
+val changelogUntaggedName = modVersion.map { "Version $it" }
 
 val makeHtmlChangelog = tasks.register<GitChangelogTask>("makeHtmlChangelog") {
     val output = layout.buildDirectory.file("CHANGELOG.html")

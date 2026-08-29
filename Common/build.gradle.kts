@@ -1,18 +1,12 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-
 plugins {
-    id("idea")
-    id("java")
+    id("cuttingdelight-convention")
     id("net.neoforged.moddev")
-    id("maven-publish")
 }
 
 // gradle.properties
 val minecraftVersion = providers.gradleProperty("minecraftVersion")
 val neoformVersionAndTimestamp = providers.gradleProperty("neoformVersionAndTimestamp")
 val modId = providers.gradleProperty("modId")
-val modJavaVersion = providers.gradleProperty("modJavaVersion")
 val jeiVersion = providers.gradleProperty("jeiVersion")
 val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
 val jUnitVersion = providers.gradleProperty("jUnitVersion")
@@ -42,9 +36,8 @@ repositories {
     }
 }
 
-val baseArchivesName = "${modId.get()}-common"
 base {
-    archivesName.set(baseArchivesName)
+    archivesName = "${modId.get()}-common"
 }
 
 sourceSets {
@@ -93,31 +86,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.test {
-    useJUnitPlatform()
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-    // Should be removed once tests are added
-    failOnNoDiscoveredTests = false
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
-    withSourcesJar()
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    javaToolchains.compilerFor {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
-    }
-}
-
 publishing {
     publications {
         register<MavenPublication>("commonJar") {
@@ -144,25 +112,9 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
 }
 
-idea {
-    module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
-
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
-        }
-    }
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
 }
