@@ -1,12 +1,8 @@
 import me.modmuss50.mpp.ReleaseType
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.slf4j.event.Level
 
 plugins {
-    id("java")
-    id("idea")
-    id("maven-publish")
+    id("cuttingdelight-convention")
     id("me.modmuss50.mod-publish-plugin")
     id("net.neoforged.moddev")
 }
@@ -22,7 +18,7 @@ val neoVersion = providers.gradleProperty("neoVersion")
 
 val modId = providers.gradleProperty("modId")
 val modVersion = providers.gradleProperty("modVersion")
-val modJavaVersion = providers.gradleProperty("modJavaVersion")
+val javaVersion = providers.gradleProperty("javaVersion")
 
 val jeiVersion = providers.gradleProperty("jeiVersion")
 val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
@@ -97,20 +93,10 @@ tasks.withType<JavaCompile>().configureEach {
 tasks.withType<ProcessResources> {
     dependencyProjects.forEach {
         from(it.sourceSets.main.get().resources)
-    }
-}
-
-tasks.withType<ProcessResources> {
-    dependencyProjects.forEach {
         if (it.sourceSets.findByName("dev") != null) {
             from(it.sourceSets.getByName("dev").resources)
         }
     }
-}
-
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion.get())
-    withSourcesJar()
 }
 
 val changelogHtml = configurations.create("changelogHtml")
@@ -231,7 +217,7 @@ val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
 }
 
 publishMods {
-    val publishType = System.getenv("PUBLISH_TYPE")
+    val publishType = providers.environmentVariable("PUBLISH_TYPE").orNull
 
     if (publishType != null) {
         file.set(tasks.jar.get().archiveFile)
@@ -249,7 +235,7 @@ publishMods {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
             }
-            javaVersions.add(JavaVersion.toVersion(modJavaVersion.get()))
+            javaVersions.add(JavaVersion.toVersion(javaVersion.get()))
             requires("farmers-delight")
             client = true
             server = true
@@ -268,22 +254,9 @@ publishMods {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-    // Should be removed once tests are added
-    failOnNoDiscoveredTests = false
-}
-
 artifacts {
-    archives(tasks.jar.get())
-    archives(sourcesJarTask.get())
+    archives(tasks.jar)
+    archives(sourcesJarTask)
 }
 
 publishing {
@@ -291,28 +264,12 @@ publishing {
         register<MavenPublication>("neoforgeJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
-            artifact(sourcesJarTask.get())
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
+            artifact(sourcesJarTask)
         }
     }
 }
 
-idea {
-    module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
-
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
-        }
-    }
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
 }

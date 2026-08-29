@@ -1,10 +1,5 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-
 plugins {
-    id("idea")
-    id("java")
-    id("maven-publish")
+    id("cuttingdelight-convention")
 }
 
 repositories {
@@ -14,7 +9,6 @@ repositories {
 // gradle.properties
 val jUnitVersion = providers.gradleProperty("jUnitVersion")
 val modId = providers.gradleProperty("modId")
-val modJavaVersion = providers.gradleProperty("modJavaVersion")
 
 dependencies {
     implementation("com.google.guava:guava:32.0.1-jre")
@@ -34,35 +28,6 @@ sourceSets {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-    // Should be removed once tests are added
-    failOnNoDiscoveredTests = false
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
-    }
-    withSourcesJar()
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    javaToolchains {
-        compilerFor {
-            languageVersion.set(JavaLanguageVersion.of(modJavaVersion.get()))
-        }
-    }
-}
-
 val sourcesJarTask = tasks.named<Jar>("sourcesJar")
 
 base {
@@ -70,8 +35,8 @@ base {
 }
 
 artifacts {
-    archives(tasks.jar.get())
-    archives(sourcesJarTask.get())
+    archives(tasks.jar)
+    archives(sourcesJarTask)
 }
 
 publishing {
@@ -79,25 +44,12 @@ publishing {
         register<MavenPublication>("coreJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
-            artifact(sourcesJarTask.get())
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
+            artifact(sourcesJarTask)
         }
     }
 }
 
-idea {
-    module {
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
-        }
-    }
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**")
+    exclude("dev/jaronline/cuttingdelight/lib/**")
 }
