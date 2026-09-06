@@ -1,10 +1,5 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-
 plugins {
-    id("idea")
-    id("java")
-    id("maven-publish")
+    id("cuttingdelight-convention")
     id("org.spongepowered.gradle.vanilla")
 }
 
@@ -33,19 +28,16 @@ repositories {
 }
 
 // gradle.properties
-val parchmentVersionForge: String by extra
-val minecraftVersion: String by extra
-val spongeMixinVersion: String by extra
-val modId: String by extra
-val modJavaVersion: String by extra
-val jeiVersion: String by extra
-val farmersDelightVersion: String by extra
-val guavaVersion: String by extra
-val jUnitVersion: String by extra
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
+val spongeMixinVersion = providers.gradleProperty("spongeMixinVersion")
+val modId = providers.gradleProperty("modId")
+val jeiVersion = providers.gradleProperty("jeiVersion")
+val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
+val guavaVersion = providers.gradleProperty("guavaVersion")
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
 
-val baseArchivesName = "${modId}-common"
 base {
-    archivesName.set(baseArchivesName)
+    archivesName = "${modId.get()}-common"
 }
 
 sourceSets {
@@ -78,66 +70,25 @@ dependencyProjects.forEach {
 }
 
 minecraft {
-    version(minecraftVersion)
-    accessWideners(file("src/main/resources/$modId.accesswidener"))
+    version(minecraftVersion.get())
+    accessWideners(file("src/main/resources/${modId.get()}.accesswidener"))
 }
 
 dependencies {
-    compileOnly(
-        group = "org.spongepowered",
-        name = "mixin",
-        version = spongeMixinVersion
-    )
-    implementation(
-        group = "com.google.guava",
-        name = "guava",
-        version = guavaVersion
-    )
+    compileOnly("org.spongepowered:mixin:${spongeMixinVersion.get()}")
+    implementation("com.google.guava:guava:${guavaVersion.get()}")
     dependencyProjects.forEach {
         implementation(it)
     }
-    implementation(
-        group = "mezz.jei",
-        name = "jei-$minecraftVersion-common-api",
-        version = jeiVersion
-    )
-    compileOnly(
-        group = "maven.modrinth",
-        name = "farmers-delight",
-        version = "$minecraftVersion-$farmersDelightVersion"
-    )
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    implementation("mezz.jei:jei-${minecraftVersion.get()}-common-api:${jeiVersion.get()}")
+    compileOnly("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.test {
-    useJUnitPlatform()
     include("dev/jaronline/cuttingdelight/**")
     exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
-    withSourcesJar()
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    javaToolchains.compilerFor {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
-    }
 }
 
 tasks.jar {
@@ -171,27 +122,6 @@ publishing {
                     }
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-idea {
-    module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
-
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
         }
     }
 }

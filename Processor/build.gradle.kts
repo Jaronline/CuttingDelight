@@ -30,11 +30,7 @@ repositories {
 dependencies {
     implementation(project(":Core"))
     implementation(project(":Common"))
-    implementation(
-        group = "org.jetbrains",
-        name = "annotations",
-        version = "26.1.0"
-    )
+    implementation("org.jetbrains:annotations:26.1.0")
 }
 
 tasks.withType<JavaCompile> {
