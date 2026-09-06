@@ -88,10 +88,11 @@ gitHooks {
     createHooks(true)
 }
 
-val modId: String by settings
-val minecraftVersion: String by settings
+val modId = providers.gradleProperty("modId")
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
 
-rootProject.name = "$modId-$minecraftVersion"
+rootProject.name = modId.zip(minecraftVersion) { modId, minecraftVersion -> "$modId-$minecraftVersion" }.get()
+
 include(
     "Core", "Processor",
     "Changelog",

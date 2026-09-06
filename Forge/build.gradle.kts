@@ -2,13 +2,9 @@ import me.modmuss50.mpp.ReleaseType
 import net.minecraftforge.gradle.common.tasks.DownloadMavenArtifact
 import net.minecraftforge.gradle.common.tasks.JarExec
 import net.minecraftforge.gradle.common.util.RunConfig
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("java")
-    id("idea")
-    id("maven-publish")
+    id("cuttingdelight-convention")
     id("me.modmuss50.mod-publish-plugin")
     id("net.minecraftforge.gradle")
     id("org.parchmentmc.librarian.forgegradle")
@@ -37,29 +33,28 @@ repositories {
 }
 
 // gradle.properties
-val parchmentMinecraftVersion: String by extra
-val parchmentVersionForge: String by extra
-val minecraftVersion: String by extra
-val minecraftVersionRangeStart: String by extra
-val spongeMixinVersion: String by extra
-val forgeVersion: String by extra
-val modId: String by extra
-val modVersion: String by extra
-val modJavaVersion: String by extra
-val jeiVersion: String by extra
-val farmersDelightVersion: String by extra
-val hearthAndHarvestVersion: String by extra
-val jUnitVersion: String by extra
-val curseProjectId: String by extra
-val modrinthId: String by extra
+val parchmentVersionForge = providers.gradleProperty("parchmentVersionForge")
+val minecraftVersion = providers.gradleProperty("minecraftVersion")
+val minecraftVersionRangeStart = providers.gradleProperty("minecraftVersionRangeStart")
+    .orElse(minecraftVersion)
+val spongeMixinVersion = providers.gradleProperty("spongeMixinVersion")
+val forgeVersion = providers.gradleProperty("forgeVersion")
+val modId = providers.gradleProperty("modId")
+val modVersion = providers.gradleProperty("modVersion")
+val javaVersion = providers.gradleProperty("javaVersion")
+val jeiVersion = providers.gradleProperty("jeiVersion")
+val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
+val curseProjectId = providers.gradleProperty("curseProjectId")
+val modrinthId = providers.gradleProperty("modrinthId")
 
 // set by ORG_GRADLE_PROJECT_modrinthToken
-val modrinthToken: String? by project
+val modrinthToken = providers.gradleProperty("modrinthToken")
 // set by ORG_GRADLE_PROJECT_curseforgeApikey
-val curseforgeApikey: String? by project
+val curseforgeApikey = providers.gradleProperty("curseforgeApikey").orElse("0")
 
 base {
-    archivesName = "${modId}-forge"
+    archivesName = "${modId.get()}-forge"
 }
 
 sourceSets {
@@ -93,11 +88,6 @@ tasks.withType<ProcessResources> {
     }
 }
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(modJavaVersion)
-    withSourcesJar()
-}
-
 val changelogHtml = configurations.create("changelogHtml")
 changelogHtml.isCanBeConsumed = false
 changelogHtml.isCanBeResolved = true
@@ -120,19 +110,10 @@ fun Configuration.singleFileContents(): Provider<String> =
         .map { it.asFile.readText() }
 
 dependencies {
-    "minecraft"(
-        group = "net.minecraftforge",
-        name = "forge",
-        version = "${minecraftVersion}-${forgeVersion}"
-    )
+    "minecraft"("net.minecraftforge:forge:${minecraftVersion.get()}-${forgeVersion.get()}")
 
     if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor(
-            group = "org.spongepowered",
-            name = "mixin",
-            version = spongeMixinVersion,
-            classifier = "processor"
-        )
+        annotationProcessor("org.spongepowered:mixin:${spongeMixinVersion.get()}:processor")
     }
 
     dependencyProjects.forEach {
@@ -140,33 +121,26 @@ dependencies {
     }
     annotationProcessor(project(":Processor"))
 
-    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraftVersion}-forge:${jeiVersion}"))
-    val farmersDelightDependency = "maven.modrinth:farmers-delight:${minecraftVersion}-${farmersDelightVersion}"
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraftVersion.get()}-forge:${jeiVersion.get()}"))
+    val farmersDelightDependency = "maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}"
     implementation(fg.deobf(farmersDelightDependency))
     // Need runtimeOnly as well to ensure the mod is present in run configurations on IDEs
     runtimeOnly(fg.deobf(farmersDelightDependency))
 
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     changelogHtml(project(":Changelog"))
     changelogMarkdown(project(":Changelog"))
 }
 
 mixin {
-    add(sourceSets.main.get(), "$modId.refmap.json")
-    config("$modId-common.mixins.json")
+    add(sourceSets.main.get(), "${modId.get()}.refmap.json")
+    config("${modId.get()}-common.mixins.json")
 }
 
 minecraft {
-    mappings("parchment", parchmentVersionForge)
+    mappings("parchment", parchmentVersionForge.get())
 
     copyIdeResources.set(true)
 
@@ -197,7 +171,7 @@ minecraft {
             args.addAll(
                 listOf(
                     "--mod",
-                    modId,
+                    modId.get(),
                     "--all",
                     "--output",
                     file("src/generated/resources/").absolutePath,
@@ -215,7 +189,7 @@ minecraft {
             ideaModule("${rootProject.name}.${project.name}.main")
             isSingleInstance = true
             mods {
-                create(modId) {
+                create(modId.get()) {
                     source(sourceSets.main.get())
                     for (p in dependencyProjects) {
                         source(p.sourceSets.main.get())
@@ -251,25 +225,25 @@ val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
 }
 
 publishMods {
-    val publishType = System.getenv("PUBLISH_TYPE")
+    val publishType = providers.environmentVariable("PUBLISH_TYPE").orNull
 
     if (publishType != null) {
         file.set(tasks.jar.get().archiveFile)
         type.set(ReleaseType.of(publishType.uppercase()))
         modLoaders.add("forge")
-        displayName.set("$modVersion for Forge $minecraftVersion")
+        displayName.set("${modVersion.get()} for Forge ${minecraftVersion.get()}")
         version.set(project.version.toString())
 
         curseforge {
             projectId = curseProjectId
-            accessToken.set(curseforgeApikey ?: "0")
+            accessToken = curseforgeApikey
             changelog.set(changelogHtml.singleFileContents())
             changelogType = "html"
             minecraftVersionRange {
                 start = minecraftVersionRangeStart
                 end = minecraftVersion
             }
-            javaVersions.add(JavaVersion.toVersion(modJavaVersion))
+            javaVersions.add(JavaVersion.toVersion(javaVersion.get()))
             requires("farmers-delight")
             client = true
             server = true
@@ -289,19 +263,13 @@ publishMods {
 }
 
 tasks.test {
-    useJUnitPlatform()
     include("dev/jaronline/cuttingdelight/**")
     exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
 }
 
 artifacts {
-    archives(tasks.jar.get())
-    archives(sourcesJarTask.get())
+    archives(tasks.jar)
+    archives(sourcesJarTask)
 }
 
 publishing {
@@ -309,28 +277,7 @@ publishing {
         register<MavenPublication>("neoforgeJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
-            artifact(sourcesJarTask.get())
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-idea {
-    module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
-
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
+            artifact(sourcesJarTask)
         }
     }
 }

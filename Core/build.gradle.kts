@@ -1,10 +1,5 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-
 plugins {
-    id("idea")
-    id("java")
-    id("maven-publish")
+    id("cuttingdelight-convention")
 }
 
 repositories {
@@ -12,31 +7,15 @@ repositories {
 }
 
 // gradle.properties
-val jUnitVersion: String by extra
-val modId: String by extra
-val modJavaVersion: String by extra
-val guavaVersion: String by extra
+val jUnitVersion = providers.gradleProperty("jUnitVersion")
+val modId = providers.gradleProperty("modId")
+val guavaVersion = providers.gradleProperty("guavaVersion")
 
 dependencies {
-    implementation(
-        group = "com.google.guava",
-        name = "guava",
-        version = guavaVersion
-    )
-    implementation(
-        group = "org.jetbrains",
-        name = "annotations",
-        version = "26.1.0"
-    )
-    testImplementation(
-        group = "org.junit.jupiter",
-        name = "junit-jupiter",
-        version = jUnitVersion
-    )
-    testRuntimeOnly(
-        group = "org.junit.platform",
-        name = "junit-platform-launcher"
-    )
+    implementation("com.google.guava:guava:${guavaVersion.get()}")
+    implementation("org.jetbrains:annotations:26.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 sourceSets {
@@ -51,42 +30,20 @@ sourceSets {
 }
 
 tasks.test {
-    useJUnitPlatform()
     include("dev/jaronline/cuttingdelight/**")
     exclude("dev/jaronline/cuttingdelight/lib/**")
-    outputs.upToDateWhen { false }
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
-    }
-    withSourcesJar()
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    javaToolchains {
-        compilerFor {
-            languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
-        }
-    }
 }
 
 val sourcesJarTask = tasks.named<Jar>("sourcesJar")
 
-val baseArchivesName = "${modId}-core"
+val baseArchivesName = "${modId.get()}-core"
 base {
     archivesName.set(baseArchivesName)
 }
 
 artifacts {
-    archives(tasks.jar.get())
-    archives(sourcesJarTask.get())
+    archives(tasks.jar)
+    archives(sourcesJarTask)
 }
 
 publishing {
@@ -94,25 +51,7 @@ publishing {
         register<MavenPublication>("coreJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
-            artifact(sourcesJarTask.get())
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-idea {
-    module {
-        for (fileName in listOf("build", "run", "run-data", "out", "logs")) {
-            excludeDirs.add(file(fileName))
+            artifact(sourcesJarTask)
         }
     }
 }
