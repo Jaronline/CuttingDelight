@@ -30,10 +30,7 @@ pluginManagement {
 	}
 }
 
-val modId = providers.gradleProperty("modId")
-val minecraftVersion = providers.gradleProperty("minecraftVersion")
-
-rootProject.name = modId.zip(minecraftVersion) { modId, minecraftVersion -> "$modId-$minecraftVersion" }.get()
+rootProject.name = "cuttingdelight-1.21.1"
 
 include(
     "Core",
