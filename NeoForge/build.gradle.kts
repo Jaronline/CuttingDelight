@@ -205,7 +205,7 @@ publishMods {
 
         curseforge {
             projectId = cuttingDelight.curseProjectId
-            accessToken = cuttingDelight.curseforgeApikey
+            accessToken = cuttingDelight.curseforgeApiKey
             changelog.set(changelogHtml.singleFileContents())
             changelogType = "html"
             minecraftVersionRange {
