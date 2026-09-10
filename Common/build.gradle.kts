@@ -1,15 +1,9 @@
 plugins {
     id("cuttingdelight-convention")
-    id("net.neoforged.moddev")
+    alias(libs.plugins.moddevgradle)
 }
 
-// gradle.properties
-val minecraftVersion = providers.gradleProperty("minecraftVersion")
-val neoformVersionAndTimestamp = providers.gradleProperty("neoformVersionAndTimestamp")
-val modId = providers.gradleProperty("modId")
-val jeiVersion = providers.gradleProperty("jeiVersion")
-val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
-val jUnitVersion = providers.gradleProperty("jUnitVersion")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 repositories {
     mavenCentral()
@@ -37,7 +31,7 @@ repositories {
 }
 
 base {
-    archivesName = "${modId.get()}-common"
+    archivesName = "${cuttingDelight.modId.get()}-common"
 }
 
 sourceSets {
@@ -70,20 +64,22 @@ dependencyProjects.forEach {
 }
 
 neoForge {
-    neoFormVersion = neoformVersionAndTimestamp.get()
+    neoFormVersion = cuttingDelight.neoformVersion.version
     addModdingDependenciesTo(sourceSets.test.get())
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 }
 
 dependencies {
-    compileOnly("org.spongepowered:mixin:0.8.7")
+    compileOnly(libs.mixin)
     dependencyProjects.forEach {
         implementation(it)
     }
-    api("mezz.jei:jei-${minecraftVersion.get()}-common-api:${jeiVersion.get()}")
-    implementation("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
-    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    api(libs.jei.common.api)
+    implementation(libs.farmersdelight)
+
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 publishing {

@@ -6,15 +6,13 @@ repositories {
     mavenCentral()
 }
 
-// gradle.properties
-val jUnitVersion = providers.gradleProperty("jUnitVersion")
-val modId = providers.gradleProperty("modId")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 dependencies {
-    implementation("com.google.guava:guava:32.0.1-jre")
-    implementation("org.jetbrains:annotations:26.1.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(libs.guava)
+    implementation(libs.jetbrains.annotations)
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 sourceSets {
@@ -31,7 +29,7 @@ sourceSets {
 val sourcesJarTask = tasks.named<Jar>("sourcesJar")
 
 base {
-    archivesName = "${modId.get()}-core"
+    archivesName = "${cuttingDelight.modId.get()}-core"
 }
 
 artifacts {

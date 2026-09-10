@@ -3,34 +3,11 @@ import org.slf4j.event.Level
 
 plugins {
     id("cuttingdelight-convention")
-    id("me.modmuss50.mod-publish-plugin")
-    id("net.neoforged.moddev")
+    alias(libs.plugins.modpublish)
+    alias(libs.plugins.moddevgradle)
 }
 
-// gradle.properties
-val minecraftVersion = providers.gradleProperty("minecraftVersion")
-val minecraftVersionRangeStart = providers.gradleProperty("minecraftVersionRangeStart")
-    .orElse(minecraftVersion)
-val parchmentMinecraftVersion = providers.gradleProperty("parchmentMinecraftVersion")
-    .orElse(minecraftVersion)
-val parchmentMappingsVersion = providers.gradleProperty("parchmentMappingsVersion")
-val neoVersion = providers.gradleProperty("neoVersion")
-
-val modId = providers.gradleProperty("modId")
-val modVersion = providers.gradleProperty("modVersion")
-val javaVersion = providers.gradleProperty("javaVersion")
-
-val jeiVersion = providers.gradleProperty("jeiVersion")
-val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
-val jUnitVersion = providers.gradleProperty("jUnitVersion")
-
-val curseProjectId = providers.gradleProperty("curseProjectId")
-val modrinthId = providers.gradleProperty("modrinthId")
-
-// set by ORG_GRADLE_PROJECT_modrinthToken
-val modrinthToken = providers.gradleProperty("modrinthToken")
-// set by ORG_GRADLE_PROJECT_curseforgeApikey
-val curseforgeApikey = providers.gradleProperty("curseforgeApikey").orElse("0")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 repositories {
     mavenCentral()
@@ -58,7 +35,7 @@ repositories {
 }
 
 base {
-    archivesName = "${modId.get()}-neoforge"
+    archivesName = "${cuttingDelight.modId.get()}-neoforge"
 }
 
 sourceSets {
@@ -125,12 +102,12 @@ dependencies {
         implementation(it)
     }
 
-    runtimeOnly("mezz.jei:jei-${minecraftVersion.get()}-neoforge:${jeiVersion.get()}")
 
-    implementation("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
+    runtimeOnly(libs.jei.neoforge)
+    implementation(libs.farmersdelight)
 
-    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     @Suppress("AvoidDuplicateDependencies")
     changelogHtml(project(":Changelog"))
@@ -139,18 +116,18 @@ dependencies {
 }
 
 neoForge {
-    version = neoVersion.get()
+    version = cuttingDelight.neoforgeVersion.version
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
     addModdingDependenciesTo(sourceSets.test.get())
 
     parchment {
-        mappingsVersion = parchmentMappingsVersion
-        minecraftVersion = parchmentMinecraftVersion
+        mappingsVersion = cuttingDelight.parchmentMappingsVersion.version
+        minecraftVersion = cuttingDelight.parchmentMCVersion.version
     }
 
     mods {
-        create(modId.get()) {
+        create(cuttingDelight.modId.get()) {
             sourceSet(sourceSets.main.get())
             for (dependencyProject in dependencyProjects) {
                 sourceSet(dependencyProject.sourceSets.main.get())
@@ -162,24 +139,24 @@ neoForge {
         val client = create("client")
         client.client()
         client.gameDirectory = file("run/client")
-        client.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
+        client.systemProperty("neoforge.enabledGameTestNamespaces", cuttingDelight.modId.get())
 
         val server = create("server")
         server.server()
         server.gameDirectory = file("run/server")
         server.programArgument("--nogui")
-        server.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
+        server.systemProperty("neoforge.enabledGameTestNamespaces", cuttingDelight.modId.get())
 
         val gameTestServer = create("gameTestServer")
         gameTestServer.type = "gameTestServer"
-        gameTestServer.systemProperty("neoforge.enabledGameTestNamespaces", modId.get())
+        gameTestServer.systemProperty("neoforge.enabledGameTestNamespaces", cuttingDelight.modId.get())
 
         val data = create("data")
         data.data()
         data.gameDirectory = file("run-data")
         data.programArguments.addAll(
             "--mod",
-            modId.get(),
+            cuttingDelight.modId.get(),
             "--all",
             "--output",
             file("src/generated/resources/").absolutePath,
@@ -223,31 +200,31 @@ publishMods {
         file.set(tasks.jar.get().archiveFile)
         type.set(ReleaseType.of(publishType.uppercase()))
         modLoaders.add("neoforge")
-        displayName.set("${modVersion.get()} for NeoForge ${minecraftVersion.get()}")
+        displayName.set("${cuttingDelight.modVersion.version} for NeoForge ${cuttingDelight.mcVersion.version}")
         version.set(project.version.toString())
 
         curseforge {
-            projectId = curseProjectId
-            accessToken = curseforgeApikey
+            projectId = cuttingDelight.curseProjectId
+            accessToken = cuttingDelight.curseforgeApikey
             changelog.set(changelogHtml.singleFileContents())
             changelogType = "html"
             minecraftVersionRange {
-                start = minecraftVersionRangeStart
-                end = minecraftVersion
+                start = cuttingDelight.mcVersion.version
+                end = cuttingDelight.mcVersion.version
             }
-            javaVersions.add(JavaVersion.toVersion(javaVersion.get()))
+            javaVersions.add(JavaVersion.toVersion(cuttingDelight.javaVersion.version))
             requires("farmers-delight")
             client = true
             server = true
         }
 
         modrinth {
-            projectId = modrinthId
-            accessToken = modrinthToken
+            projectId = cuttingDelight.modrinthId
+            accessToken = cuttingDelight.modrinthToken
             changelog.set(changelogMarkdown.singleFileContents())
             minecraftVersionRange {
-                start = minecraftVersionRangeStart
-                end = minecraftVersion
+                start = cuttingDelight.mcVersion.version
+                end = cuttingDelight.mcVersion.version
             }
             requires("farmers-delight")
         }

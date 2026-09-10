@@ -1,0 +1,69 @@
+[versions]
+# Cutting Delight
+cuttingdelight = "1.1.0"
+
+# Common
+minecraft = { strictly = "[1.21.1]", prefer = "1.21.1" }
+# https://projects.neoforged.net/neoforged/neoform
+neoform = "1.21.1-20240808.144430"
+java = "21"
+
+# NeoForge
+neoforge-loader = { strictly = "[1,)", prefer = "5" }
+neoforge = { strictly = "[21.1.219,)", prefer = "21.1.234" }
+
+# Parchment
+parchment-minecraft = "1.21.1"
+parchment-mappings = "2024.11.17"
+
+# Dependencies
+mixin = "0.8.7"
+guava = "32.0.1-jre"
+jetbrains-annotations = "26.1.0"
+
+# Mods
+farmersdelight = { strictly = "[1.3.0,)", prefer = "1.3.2" }
+farmersdelight-mc = "1.21.1-1.3.2"
+jei = "19.53.0.425"
+
+# Testing
+junit = "5.14.4"
+
+# Plugins
+plugin-tasktree = "4.0.2"
+plugin-spotless = "8.10.2"
+plugin-gitchangelog = "3.1.2"
+plugin-modpublish = "2.2.0"
+plugin-moddevgradle = "2.0.146"
+
+[libraries]
+# Common
+mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations" }
+
+# Dependencies
+farmersdelight = { group = "maven.modrinth", name = "farmers-delight", version.ref = "farmersdelight-mc" }
+## JEI
+jei-common-api = { group = "mezz.jei", name = "jei-1.21.1-common-api", version.ref = "jei" }
+jei-neoforge = { group = "mezz.jei", name = "jei-1.21.1-neoforge", version.ref = "jei" }
+
+# Testing
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+
+[plugins]
+# https://plugins.gradle.org/plugin/com.dorongold.task-tree
+tasktree = { id = "com.dorongold.task-tree", version.ref = "plugin-tasktree" }
+# https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless
+spotless = { id = "com.diffplug.spotless", version.ref = "plugin-spotless" }
+# https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
+gitchangelog = { id = "se.bjurr.gitchangelog.git-changelog-gradle-plugin", version.ref = "plugin-gitchangelog" }
+
+# Publishing
+# https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
+modpublish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "plugin-modpublish" }
+
+# Platform
+# https://projects.neoforged.net/neoforged/moddevgradle
+moddevgradle = { id = "net.neoforged.moddev", version.ref = "plugin-moddevgradle" }
