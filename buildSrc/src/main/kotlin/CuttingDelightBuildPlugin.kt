@@ -32,10 +32,8 @@ abstract class CuttingDelightBuildPlugin(val project: Project) {
 
     val farmersDelightVersion = versionLookup("farmersdelight")
 
-    // set by ORG_GRADLE_PROJECT_modrinthToken
-    val modrinthToken = gradleProperty("modrinthToken")
-    // set by ORG_GRADLE_PROJECT_curseforgeApikey
-    val curseforgeApikey = gradleProperty("curseforgeApikey").orElse("0")
+    val modrinthToken = environmentVariable("MODRINTH_TOKEN")
+    val curseforgeApiKey = environmentVariable("CURSEFORGE_API_KEY").orElse("0")
 
     val githubActor = environmentVariable("GITHUB_ACTOR").orNull
     val githubToken = environmentVariable("GITHUB_TOKEN").orNull
