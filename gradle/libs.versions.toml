@@ -35,7 +35,7 @@ plugin-gitchangelog = "3.1.2"
 plugin-modpublish = "2.2.0"
 plugin-vanillagradle = "0.2.2-SNAPSHOT"
 plugin-mixin = "0.7.38"
-plugin-forgegradle = "6.0.54"
+plugin-forgegradle = "7.0.40"
 plugin-librarian-forgegradle = "1.2.0"
 
 [libraries]
