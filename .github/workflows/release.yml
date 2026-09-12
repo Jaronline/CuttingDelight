@@ -45,8 +45,8 @@ on:
         type: boolean
 
 env:
-  ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
-  ORG_GRADLE_PROJECT_curseforgeApikey: ${{ secrets.CURSEFORGE_API_KEY }}
+  MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+  CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
 
 permissions:
   contents: read
