@@ -1,35 +1,15 @@
 plugins {
-    // https://plugins.gradle.org/plugin/com.diffplug.gradle.spoittless
-    id("com.diffplug.spotless") version ("8.10.2")
-    // https://plugins.gradle.org/plugin/com.dorongold.task-tree
-    id("com.dorongold.task-tree") version ("4.0.2")
-    // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/vanillagradle/
-    id("org.spongepowered.gradle.vanilla") version ("0.2.2-SNAPSHOT") apply (false)
-    // https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
-    id("org.spongepowered.mixin") version ("0.7.38") apply (false)
-    // https://files.minecraftforge.net/net/minecraftforge/gradle/ForgeGradle/index.html
-    id("net.minecraftforge.gradle") version ("6.0.54") apply (false)
-    // https://mvnrepository.com/artifact/org.parchmentmc.librarian.forgegradle/org.parchmentmc.librarian.forgegradle.gradle.plugin
-    id("org.parchmentmc.librarian.forgegradle") version ("1.2.0") apply (false)
-    // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
-    id("me.modmuss50.mod-publish-plugin") version ("2.2.0") apply (false)
+    id("cuttingdelight-build")
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.tasktree)
+    alias(libs.plugins.vanillagradle) apply false
+    alias(libs.plugins.mixin) apply false
+    alias(libs.plugins.forgegradle) apply false
+    alias(libs.plugins.librarian.forgegradle) apply false
+    alias(libs.plugins.modpublish) apply false
 }
 
-// gradle.properties
-val minecraftVersion = providers.gradleProperty("minecraftVersion")
-val minecraftVersionRange = providers.gradleProperty("minecraftVersionRange")
-val forgeVersionRange = providers.gradleProperty("forgeVersionRange")
-val forgeLoaderVersionRange = providers.gradleProperty("forgeLoaderVersionRange")
-val modId = providers.gradleProperty("modId")
-val modName = providers.gradleProperty("modName")
-val modLicense = providers.gradleProperty("modLicense")
-val modVersion = providers.gradleProperty("modVersion")
-val modGroupId = providers.gradleProperty("modGroupId")
-val modAuthors = providers.gradleProperty("modAuthors")
-val modCredits = providers.gradleProperty("modCredits")
-val modDescription = providers.gradleProperty("modDescription")
-val javaVersion = providers.gradleProperty("javaVersion")
-val farmersDelightVersionRange = providers.gradleProperty("farmersDelightVersionRange")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 repositories {
     mavenCentral()
@@ -54,13 +34,12 @@ tasks.withType<Wrapper> {
 }
 
 subprojects {
-    version = minecraftVersion.zip(modVersion) { minecraftVersion, modVersion -> "$minecraftVersion-$modVersion" }
-        .get()
-    group = modGroupId.get()
+    version = "${cuttingDelight.mcVersion.version}-${cuttingDelight.modVersion.version}"
+    group = cuttingDelight.modGroupId.get()
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release = JavaLanguageVersion.of(javaVersion.get()).asInt()
+        options.release = JavaLanguageVersion.of(cuttingDelight.javaVersion.version).asInt()
         options.isDeprecation = true
         options.compilerArgs.add("-Xlint:unchecked")
     }
@@ -69,12 +48,12 @@ subprojects {
         manifest {
             attributes(
                 mapOf(
-                    "Specification-Title" to modName.get(),
-                    "Specification-Vendor" to modAuthors.get(),
-                    "Specification-Version" to modVersion.get(),
+                    "Specification-Title" to cuttingDelight.modName.get(),
+                    "Specification-Vendor" to cuttingDelight.modAuthors.get(),
+                    "Specification-Version" to cuttingDelight.modVersion.version,
                     "Implementation-Title" to name,
                     "Implementation-Version" to archiveVersion,
-                    "Implementation-Vendor" to modAuthors.get()
+                    "Implementation-Vendor" to cuttingDelight.modAuthors.get()
                 )
             )
         }
@@ -94,11 +73,12 @@ subprojects {
 
     tasks.withType<ProcessResources> {
         var replaceProperties = mapOf(
-            "minecraft_version" to minecraftVersion.get(), "minecraft_version_range" to minecraftVersionRange.get(),
-            "forge_version_range" to forgeVersionRange.get(), "forge_loader_version_range" to forgeLoaderVersionRange.get(),
-            "mod_id" to modId.get(), "mod_name" to modName.get(), "mod_license" to modLicense.get(), "mod_version" to modVersion.get(),
-            "mod_authors" to modAuthors.get(), "mod_credits" to modCredits.get(), "mod_description" to modDescription.get(),
-            "farmers_delight_version_range" to farmersDelightVersionRange.get()
+            "minecraft_version" to cuttingDelight.mcVersion.version, "minecraft_version_range" to cuttingDelight.mcVersion.range,
+            "forge_version_range" to cuttingDelight.forgeVersion.range, "forge_loader_version_range" to cuttingDelight.fmlVersion.range,
+            "mod_id" to cuttingDelight.modId.get(), "mod_name" to cuttingDelight.modName.get(), "mod_license" to cuttingDelight.modLicense.get(),
+            "mod_version" to cuttingDelight.modVersion.version, "mod_authors" to cuttingDelight.modAuthors.get(),
+            "mod_credits" to cuttingDelight.modCredits.get(), "mod_description" to cuttingDelight.modDescription.get(),
+            "farmers_delight_version_range" to cuttingDelight.farmersDelightVersion.range
         )
         inputs.properties(replaceProperties)
         filesMatching(listOf("META-INF/mods.toml", "pack.mcmeta")) {
