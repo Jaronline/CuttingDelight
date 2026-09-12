@@ -1,6 +1,6 @@
 plugins {
     id("cuttingdelight-convention")
-    id("org.spongepowered.gradle.vanilla")
+    alias(libs.plugins.vanillagradle)
 }
 
 repositories {
@@ -27,17 +27,10 @@ repositories {
     }
 }
 
-// gradle.properties
-val minecraftVersion = providers.gradleProperty("minecraftVersion")
-val spongeMixinVersion = providers.gradleProperty("spongeMixinVersion")
-val modId = providers.gradleProperty("modId")
-val jeiVersion = providers.gradleProperty("jeiVersion")
-val farmersDelightVersion = providers.gradleProperty("farmersDelightVersion")
-val guavaVersion = providers.gradleProperty("guavaVersion")
-val jUnitVersion = providers.gradleProperty("jUnitVersion")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 base {
-    archivesName = "${modId.get()}-common"
+    archivesName = "${cuttingDelight.modId.get()}-common"
 }
 
 sourceSets {
@@ -70,20 +63,23 @@ dependencyProjects.forEach {
 }
 
 minecraft {
-    version(minecraftVersion.get())
-    accessWideners(file("src/main/resources/${modId.get()}.accesswidener"))
+    version(cuttingDelight.mcVersion.version)
+    accessWideners(file("src/main/resources/${cuttingDelight.modId.get()}.accesswidener"))
 }
 
 dependencies {
-    compileOnly("org.spongepowered:mixin:${spongeMixinVersion.get()}")
-    implementation("com.google.guava:guava:${guavaVersion.get()}")
+    compileOnly(libs.mixin)
+    implementation(libs.guava)
+
     dependencyProjects.forEach {
         implementation(it)
     }
-    implementation("mezz.jei:jei-${minecraftVersion.get()}-common-api:${jeiVersion.get()}")
-    compileOnly("maven.modrinth:farmers-delight:${minecraftVersion.get()}-${farmersDelightVersion.get()}")
-    testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion.get()}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation(libs.jei.common.api)
+    compileOnly(libs.farmersdelight)
+
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.test {

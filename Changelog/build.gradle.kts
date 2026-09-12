@@ -1,13 +1,13 @@
 import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 
 plugins {
-    // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
-    id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version("3.1.2")
+    id("cuttingdelight-build")
+    alias(libs.plugins.gitchangelog)
 }
 
-// gradle.properties
-val modVersion = providers.gradleProperty("modVersion")
-val changelogUntaggedName = modVersion.map { "Version $it" }
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
+
+val changelogUntaggedName = "Version ${cuttingDelight.modVersion.version}"
 
 val makeHtmlChangelog = tasks.register<GitChangelogTask>("makeHtmlChangelog") {
     val output = layout.buildDirectory.file("CHANGELOG.html")

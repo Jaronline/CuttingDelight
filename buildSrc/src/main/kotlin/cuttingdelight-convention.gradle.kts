@@ -2,17 +2,17 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
+    id("cuttingdelight-build")
     idea
     eclipse
     java
     `maven-publish`
 }
 
-// gradle.properties
-val javaVersion = providers.gradleProperty("javaVersion")
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(javaVersion.get())
+    toolchain.languageVersion = JavaLanguageVersion.of(cuttingDelight.javaVersion.version)
     withSourcesJar()
 }
 
@@ -45,8 +45,8 @@ publishing {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = cuttingDelight.githubActor
+                password = cuttingDelight.githubToken
             }
         }
     }
