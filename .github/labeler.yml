@@ -22,3 +22,39 @@ quilt:
       - any-glob-to-any-file:
           - Quilt/*
           - Quilt/**/*
+root:
+  - changed-files:
+      - any-glob-to-any-file:
+          - build.gradle.kts
+          - settings.gradle.kts
+core:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Core/*
+          - Core/**/*
+common:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Common/*
+          - Common/**/*
+changelog:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Changelog/*
+          - Changelog/**/*
+buildSrc:
+  - changed-files:
+      - any-glob-to-any-file:
+          - buildSrc/*
+          - buildSrc/**/*
+gradlew:
+  - changed-files:
+      - any-glob-to-any-file:
+          - gradle/wrapper/*
+          - gradle/wrapper/**/*
+          - gradlew
+          - gradlew.bat
+versions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - gradle/libs.versions.toml
