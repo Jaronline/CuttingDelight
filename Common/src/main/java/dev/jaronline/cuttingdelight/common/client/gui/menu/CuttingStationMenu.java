@@ -4,7 +4,6 @@ import com.google.common.reflect.TypeToken;
 import dev.jaronline.cuttingdelight.common.ModBlocks;
 import dev.jaronline.cuttingdelight.common.ModMenuTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CuttingStationBlockEntity;
-import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -208,7 +207,7 @@ public class CuttingStationMenu extends AbstractContainerMenu {
 			CuttingBoardRecipe recipe = this.recipes.get(this.selectedRecipeIndex.get());
 			//noinspection unchecked
 			ItemStack itemStack = Services.PLATFORM.getRecipeHelper().assemble(recipe, this.container, this.level.registryAccess());
-			if (ConfigManager.getConfig().shouldProcessStack()) {
+			if (Services.CONFIG.shouldProcessStack()) {
 				itemStack.setCount(itemStack.getCount() * this.inputSlot.getItem().getCount());
 			}
 			if (itemStack.isItemEnabled(this.level.enabledFeatures())) {

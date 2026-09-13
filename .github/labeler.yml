@@ -37,11 +37,6 @@ common:
       - any-glob-to-any-file:
           - Common/*
           - Common/**/*
-processor:
-  - changed-files:
-      - any-glob-to-any-file:
-          - Processor/*
-          - Processor/**/*
 changelog:
   - changed-files:
       - any-glob-to-any-file:
