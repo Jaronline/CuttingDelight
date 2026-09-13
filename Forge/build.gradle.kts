@@ -74,6 +74,8 @@ tasks.withType<ProcessResources> {
             from(it.sourceSets.getByName("dev").resources)
         }
     }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 val changelogHtml = configurations.create("changelogHtml")
@@ -106,7 +108,6 @@ dependencies {
     annotationProcessor(variantOf(libs.mixin) {
         classifier("processor")
     })
-    annotationProcessor(project(":Processor"))
 
     compileOnlyApi(libs.jei.common.api)
     modRuntimeOnly(libs.jei.forge)

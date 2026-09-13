@@ -3,7 +3,6 @@ package dev.jaronline.cuttingdelight.common.client.gui.screen;
 import com.mojang.logging.LogUtils;
 import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingStationMenu;
-import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.network.CutPacket;
 import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -208,7 +207,7 @@ public class CuttingStationScreen extends AbstractContainerScreen<CuttingStation
 				return;
 			}
 			CuttingStationScreen.this.confirmButton.setFocused(false);
-			if (ConfigManager.getConfig().shouldProcessStack() || CuttingStationScreen.this.menu.hasSingleInputItem()) {
+			if (Services.CONFIG.shouldProcessStack() || CuttingStationScreen.this.menu.hasSingleInputItem()) {
 				CuttingStationScreen.this.confirmButton.active = false;
 			}
 			Services.PLATFORM.getClientHelper().send(new CutPacket(CuttingStationScreen.this.menu.containerId, result));

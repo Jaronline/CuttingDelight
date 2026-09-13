@@ -1,6 +1,6 @@
-package dev.jaronline.cuttingdelight.common.config;
+package dev.jaronline.cuttingdelight.common.platform.config;
 
-public class DefaultConfig implements IConfig {
+public class DefaultConfig implements PlatformConfig {
 	@Override
 	@Deprecated(
 			forRemoval = true,

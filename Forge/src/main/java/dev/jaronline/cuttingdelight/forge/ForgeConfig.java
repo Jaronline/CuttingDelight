@@ -1,11 +1,9 @@
 package dev.jaronline.cuttingdelight.forge;
 
-import dev.jaronline.cuttingdelight.common.config.IConfig;
-import dev.jaronline.cuttingdelight.core.config.Config;
+import dev.jaronline.cuttingdelight.common.platform.config.PlatformConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-@Config
-public class CDConfig implements IConfig {
+public class ForgeConfig implements PlatformConfig {
 	private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
 	@Deprecated(

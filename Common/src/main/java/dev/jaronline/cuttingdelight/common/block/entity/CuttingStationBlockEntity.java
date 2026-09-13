@@ -3,7 +3,6 @@ package dev.jaronline.cuttingdelight.common.block.entity;
 import com.mojang.logging.LogUtils;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.CuttingStationBlock;
-import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.mixin.CuttingBoardBlockEntityAccessor;
 import dev.jaronline.cuttingdelight.common.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -45,7 +44,7 @@ public class CuttingStationBlockEntity extends CuttingBoardBlockEntity {
 			since = "1.1.0"
 	)
 	public boolean processStoredStackOrItemUsingTool(CuttingBoardRecipe recipe, ItemStack tool, @Nullable Player player) {
-		if (ConfigManager.getConfig().shouldProcessStack()) {
+		if (Services.CONFIG.shouldProcessStack()) {
 			return processStoredStackUsingTool(recipe, tool, player);
 		}
 		return processStoredItemUsingTool(recipe, tool, player);
