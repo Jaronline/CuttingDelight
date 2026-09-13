@@ -74,6 +74,8 @@ tasks.withType<ProcessResources> {
             from(it.sourceSets.getByName("dev").resources)
         }
     }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 val changelogHtml = configurations.create("changelogHtml")

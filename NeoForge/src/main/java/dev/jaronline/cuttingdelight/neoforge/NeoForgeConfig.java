@@ -1,9 +1,9 @@
 package dev.jaronline.cuttingdelight.neoforge;
 
-import dev.jaronline.cuttingdelight.common.config.IConfig;
+import dev.jaronline.cuttingdelight.common.platform.config.PlatformConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class Config implements IConfig {
+public class NeoForgeConfig implements PlatformConfig {
 	private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
 	@Deprecated(

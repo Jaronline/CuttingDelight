@@ -1,6 +1,5 @@
 package dev.jaronline.cuttingdelight.common.client.gui.screen;
 
-import dev.jaronline.cuttingdelight.common.config.ConfigManager;
 import dev.jaronline.cuttingdelight.common.ModIds;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.common.network.CutPayload;
@@ -229,7 +228,7 @@ public class CuttingBoardScreen extends AbstractContainerScreen<CuttingBoardMenu
 				return;
 			}
 			CuttingBoardScreen.this.confirmButton.setFocused(false);
-			if (ConfigManager.getConfig().shouldProcessStack() || CuttingBoardScreen.this.menu.hasSingleInputItem()) {
+			if (Services.CONFIG.shouldProcessStack() || CuttingBoardScreen.this.menu.hasSingleInputItem()) {
 				CuttingBoardScreen.this.confirmButton.active = false;
 			}
 			Services.PLATFORM.getClientHelper().send(new CutPayload(result));

@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.common.client.gui.menu;
 
 import com.google.common.collect.Lists;
-import dev.jaronline.cuttingdelight.common.config.ConfigManager;
+import dev.jaronline.cuttingdelight.common.platform.Services;
 import dev.jaronline.cuttingdelight.common.ModBlocks;
 import dev.jaronline.cuttingdelight.common.ModMenuTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
@@ -258,7 +258,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 		if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
 			RecipeHolder<CuttingBoardRecipe> recipeholder = this.recipes.get(this.selectedRecipeIndex.get());
 			ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(this.container), this.level.registryAccess());
-			if (ConfigManager.getConfig().shouldProcessStack()) {
+			if (Services.CONFIG.shouldProcessStack()) {
 				itemstack.setCount(itemstack.getCount() * this.inputSlot.getItem().getCount());
 			}
 			if (itemstack.isItemEnabled(this.level.enabledFeatures())) {

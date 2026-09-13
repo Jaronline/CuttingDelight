@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package dev.jaronline.cuttingdelight.common.config;
+package dev.jaronline.cuttingdelight.common.platform.config;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
