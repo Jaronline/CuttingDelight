@@ -27,16 +27,10 @@ sourceSets {
     }
 }
 
-tasks.test {
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-}
-
 val sourcesJarTask = tasks.named<Jar>("sourcesJar")
 
-val baseArchivesName = "${cuttingDelight.modId.get()}-core"
 base {
-    archivesName.set(baseArchivesName)
+    archivesName = "${cuttingDelight.modId.get()}-core"
 }
 
 artifacts {
@@ -52,4 +46,8 @@ publishing {
             artifact(sourcesJarTask)
         }
     }
+}
+
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**/*Test")
 }

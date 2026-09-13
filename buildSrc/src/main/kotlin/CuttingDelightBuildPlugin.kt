@@ -25,10 +25,10 @@ abstract class CuttingDelightBuildPlugin(val project: Project) {
 
     val forgeVersion = versionLookup("forge")
     val fmlVersion = versionLookup("forge.fml")
+    val forgeMCVersion = "${mcVersion.version}-${forgeVersion.version}"
 
     val parchmentMCVersion = versionLookup("parchment.minecraft")
     val parchmentMappingsVersion = versionLookup("parchment.mappings")
-    val parchmentVersionForge: String get() = "${parchmentMappingsVersion.version}-${parchmentMCVersion.version}"
 
     val farmersDelightVersion = versionLookup("farmersdelight")
 

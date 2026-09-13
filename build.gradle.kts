@@ -2,11 +2,8 @@ plugins {
     id("cuttingdelight-build")
     alias(libs.plugins.spotless)
     alias(libs.plugins.tasktree)
-    alias(libs.plugins.vanillagradle) apply false
-    alias(libs.plugins.mixin) apply false
-    alias(libs.plugins.forgegradle) apply false
-    alias(libs.plugins.librarian.forgegradle) apply false
     alias(libs.plugins.modpublish) apply false
+    alias(libs.plugins.moddevgradle.legacyforge) apply false
 }
 
 val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()

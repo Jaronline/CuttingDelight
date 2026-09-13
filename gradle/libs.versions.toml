@@ -9,7 +9,6 @@ java = "17"
 # Forge
 forge-fml = { strictly = "[47,)", prefer = "47" }
 forge = { strictly = "[47.0,)", prefer = "47.4.20" }
-forge-mc = "1.20.1-47.4.20"
 
 # Parchment
 parchment-minecraft = "1.20.1"
@@ -33,19 +32,13 @@ plugin-tasktree = "4.0.2"
 plugin-spotless = "8.10.2"
 plugin-gitchangelog = "3.1.2"
 plugin-modpublish = "2.2.0"
-plugin-vanillagradle = "0.2.2-SNAPSHOT"
-plugin-mixin = "0.7.38"
-plugin-forgegradle = "6.0.54"
-plugin-librarian-forgegradle = "1.2.0"
+plugin-moddevgradle = "2.0.147"
 
 [libraries]
 # Common
 mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations" }
-
-# Forge
-forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-mc" }
 
 # Dependencies
 farmersdelight = { group = "maven.modrinth", name = "farmers-delight", version.ref = "farmersdelight-mc" }
@@ -70,11 +63,5 @@ gitchangelog = { id = "se.bjurr.gitchangelog.git-changelog-gradle-plugin", versi
 modpublish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "plugin-modpublish" }
 
 # Platform
-# https://plugins.gradle.org/plugin/org.spongepowered.gradle.vanilla
-vanillagradle = { id = "org.spongepowered.gradle.vanilla", version.ref = "plugin-vanillagradle" }
-# https://repo.spongepowered.org/service/rest/repository/browse/maven-public/org/spongepowered/mixingradle/
-mixin = { id = "org.spongepowered.mixin", version.ref = "plugin-mixin" }
-# https://files.minecraftforge.net/net/minecraftforge/gradle/ForgeGradle/index.html
-forgegradle = { id = "net.minecraftforge.gradle", version.ref = "plugin-forgegradle" }
-# https://mvnrepository.com/artifact/org.parchmentmc.librarian.forgegradle/org.parchmentmc.librarian.forgegradle.gradle.plugin
-librarian-forgegradle = { id = "org.parchmentmc.librarian.forgegradle", version.ref = "plugin-librarian-forgegradle" }
+# https://projects.neoforged.net/neoforged/ModDevGradle
+moddevgradle-legacyforge = { id = "net.neoforged.moddev.legacyforge", version.ref = "plugin-moddevgradle" }
