@@ -116,11 +116,27 @@ jobs:
           java: ${{ env.JAVA_VERSION }}
           fabric-api: ${{ matrix.fabric-api }}
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup gradle
+        uses: Jaronline/.github/actions/setup-java-gradle@main
+
+      - name: Lint
+        run: |
+          chmod +x gradlew
+          ./gradlew spotlessCheck --no-daemon
+
   summary:
     name: CI Summary
     needs:
       - build
       - test
+      - lint
     if: always()
     runs-on: ubuntu-latest
     steps:
