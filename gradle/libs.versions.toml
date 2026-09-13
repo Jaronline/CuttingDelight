@@ -32,7 +32,7 @@ junit = "5.14.4"
 # Plugins
 plugin-tasktree = "4.0.2"
 plugin-spotless = "8.10.2"
-plugin-gitchangelog = "3.1.2"
+plugin-gitchangelog = "3.2.0"
 plugin-modpublish = "2.2.0"
 plugin-moddevgradle = "2.0.147"
 
