@@ -10,7 +10,7 @@ java = "21"
 
 # NeoForge
 neoforge-loader = { strictly = "[1,)", prefer = "5" }
-neoforge = { strictly = "[21.1.219,)", prefer = "21.1.234" }
+neoforge = { strictly = "[21.1.219,)", prefer = "21.1.250" }
 
 # Parchment
 parchment-minecraft = "1.21.1"
