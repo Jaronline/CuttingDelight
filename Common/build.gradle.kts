@@ -1,7 +1,9 @@
 plugins {
     id("cuttingdelight-convention")
-    alias(libs.plugins.vanillagradle)
+    alias(libs.plugins.moddevgradle.legacyforge)
 }
+
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 repositories {
     exclusiveContent {
@@ -26,8 +28,6 @@ repositories {
         url = uri("https://modmaven.dev")
     }
 }
-
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 base {
     archivesName = "${cuttingDelight.modId.get()}-common"
@@ -62,9 +62,17 @@ dependencyProjects.forEach {
     project.evaluationDependsOn(it.path)
 }
 
-minecraft {
-    version(cuttingDelight.mcVersion.version)
-    accessWideners(file("src/main/resources/${cuttingDelight.modId.get()}.accesswidener"))
+legacyForge {
+    validateAccessTransformers = true
+    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
+
+    enable {
+        mcpVersion = cuttingDelight.mcVersion.version
+        enabledSourceSets = setOf(sourceSets.main.get(), sourceSets.test.get())
+        isDisableRecompilation = false
+    }
+
+    addModdingDependenciesTo(sourceSets.test.get())
 }
 
 dependencies {
@@ -80,18 +88,6 @@ dependencies {
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
-}
-
-tasks.test {
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-}
-
-tasks.jar {
-    // Exclude dev source set classes from jar output
-    from(sourceSets.getByName("dev").output) {
-        exclude("**/*")
-    }
 }
 
 publishing {
@@ -120,4 +116,8 @@ publishing {
             }
         }
     }
+}
+
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**/*Test")
 }

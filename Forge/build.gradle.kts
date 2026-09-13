@@ -1,22 +1,24 @@
 import me.modmuss50.mpp.ReleaseType
-import net.minecraftforge.gradle.common.tasks.DownloadMavenArtifact
-import net.minecraftforge.gradle.common.tasks.JarExec
-import net.minecraftforge.gradle.common.util.RunConfig
+import org.slf4j.event.Level
 
 plugins {
     id("cuttingdelight-convention")
     alias(libs.plugins.modpublish)
-    alias(libs.plugins.forgegradle)
-    alias(libs.plugins.librarian.forgegradle)
-    alias(libs.plugins.mixin)
+    alias(libs.plugins.moddevgradle.legacyforge)
 }
+
+val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 repositories {
     mavenCentral()
-    maven {
-        name = "Modrinth"
-        url = uri("https://api.modrinth.com/maven")
-        content {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = uri("https://api.modrinth.com/maven")
+            }
+        }
+        filter {
             includeGroup("maven.modrinth")
         }
     }
@@ -31,8 +33,6 @@ repositories {
         url = uri("https://modmaven.dev")
     }
 }
-
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 base {
     archivesName = "${cuttingDelight.modId.get()}-forge"
@@ -61,8 +61,15 @@ dependencyProjects.forEach {
     project.evaluationDependsOn(it.path)
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    dependencyProjects.forEach {
+        source(it.sourceSets.main.get().allSource)
+    }
+}
+
 tasks.withType<ProcessResources> {
     dependencyProjects.forEach {
+        from(it.sourceSets.main.get().resources)
         if (it.sourceSets.findByName("dev") != null) {
             from(it.sourceSets.getByName("dev").resources)
         }
@@ -91,28 +98,26 @@ fun Configuration.singleFileContents(): Provider<String> =
         .map { it.asFile.readText() }
 
 dependencies {
-    "minecraft"(libs.forge)
-
-    if (System.getProperty("idea.sync.active") != "true") {
-         annotationProcessor(variantOf(libs.mixin) {
-            classifier("processor")
-        })
-    }
-
     dependencyProjects.forEach {
-        implementation(it)
+        compileOnly(it)
+        testImplementation(it)
     }
+
+    annotationProcessor(variantOf(libs.mixin) {
+        classifier("processor")
+    })
     annotationProcessor(project(":Processor"))
 
-    runtimeOnly(fg.deobf(libs.jei.forge))
-    implementation(fg.deobf(libs.farmersdelight))
-    // Need runtimeOnly as well to ensure the mod is present in run configurations on IDEs
-    runtimeOnly(fg.deobf(libs.farmersdelight))
+    compileOnlyApi(libs.jei.common.api)
+    modRuntimeOnly(libs.jei.forge)
+    modImplementation(libs.farmersdelight)
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 
+    @Suppress("AvoidDuplicateDependencies")
     changelogHtml(project(":Changelog"))
+    @Suppress("AvoidDuplicateDependencies")
     changelogMarkdown(project(":Changelog"))
 }
 
@@ -121,65 +126,78 @@ mixin {
     config("${cuttingDelight.modId.get()}-common.mixins.json")
 }
 
-minecraft {
-    mappings("parchment", cuttingDelight.parchmentVersionForge)
+legacyForge {
+    validateAccessTransformers = true
+//    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
-    copyIdeResources.set(true)
+    enable {
+        forgeVersion = cuttingDelight.forgeMCVersion
+        enabledSourceSets = setOf(sourceSets.main.get(), sourceSets.test.get())
+        isDisableRecompilation = false
+    }
 
-//    accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
+    addModdingDependenciesTo(sourceSets.test.get())
 
-    runs {
-        val client = create("client", Action<RunConfig> {
-            taskName("runClientDev")
-            workingDirectory(file("run/client/Dev"))
-        })
+    parchment {
+        mappingsVersion = cuttingDelight.parchmentMappingsVersion.version
+        minecraftVersion = cuttingDelight.parchmentMCVersion.version
+    }
 
-        create("client_1", Action<RunConfig> {
-            taskName("runClientPlayer")
-            parent(client)
-            workingDirectory(file("run/client/Player1"))
-            args("--username", "Player")
-        })
-
-        create("server", Action<RunConfig> {
-            taskName("runServer")
-            workingDirectory(file("run/server"))
-            args("--nogui")
-        })
-
-        create("data", Action<RunConfig> {
-            taskName("runData")
-            workingDirectory(file("run-data"))
-            args.addAll(
-                listOf(
-                    "--mod",
-                    cuttingDelight.modId.get(),
-                    "--all",
-                    "--output",
-                    file("src/generated/resources/").absolutePath,
-                    "--existing",
-                    file("src/main/resources/").absolutePath
-                )
-            )
-            dependencyProjects.stream().flatMap { it.sourceSets.main.get().resources.srcDirs.stream() }.forEach {
-                args.addAll(listOf("--existing", it.absolutePath))
-            }
-        })
-
-        configureEach {
-            property("forge.logging.console.level", "debug")
-            ideaModule("${rootProject.name}.${project.name}.main")
-            isSingleInstance = true
-            mods {
-                create(cuttingDelight.modId.get()) {
-                    source(sourceSets.main.get())
-                    for (p in dependencyProjects) {
-                        source(p.sourceSets.main.get())
-                    }
-                }
+    mods {
+        create(cuttingDelight.modId.get()) {
+            sourceSet(sourceSets.main.get())
+            dependencyProjects.forEach {
+                sourceSet(it.sourceSets.main.get())
             }
         }
     }
+
+    runs {
+        create("clientDev") {
+            client()
+            systemProperty("forge.logging.console.level", "debug")
+            gameDirectory = file("run/client/Dev")
+            logLevel = Level.DEBUG
+        }
+        create("clientPlayer1") {
+            client()
+            systemProperty("forge.logging.console.level", "debug")
+            gameDirectory = file("run/client/Player1")
+            programArguments.addAll("--username", "Player1")
+            logLevel = Level.DEBUG
+        }
+        create("server") {
+            server()
+            systemProperty("forge.logging.console.level", "debug")
+            gameDirectory = file("run/server")
+            programArguments.add("nogui")
+            logLevel = Level.DEBUG
+        }
+        create("data") {
+            data()
+            systemProperty("forge.logging.console.level", "debug")
+            gameDirectory = file("run-data")
+            programArguments.addAll(
+                "-mixin.config=${cuttingDelight.modId.get()}-common.mixins.json",
+                "--mod",
+                cuttingDelight.modId.get(),
+                "--all",
+                "--output",
+                file("src/generated/resources/").absolutePath,
+                "--existing",
+                file("src/main/resources/").absolutePath
+            )
+            dependencyProjects.stream().flatMap { it.sourceSets.main.get().resources.srcDirs.stream() }.forEach {
+                programArguments.addAll("--existing", it.absolutePath)
+            }
+        }
+    }
+}
+
+tasks.withType<Jar> {
+    manifest.attributes(mapOf(
+        "MixinConfigs" to "${cuttingDelight.modId.get()}-common.mixins.json"
+    ))
 }
 
 tasks.jar {
@@ -191,7 +209,6 @@ tasks.jar {
     exclude("data/cuttingdelight-dev/**", "assets/cuttingdelight-dev/**")
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    finalizedBy("reobfJar")
 }
 
 val sourcesJarTask = tasks.named<Jar>("sourcesJar") {
@@ -244,19 +261,16 @@ publishMods {
     }
 }
 
-tasks.test {
-    include("dev/jaronline/cuttingdelight/**")
-    exclude("dev/jaronline/cuttingdelight/lib/**")
-}
+val reobfJarTask = tasks.named<AbstractArchiveTask>("reobfJar")
 
 artifacts {
-    archives(tasks.jar)
+    archives(reobfJarTask)
     archives(sourcesJarTask)
 }
 
 publishing {
     publications {
-        register<MavenPublication>("neoforgeJar") {
+        register<MavenPublication>("forgeJar") {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
             artifact(sourcesJarTask)
@@ -264,10 +278,6 @@ publishing {
     }
 }
 
-tasks.withType<DownloadMavenArtifact> {
-    notCompatibleWithConfigurationCache("uses Task.project at execution time")
-}
-
-tasks.withType<JarExec> {
-    notCompatibleWithConfigurationCache("uses external process at execution time")
+tasks.test {
+    include("dev/jaronline/cuttingdelight/**/*Test")
 }

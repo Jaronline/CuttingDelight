@@ -10,5 +10,6 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "refmap": "cuttingdelight.refmap.json"
 }
