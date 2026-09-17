@@ -14,7 +14,17 @@ val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 spotless {
     java {
-        target("*/src/*/java/dev/jaronline/cuttingdelight/**/*.java")
+        val customTargets = providers.environmentVariable("SPOTLESS_TARGETS")
+            .map { it ->
+                it.split("\n")
+                    .filter { it.endsWith(".java") }
+            }
+            .orNull
+
+        if (customTargets == null)
+            target("*/src/*/java/dev/jaronline/cuttingdelight/**/*.java")
+        else
+            target(customTargets)
 
         endWithNewline()
         trimTrailingWhitespace()

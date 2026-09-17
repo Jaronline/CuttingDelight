@@ -30,6 +30,26 @@ pluginManagement {
 	}
 }
 
+runCatching {
+	logger.info("Configuring git hooks")
+
+	providers.exec {
+		commandLine("git", "config", "extensions.worktreeConfig", "true")
+	}.result.get()
+
+	providers.exec {
+		commandLine("git", "config", "--worktree", "core.bare", "false")
+	}.result.get()
+
+	providers.exec {
+		commandLine("git", "config", "--worktree", "core.hooksPath", ".githooks")
+	}.result.get()
+
+	logger.info("Git hooks configured")
+}.onFailure {
+	logger.error("Could not auto-configure Git hooks: ${it.message}")
+}
+
 rootProject.name = "cuttingdelight-1.21.1"
 
 include(
