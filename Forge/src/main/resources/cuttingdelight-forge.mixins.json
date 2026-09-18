@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.jaronline.cuttingdelight.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "CuttingBoardBlockEntityInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "refmap": "cuttingdelight.refmap.json"
+}
