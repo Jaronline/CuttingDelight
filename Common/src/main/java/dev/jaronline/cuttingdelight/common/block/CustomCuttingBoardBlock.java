@@ -4,6 +4,7 @@ import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
 import dev.jaronline.cuttingdelight.common.event.RightClickBlockEvent;
+import dev.jaronline.cuttingdelight.common.mixin.CuttingBoardBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -68,6 +69,11 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 			Vec3 centerPos = pos.getCenter();
 			level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_PLACE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
 			return ItemInteractionResult.SUCCESS;
+		}
+
+		if (((CuttingBoardBlockEntityAccessor) cuttingBoard)
+				.cuttingdelight$getMatchingRecipe(mainHandStack, player).isEmpty()) {
+			return ItemInteractionResult.CONSUME;
 		}
 
 		if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
