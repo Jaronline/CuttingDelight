@@ -1,6 +1,6 @@
 [versions]
 # Cutting Delight
-cuttingdelight = "1.1.0"
+cuttingdelight = "1.1.1"
 
 # Common
 minecraft = { strictly = "[1.21.1]", prefer = "1.21.1" }
