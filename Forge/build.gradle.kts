@@ -125,6 +125,7 @@ dependencies {
 mixin {
     add(sourceSets.main.get(), "${cuttingDelight.modId.get()}.refmap.json")
     config("${cuttingDelight.modId.get()}-common.mixins.json")
+    config("${cuttingDelight.modId.get()}-forge.mixins.json")
 }
 
 legacyForge {

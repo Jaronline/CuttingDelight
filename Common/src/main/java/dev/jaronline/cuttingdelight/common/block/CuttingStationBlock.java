@@ -78,6 +78,10 @@ public class CuttingStationBlock extends CuttingBoardBlock {
 			return InteractionResult.SUCCESS;
 		}
 
+		if (Services.PLATFORM.getRecipeHelper().getMatchingRecipe(cuttingBoard, mainHandStack, player).isEmpty()) {
+			return InteractionResult.CONSUME;
+		}
+
 		if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
 			serverPlayer.openMenu(state.getMenuProvider(level, pos));
 		}
