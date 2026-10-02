@@ -34,7 +34,7 @@ plugin-tasktree = "4.0.2"
 plugin-spotless = "8.10.3"
 plugin-gitchangelog = "3.4.0"
 plugin-modpublish = "2.2.1"
-plugin-moddevgradle = "2.0.147"
+plugin-moddevgradle = "2.0.148"
 
 [libraries]
 # Common
