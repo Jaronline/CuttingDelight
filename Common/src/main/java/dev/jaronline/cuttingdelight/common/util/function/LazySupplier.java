@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.core.util.function;
+package dev.jaronline.cuttingdelight.common.util.function;
 
 import org.jetbrains.annotations.Nullable;
 

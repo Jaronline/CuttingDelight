@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.core;
+package dev.jaronline.cuttingdelight.common;
 
 import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;

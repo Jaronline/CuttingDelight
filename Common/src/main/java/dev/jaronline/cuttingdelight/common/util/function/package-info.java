@@ -1,7 +1,7 @@
 @ParametersAreNonnullByDefault
-@FieldsAreNonnullByDefault
 @MethodsAreNonnullByDefault
-package dev.jaronline.cuttingdelight.forge.event;
+@FieldsAreNonnullByDefault
+package dev.jaronline.cuttingdelight.common.util.function;
 
 import dev.jaronline.cuttingdelight.common.FieldsAreNonnullByDefault;
 import dev.jaronline.cuttingdelight.common.MethodsAreNonnullByDefault;

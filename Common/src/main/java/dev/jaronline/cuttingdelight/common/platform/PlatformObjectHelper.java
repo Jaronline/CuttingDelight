@@ -1,8 +1,8 @@
 package dev.jaronline.cuttingdelight.common.platform;
 
 import com.google.common.reflect.TypeToken;
-import dev.jaronline.cuttingdelight.core.util.ObjectMap;
-import dev.jaronline.cuttingdelight.core.util.ObjectNotFoundException;
+import dev.jaronline.cuttingdelight.common.util.ObjectMap;
+import dev.jaronline.cuttingdelight.common.util.ObjectNotFoundException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;

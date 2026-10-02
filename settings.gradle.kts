@@ -56,7 +56,6 @@ runCatching {
 rootProject.name = "cuttingdelight-1.20.1"
 
 include(
-    "Core",
     "Changelog",
     "Common",
     "Forge"
