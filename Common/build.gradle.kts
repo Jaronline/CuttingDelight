@@ -55,14 +55,6 @@ sourceSets {
     }
 }
 
-val dependencyProjects: List<Project> = listOf(
-    project(":Core")
-)
-
-dependencyProjects.forEach {
-    project.evaluationDependsOn(it.path)
-}
-
 neoForge {
     neoFormVersion = cuttingDelight.neoformVersion.version
     addModdingDependenciesTo(sourceSets.test.get())
@@ -71,9 +63,6 @@ neoForge {
 
 dependencies {
     compileOnly(libs.mixin)
-    dependencyProjects.forEach {
-        implementation(it)
-    }
 
     api(libs.jei.common.api)
     implementation(libs.farmersdelight)
@@ -88,24 +77,6 @@ publishing {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
             artifact(tasks.named("sourcesJar"))
-
-            val dependencyInfos = dependencyProjects.map {
-                mapOf(
-                    "groupId" to it.group,
-                    "artifactId" to it.base.archivesName.get(),
-                    "version" to it.version
-                )
-            }
-
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-                dependencyInfos.forEach {
-                    val dependencyNode = dependenciesNode.appendNode("dependency")
-                    it.forEach { (key, value) ->
-                        dependencyNode.appendNode(key, value)
-                    }
-                }
-            }
         }
     }
 }

@@ -27,11 +27,6 @@ root:
       - any-glob-to-any-file:
           - build.gradle.kts
           - settings.gradle.kts
-core:
-  - changed-files:
-      - any-glob-to-any-file:
-          - Core/*
-          - Core/**/*
 common:
   - changed-files:
       - any-glob-to-any-file:
