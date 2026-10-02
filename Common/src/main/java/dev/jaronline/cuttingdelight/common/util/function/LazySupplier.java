@@ -1,12 +1,10 @@
 package dev.jaronline.cuttingdelight.common.util.function;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class LazySupplier<T> implements Supplier<T> {
-	@Nonnull
 	private final Supplier<T> supplier;
 	@Nullable
 	private T cachedResult;

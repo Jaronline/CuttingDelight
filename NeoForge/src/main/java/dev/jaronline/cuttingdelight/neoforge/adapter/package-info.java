@@ -1,4 +1,4 @@
 @NullMarked
-package dev.jaronline.cuttingdelight.common.client;
+package dev.jaronline.cuttingdelight.neoforge.adapter;
 
 import org.jspecify.annotations.NullMarked;

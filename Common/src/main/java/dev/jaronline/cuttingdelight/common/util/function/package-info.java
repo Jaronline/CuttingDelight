@@ -1,7 +1,4 @@
-@ParametersAreNonnullByDefault
-@MethodsAreNonnullByDefault
+@NullMarked
 package dev.jaronline.cuttingdelight.common.util.function;
 
-import dev.jaronline.cuttingdelight.common.MethodsAreNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;

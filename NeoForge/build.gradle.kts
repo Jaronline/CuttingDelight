@@ -107,6 +107,9 @@ dependencies {
     runtimeOnly(libs.jei.neoforge)
     implementation(libs.farmersdelight)
 
+    compileOnly(libs.jspecify)
+    testCompileOnly(libs.jspecify)
+
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 
