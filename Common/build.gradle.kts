@@ -54,14 +54,6 @@ sourceSets {
     }
 }
 
-val dependencyProjects: List<Project> = listOf(
-    project(":Core")
-)
-
-dependencyProjects.forEach {
-    project.evaluationDependsOn(it.path)
-}
-
 legacyForge {
     validateAccessTransformers = true
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
@@ -79,10 +71,6 @@ dependencies {
     compileOnly(libs.mixin)
     implementation(libs.guava)
 
-    dependencyProjects.forEach {
-        implementation(it)
-    }
-
     implementation(libs.jei.common.api)
     compileOnly(libs.farmersdelight)
 
@@ -96,24 +84,6 @@ publishing {
             artifactId = base.archivesName.get()
             artifact(tasks.jar)
             artifact(tasks.named("sourcesJar"))
-
-            val dependencyInfos = dependencyProjects.map {
-                mapOf(
-                    "groupId" to it.group,
-                    "artifactId" to it.base.archivesName.get(),
-                    "version" to it.version
-                )
-            }
-
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-                dependencyInfos.forEach {
-                    val dependencyNode = dependenciesNode.appendNode("dependency")
-                    it.forEach { (key, value) ->
-                        dependencyNode.appendNode(key, value)
-                    }
-                }
-            }
         }
     }
 }

@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.forge.platform;
 
 import dev.jaronline.cuttingdelight.common.platform.*;
-import dev.jaronline.cuttingdelight.core.util.function.LazySupplier;
+import dev.jaronline.cuttingdelight.common.util.function.LazySupplier;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.function.Supplier;

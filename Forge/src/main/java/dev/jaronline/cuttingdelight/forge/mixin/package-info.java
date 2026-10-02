@@ -3,6 +3,6 @@
 @MethodsAreNonnullByDefault
 package dev.jaronline.cuttingdelight.forge.mixin;
 
-import dev.jaronline.cuttingdelight.core.FieldsAreNonnullByDefault;
-import dev.jaronline.cuttingdelight.core.MethodsAreNonnullByDefault;
-import dev.jaronline.cuttingdelight.core.ParametersAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.common.FieldsAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.common.MethodsAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.common.ParametersAreNonnullByDefault;

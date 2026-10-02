@@ -35,7 +35,7 @@ jobs:
       - name: Prepare artifacts for upload
         run: |
           mkdir -p dist
-          cp {Core,Common,Forge}/build/libs/*.jar dist
+          cp {Common,Forge}/build/libs/*.jar dist
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7

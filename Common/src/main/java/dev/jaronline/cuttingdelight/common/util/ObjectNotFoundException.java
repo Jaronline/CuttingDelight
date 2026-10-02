@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.core.util;
+package dev.jaronline.cuttingdelight.common.util;
 
 import com.google.common.reflect.TypeToken;
 
