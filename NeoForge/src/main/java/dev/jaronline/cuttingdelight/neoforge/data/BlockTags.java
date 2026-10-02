@@ -6,8 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +17,7 @@ public class BlockTags extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void addTags(HolderLookup.@NotNull Provider provider) {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CUTTING_BOARD);
 		tag(CompatibilityTags.CREATE_BRITTLE).add(ModBlocks.CUTTING_BOARD);
 	}

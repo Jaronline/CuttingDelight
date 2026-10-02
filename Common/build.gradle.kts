@@ -67,6 +67,7 @@ dependencies {
     api(libs.jei.common.api)
     implementation(libs.farmersdelight)
 
+    compileOnly(libs.jspecify)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

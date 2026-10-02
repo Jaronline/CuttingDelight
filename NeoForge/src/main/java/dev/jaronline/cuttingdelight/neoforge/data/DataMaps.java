@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,7 +18,7 @@ public class DataMaps extends DataMapProvider {
 	}
 
 	@Override
-	protected void gather(HolderLookup.@NotNull Provider provider) {
+	protected void gather(HolderLookup.Provider provider) {
 		builder(NeoForgeDataMaps.FURNACE_FUELS)
 				.add(item(ModItems.CUTTING_BOARD), new FurnaceFuel(200), false);
 	}
