@@ -2,6 +2,6 @@
 @FieldsAndMethodsAreNonnullByDefault
 package dev.jaronline.cuttingdelight.neoforge;
 
-import dev.jaronline.cuttingdelight.core.FieldsAndMethodsAreNonnullByDefault;
+import dev.jaronline.cuttingdelight.common.FieldsAndMethodsAreNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

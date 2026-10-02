@@ -4,7 +4,7 @@ import dev.jaronline.cuttingdelight.common.platform.PlatformClientHelper;
 import dev.jaronline.cuttingdelight.common.platform.PlatformHelper;
 import dev.jaronline.cuttingdelight.common.platform.PlatformInventoryHelper;
 import dev.jaronline.cuttingdelight.common.platform.PlatformRecipeHelper;
-import dev.jaronline.cuttingdelight.core.util.function.LazySupplier;
+import dev.jaronline.cuttingdelight.common.util.function.LazySupplier;
 import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.function.Supplier;

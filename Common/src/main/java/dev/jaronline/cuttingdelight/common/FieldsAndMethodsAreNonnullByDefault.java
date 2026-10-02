@@ -1,4 +1,4 @@
-package dev.jaronline.cuttingdelight.core;
+package dev.jaronline.cuttingdelight.common;
 
 import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Nonnull
-@TypeQualifierDefault({ElementType.METHOD})
+@TypeQualifierDefault({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MethodsAreNonnullByDefault {
+public @interface FieldsAndMethodsAreNonnullByDefault {
 }
