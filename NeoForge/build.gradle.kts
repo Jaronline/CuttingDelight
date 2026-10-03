@@ -3,6 +3,7 @@ import org.slf4j.event.Level
 
 plugins {
     id("cuttingdelight-convention")
+    id("cuttingdelight-test")
     alias(libs.plugins.modpublish)
     alias(libs.plugins.moddevgradle)
 }
@@ -53,10 +54,12 @@ sourceSets {
 val dependencyProjects: List<Project> = listOf(
     project(":Common")
 )
+val debugProject: Project = project(":Debug")
 
 dependencyProjects.forEach {
     project.evaluationDependsOn(it.path)
 }
+project.evaluationDependsOn(debugProject.path)
 
 tasks.withType<JavaCompile>().configureEach {
     dependencyProjects.forEach {
@@ -135,44 +138,50 @@ neoForge {
                 sourceSet(dependencyProject.sourceSets.main.get())
             }
         }
+        create("${cuttingdelight.modId.get()}debug") {
+            sourceSet(debugProject.sourceSets.main.get())
+        }
     }
 
     runs {
-        val client = create("client")
-        client.client()
-        client.gameDirectory = file("run/client")
-        client.systemProperty("neoforge.enabledGameTestNamespaces", cuttingdelight.modId.get())
-
-        val server = create("server")
-        server.server()
-        server.gameDirectory = file("run/server")
-        server.programArgument("--nogui")
-        server.systemProperty("neoforge.enabledGameTestNamespaces", cuttingdelight.modId.get())
-
-        val gameTestServer = create("gameTestServer")
-        gameTestServer.type = "gameTestServer"
-        gameTestServer.systemProperty("neoforge.enabledGameTestNamespaces", cuttingdelight.modId.get())
-
-        val data = create("data")
-        data.data()
-        data.gameDirectory = file("run-data")
-        data.programArguments.addAll(
-            "--mod",
-            cuttingdelight.modId.get(),
-            "--all",
-            "--output",
-            file("src/generated/resources/").absolutePath,
-            "--existing",
-            file("src/main/resources/").absolutePath
-        )
-        dependencyProjects.stream().flatMap { it.sourceSets.main.get().resources.srcDirs.stream() }.forEach {
-            data.programArguments.addAll("--existing", it.absolutePath)
-        }
+        val cdMod = mods.named(cuttingdelight.modId.get())
+        val cdDebugMod = mods.named("${cuttingdelight.modId.get()}debug")
 
         configureEach {
-            systemProperty("forge.logging.markers", "REGISTRIES")
+            loadedMods.set(setOf(cdMod.get()))
+        }
 
+        create("client") {
+            client()
+            loadedMods.add(cdDebugMod)
+            gameDirectory = file("run/client")
             logLevel = Level.DEBUG
+        }
+
+        create("server") {
+            server()
+            loadedMods.add(cdDebugMod)
+            gameDirectory = file("run/server")
+            programArgument("--nogui")
+            logLevel = Level.DEBUG
+        }
+
+        create("data") {
+            data()
+            gameDirectory = file("run-data")
+            programArguments.addAll(
+                "--mod",
+                cuttingdelight.modId.get(),
+                "--all",
+                "--output",
+                file("src/generated/resources/").absolutePath,
+                "--existing",
+                file("src/main/resources/").absolutePath
+            )
+            logLevel = Level.DEBUG
+            dependencyProjects.stream().flatMap { it.sourceSets.main.get().resources.srcDirs.stream() }.forEach {
+                programArguments.addAll("--existing", it.absolutePath)
+            }
         }
     }
 }

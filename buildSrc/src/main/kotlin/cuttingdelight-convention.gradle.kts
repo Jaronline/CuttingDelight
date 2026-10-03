@@ -31,16 +31,6 @@ eclipse {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-    // Should be removed once tests are added
-    failOnNoDiscoveredTests = false
-}
-
 publishing {
     repositories {
         maven {
