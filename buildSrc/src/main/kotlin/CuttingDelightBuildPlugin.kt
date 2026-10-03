@@ -1,8 +1,9 @@
-import gradle.kotlin.dsl.accessors._48b977daac796d01bf1aa29aa51634bf.versionCatalogs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
+import org.gradle.kotlin.dsl.getByType
 import java.util.function.Supplier
 
 abstract class CuttingDelightBuildPlugin(val project: Project) {
@@ -56,7 +57,7 @@ abstract class CuttingDelightBuildPlugin(val project: Project) {
     }
 
     fun findVersionCatalog(name: String): VersionCatalog {
-        return project.versionCatalogs.find(name).orElseThrow(Supplier {
+        return project.extensions.getByType<VersionCatalogsExtension>().find(name).orElseThrow(Supplier {
             NoSuchElementException("No version catalogue '$name' exists!")
         })
     }
