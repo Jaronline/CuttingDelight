@@ -3,8 +3,6 @@ plugins {
     alias(libs.plugins.moddevgradle)
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
-
 repositories {
     mavenCentral()
     exclusiveContent {
@@ -31,7 +29,7 @@ repositories {
 }
 
 base {
-    archivesName = "${cuttingDelight.modId.get()}-common"
+    archivesName = "${cuttingdelight.modId.get()}-common"
 }
 
 sourceSets {
@@ -56,7 +54,7 @@ sourceSets {
 }
 
 neoForge {
-    neoFormVersion = cuttingDelight.neoformVersion.version
+    neoFormVersion = cuttingdelight.neoformVersion.version
     addModdingDependenciesTo(sourceSets.test.get())
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 }

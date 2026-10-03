@@ -10,8 +10,6 @@ repositories {
     mavenCentral()
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
-
 spotless {
     java {
         val customTargets = providers.environmentVariable("SPOTLESS_TARGETS")
@@ -36,12 +34,14 @@ spotless {
 }
 
 subprojects {
-    version = "${cuttingDelight.mcVersion.version}-${cuttingDelight.modVersion.version}"
-    group = cuttingDelight.modGroupId.get()
+    val cuttingdelight = rootProject.cuttingdelight
+
+    version = "${cuttingdelight.mcVersion.version}-${cuttingdelight.modVersion.version}"
+    group = cuttingdelight.modGroupId.get()
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release = JavaLanguageVersion.of(cuttingDelight.javaVersion.version).asInt()
+        options.release = JavaLanguageVersion.of(cuttingdelight.javaVersion.version).asInt()
         options.isDeprecation = true
         options.compilerArgs.add("-Xlint:unchecked")
     }
@@ -50,12 +50,12 @@ subprojects {
         manifest {
             attributes(
                 mapOf(
-                    "Specification-Title" to cuttingDelight.modName.get(),
-                    "Specification-Vendor" to cuttingDelight.modAuthors.get(),
-                    "Specification-Version" to cuttingDelight.modVersion.version,
+                    "Specification-Title" to cuttingdelight.modName.get(),
+                    "Specification-Vendor" to cuttingdelight.modAuthors.get(),
+                    "Specification-Version" to cuttingdelight.modVersion.version,
                     "Implementation-Title" to name,
                     "Implementation-Version" to archiveVersion,
-                    "Implementation-Vendor" to cuttingDelight.modAuthors.get()
+                    "Implementation-Vendor" to cuttingdelight.modAuthors.get()
                 )
             )
         }
@@ -76,11 +76,11 @@ subprojects {
     tasks.withType<ProcessResources> {
         var replaceProperties = mapOf(
             "minecraft_version" to cuttingdelight.mcVersion.version, "minecraft_version_range" to cuttingdelight.mcVersion.range,
-            "neo_version_range" to cuttingDelight.neoforgeVersion.range, "loader_version_range" to cuttingDelight.neoforgeLoaderVersion.range,
-            "mod_id" to cuttingDelight.modId.get(), "mod_name" to cuttingDelight.modName.get(), "mod_license" to cuttingDelight.modLicense.get(),
-            "mod_version" to cuttingDelight.modVersion.version, "mod_authors" to cuttingDelight.modAuthors.get(),
-            "mod_credits" to cuttingDelight.modCredits.get(), "mod_description" to cuttingDelight.modDescription.get(),
-            "farmers_delight_version_range" to cuttingDelight.farmersDelightVersion.range
+            "neo_version_range" to cuttingdelight.neoforgeVersion.range, "loader_version_range" to cuttingdelight.neoforgeLoaderVersion.range,
+            "mod_id" to cuttingdelight.modId.get(), "mod_name" to cuttingdelight.modName.get(), "mod_license" to cuttingdelight.modLicense.get(),
+            "mod_version" to cuttingdelight.modVersion.version, "mod_authors" to cuttingdelight.modAuthors.get(),
+            "mod_credits" to cuttingdelight.modCredits.get(), "mod_description" to cuttingdelight.modDescription.get(),
+            "farmers_delight_version_range" to cuttingdelight.farmersDelightVersion.range
         )
         inputs.properties(replaceProperties)
         filesMatching(listOf("META-INF/neoforge.mods.toml")) {

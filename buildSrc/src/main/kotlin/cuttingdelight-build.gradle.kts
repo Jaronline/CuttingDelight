@@ -1,4 +1,4 @@
-val cuttingDelight = extensions.create(
+extensions.create(
     "cuttingdelight",
     CuttingDelightBuildPlugin::class.java,
     project
