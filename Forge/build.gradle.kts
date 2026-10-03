@@ -112,6 +112,9 @@ dependencies {
     modRuntimeOnly(libs.jei.forge)
     modImplementation(libs.farmersdelight)
 
+    compileOnly(libs.jspecify)
+    testCompileOnly(libs.jspecify)
+
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 

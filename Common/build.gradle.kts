@@ -69,11 +69,11 @@ legacyForge {
 
 dependencies {
     compileOnly(libs.mixin)
-    implementation(libs.guava)
 
     implementation(libs.jei.common.api)
     compileOnly(libs.farmersdelight)
 
+    compileOnly(libs.jspecify)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

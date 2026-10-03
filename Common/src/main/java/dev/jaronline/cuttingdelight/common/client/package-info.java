@@ -1,8 +1,4 @@
-@ParametersAreNonnullByDefault
-@FieldsAreNonnullByDefault
-@MethodsAreNonnullByDefault
+@NullMarked
 package dev.jaronline.cuttingdelight.common.client;
 
-import dev.jaronline.cuttingdelight.common.FieldsAreNonnullByDefault;
-import dev.jaronline.cuttingdelight.common.MethodsAreNonnullByDefault;
-import dev.jaronline.cuttingdelight.common.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;

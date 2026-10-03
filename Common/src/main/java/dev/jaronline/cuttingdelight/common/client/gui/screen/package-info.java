@@ -1,6 +1,4 @@
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@NullMarked
 package dev.jaronline.cuttingdelight.common.client.gui.screen;
 
-import dev.jaronline.cuttingdelight.common.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
+import org.jspecify.annotations.NullMarked;

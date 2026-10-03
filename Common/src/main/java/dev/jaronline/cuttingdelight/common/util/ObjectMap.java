@@ -1,7 +1,7 @@
 package dev.jaronline.cuttingdelight.common.util;
 
 import com.google.common.reflect.TypeToken;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
