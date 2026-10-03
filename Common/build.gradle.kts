@@ -3,8 +3,6 @@ plugins {
     alias(libs.plugins.moddevgradle.legacyforge)
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
-
 repositories {
     exclusiveContent {
         forRepository {
@@ -30,7 +28,7 @@ repositories {
 }
 
 base {
-    archivesName = "${cuttingDelight.modId.get()}-common"
+    archivesName = "${cuttingdelight.modId.get()}-common"
 }
 
 sourceSets {
@@ -59,7 +57,7 @@ legacyForge {
     setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
     enable {
-        mcpVersion = cuttingDelight.mcVersion.version
+        mcpVersion = cuttingdelight.mcVersion.version
         enabledSourceSets = setOf(sourceSets.main.get(), sourceSets.test.get())
         isDisableRecompilation = false
     }
