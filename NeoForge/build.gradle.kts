@@ -151,10 +151,18 @@ neoForge {
             loadedMods.set(setOf(cdMod.get()))
         }
 
-        create("client") {
+        create("clientDev") {
             client()
             loadedMods.add(cdDebugMod)
-            gameDirectory = file("run/client")
+            gameDirectory = file("run/client/Dev")
+            logLevel = Level.DEBUG
+        }
+
+        create("clientPlayer1") {
+            client()
+            loadedMods.add(cdDebugMod)
+            gameDirectory = file("run/client/Player1")
+            programArguments.addAll("--username", "Player1")
             logLevel = Level.DEBUG
         }
 
