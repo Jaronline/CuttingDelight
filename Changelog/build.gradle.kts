@@ -5,9 +5,7 @@ plugins {
     alias(libs.plugins.gitchangelog)
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
-
-val changelogUntaggedName = "Version ${cuttingDelight.modVersion.version}"
+val changelogUntaggedName = "Version ${cuttingdelight.modVersion.version}"
 
 val makeHtmlChangelog = tasks.register<GitChangelogTask>("makeHtmlChangelog") {
     val output = layout.buildDirectory.file("CHANGELOG.html")

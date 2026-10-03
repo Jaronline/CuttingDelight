@@ -7,8 +7,6 @@ plugins {
     alias(libs.plugins.moddevgradle.legacyforge)
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
-
 repositories {
     mavenCentral()
     exclusiveContent {
@@ -35,7 +33,7 @@ repositories {
 }
 
 base {
-    archivesName = "${cuttingDelight.modId.get()}-forge"
+    archivesName = "${cuttingdelight.modId.get()}-forge"
 }
 
 sourceSets {
@@ -125,9 +123,9 @@ dependencies {
 }
 
 mixin {
-    add(sourceSets.main.get(), "${cuttingDelight.modId.get()}.refmap.json")
-    config("${cuttingDelight.modId.get()}-common.mixins.json")
-    config("${cuttingDelight.modId.get()}-forge.mixins.json")
+    add(sourceSets.main.get(), "${cuttingdelight.modId.get()}.refmap.json")
+    config("${cuttingdelight.modId.get()}-common.mixins.json")
+    config("${cuttingdelight.modId.get()}-forge.mixins.json")
 }
 
 legacyForge {
@@ -135,7 +133,7 @@ legacyForge {
 //    setAccessTransformers("src/main/resources/META-INF/accesstransformer.cfg")
 
     enable {
-        forgeVersion = cuttingDelight.forgeMCVersion
+        forgeVersion = cuttingdelight.forgeMCVersion
         enabledSourceSets = setOf(sourceSets.main.get(), sourceSets.test.get())
         isDisableRecompilation = false
     }
@@ -143,12 +141,12 @@ legacyForge {
     addModdingDependenciesTo(sourceSets.test.get())
 
     parchment {
-        mappingsVersion = cuttingDelight.parchmentMappingsVersion.version
-        minecraftVersion = cuttingDelight.parchmentMCVersion.version
+        mappingsVersion = cuttingdelight.parchmentMappingsVersion.version
+        minecraftVersion = cuttingdelight.parchmentMCVersion.version
     }
 
     mods {
-        create(cuttingDelight.modId.get()) {
+        create(cuttingdelight.modId.get()) {
             sourceSet(sourceSets.main.get())
             dependencyProjects.forEach {
                 sourceSet(it.sourceSets.main.get())
@@ -182,9 +180,9 @@ legacyForge {
             systemProperty("forge.logging.console.level", "debug")
             gameDirectory = file("run-data")
             programArguments.addAll(
-                "-mixin.config=${cuttingDelight.modId.get()}-common.mixins.json",
+                "-mixin.config=${cuttingdelight.modId.get()}-common.mixins.json",
                 "--mod",
-                cuttingDelight.modId.get(),
+                cuttingdelight.modId.get(),
                 "--all",
                 "--output",
                 file("src/generated/resources/").absolutePath,
@@ -200,7 +198,7 @@ legacyForge {
 
 tasks.withType<Jar> {
     manifest.attributes(mapOf(
-        "MixinConfigs" to "${cuttingDelight.modId.get()}-common.mixins.json"
+        "MixinConfigs" to "${cuttingdelight.modId.get()}-common.mixins.json"
     ))
 }
 
@@ -234,31 +232,31 @@ publishMods {
         file.set(tasks.jar.get().archiveFile)
         type.set(ReleaseType.of(publishType.uppercase()))
         modLoaders.add("forge")
-        displayName.set("${cuttingDelight.modVersion.version} for Forge ${cuttingDelight.mcVersion.version}")
+        displayName.set("${cuttingdelight.modVersion.version} for Forge ${cuttingdelight.mcVersion.version}")
         version.set(project.version.toString())
 
         curseforge {
-            projectId = cuttingDelight.curseProjectId
-            accessToken = cuttingDelight.curseforgeApiKey
+            projectId = cuttingdelight.curseProjectId
+            accessToken = cuttingdelight.curseforgeApiKey
             changelog.set(changelogHtml.singleFileContents())
             changelogType = "html"
             minecraftVersionRange {
-                start = cuttingDelight.mcVersion.version
-                end = cuttingDelight.mcVersion.version
+                start = cuttingdelight.mcVersion.version
+                end = cuttingdelight.mcVersion.version
             }
-            javaVersions.add(JavaVersion.toVersion(cuttingDelight.javaVersion.version))
+            javaVersions.add(JavaVersion.toVersion(cuttingdelight.javaVersion.version))
             requires("farmers-delight")
             client = true
             server = true
         }
 
         modrinth {
-            projectId = cuttingDelight.modrinthId
-            accessToken = cuttingDelight.modrinthToken
+            projectId = cuttingdelight.modrinthId
+            accessToken = cuttingdelight.modrinthToken
             changelog.set(changelogMarkdown.singleFileContents())
             minecraftVersionRange {
-                start = cuttingDelight.mcVersion.version
-                end = cuttingDelight.mcVersion.version
+                start = cuttingdelight.mcVersion.version
+                end = cuttingdelight.mcVersion.version
             }
             requires("farmers-delight")
         }
