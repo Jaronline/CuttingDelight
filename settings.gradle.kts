@@ -58,5 +58,6 @@ rootProject.name = "cuttingdelight-1.20.1"
 include(
     "Changelog",
     "Common",
-    "Forge"
+    "Forge",
+    "Debug"
 )

@@ -3,6 +3,7 @@ import org.slf4j.event.Level
 
 plugins {
     id("cuttingdelight-convention")
+    id("cuttingdelight-test")
     alias(libs.plugins.modpublish)
     alias(libs.plugins.moddevgradle.legacyforge)
 }
@@ -53,10 +54,12 @@ sourceSets {
 val dependencyProjects: List<Project> = listOf(
     project(":Common")
 )
+val debugProject: Project = project(":Debug")
 
 dependencyProjects.forEach {
     project.evaluationDependsOn(it.path)
 }
+project.evaluationDependsOn(debugProject.path)
 
 tasks.withType<JavaCompile>().configureEach {
     dependencyProjects.forEach {
@@ -152,18 +155,30 @@ legacyForge {
                 sourceSet(it.sourceSets.main.get())
             }
         }
+        create("${cuttingdelight.modId.get()}debug") {
+            sourceSet(debugProject.sourceSets.main.get())
+        }
     }
 
     runs {
+        val cdMod = mods.named(cuttingdelight.modId.get())
+        val cdDebugMod = mods.named("${cuttingdelight.modId.get()}debug")
+
+        configureEach {
+            loadedMods.set(setOf(cdMod.get()))
+        }
+
         create("clientDev") {
             client()
             systemProperty("forge.logging.console.level", "debug")
+            loadedMods.add(cdDebugMod)
             gameDirectory = file("run/client/Dev")
             logLevel = Level.DEBUG
         }
         create("clientPlayer1") {
             client()
             systemProperty("forge.logging.console.level", "debug")
+            loadedMods.add(cdDebugMod)
             gameDirectory = file("run/client/Player1")
             programArguments.addAll("--username", "Player1")
             logLevel = Level.DEBUG
@@ -171,6 +186,7 @@ legacyForge {
         create("server") {
             server()
             systemProperty("forge.logging.console.level", "debug")
+            loadedMods.add(cdDebugMod)
             gameDirectory = file("run/server")
             programArguments.add("nogui")
             logLevel = Level.DEBUG

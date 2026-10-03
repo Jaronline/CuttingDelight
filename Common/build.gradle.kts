@@ -1,5 +1,6 @@
 plugins {
     id("cuttingdelight-convention")
+    id("cuttingdelight-test")
     alias(libs.plugins.moddevgradle.legacyforge)
 }
 
@@ -32,18 +33,11 @@ base {
 }
 
 sourceSets {
-    val main = named("main") {
+    named("main") {
         resources {
             setSrcDirs(listOf("src/main/resources"))
         }
     }
-    create("dev", Action<SourceSet> {
-        resources {
-            setSrcDirs(listOf("src/dev/resources"))
-        }
-        compileClasspath += main.get().output + configurations.compileClasspath.get()
-        runtimeClasspath += main.get().output + configurations.runtimeClasspath.get()
-    })
     named("test") {
         resources {
             //The test module has no resources
