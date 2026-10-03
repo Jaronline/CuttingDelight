@@ -9,10 +9,10 @@ plugins {
     `maven-publish`
 }
 
-val cuttingDelight = extensions.getByType<CuttingDelightBuildPlugin>()
+val cuttingdelight = extensions.getByType<CuttingDelightBuildPlugin>()
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(cuttingDelight.javaVersion.version)
+    toolchain.languageVersion = JavaLanguageVersion.of(cuttingdelight.javaVersion.version)
     withSourcesJar()
 }
 
@@ -47,8 +47,8 @@ publishing {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/jaronline/cuttingdelight")
             credentials {
-                username = cuttingDelight.githubActor
-                password = cuttingDelight.githubToken
+                username = cuttingdelight.githubActor
+                password = cuttingdelight.githubToken
             }
         }
     }
