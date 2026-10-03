@@ -31,14 +31,6 @@ eclipse {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events = setOf(TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-}
-
 publishing {
     repositories {
         maven {

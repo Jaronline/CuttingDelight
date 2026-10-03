@@ -1,0 +1,9 @@
+modLoader="lowcodefml"
+loaderVersion="${forge_loader_version_range}"
+license="MIT"
+
+[[mods]]
+modId="${mod_id}debug"
+version="${mod_version}"
+displayName="${mod_name}: Debug"
+description='''Debug plugin for Cutting Delight.'''
