@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-convetional_commit_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z \-]+\))?!?: .+$"
+convetional_commit_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-zA-Z \-]+\))?!?: .+$"
 commit_message=$(cat "$1")
 
 if [[ "$commit_message" =~ $convetional_commit_regex ]]; then
