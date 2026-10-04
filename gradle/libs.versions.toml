@@ -21,7 +21,7 @@ jspecify = "1.0.1"
 # Mods
 farmersdelight = { strictly = "[1.3.0,)", prefer = "1.3.2" }
 farmersdelight-mc = "1.20.1-1.3.2"
-jei = "15.62.0.217"
+jei = "15.62.0.219"
 
 # Testing
 junit = "5.14.4"
