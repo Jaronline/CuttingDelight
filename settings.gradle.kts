@@ -1,22 +1,20 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
-        fun exclusiveMaven(url: String, filter: Action<InclusiveRepositoryContentDescriptor>) =
+		fun exclusiveMaven(url: String, vararg groupPrefixes: String) =
 			exclusiveContent {
 				forRepository { maven(url) }
-				filter(filter)
+				filter {
+					groupPrefixes.forEach(::includeGroupAndSubgroups)
+				}
 			}
-        exclusiveMaven("https://maven.parchmentmc.org") {
-			includeGroupByRegex("org\\.parchmentmc.*")
-		}
-        exclusiveMaven("https://maven.neoforged.net/releases") {
-			includeGroupByRegex("net\\.neoforged.*")
-			includeGroup("codechicken")
-			includeGroup("net.covers1624")
-		}
-        maven("https://repo.spongepowered.org/repository/maven-public/") {
+		exclusiveMaven("https://maven.parchmentmc.org", "org.parchmentmc")
+		exclusiveMaven("https://maven.neoforged.net/releases", "net.neoforged", "codechicken", "net.covers1624")
+		maven("https://repo.spongepowered.org/repository/maven-public/") {
 			content {
-				includeGroupByRegex("org\\.spongepowered.*")
-				includeGroupByRegex("net\\.minecraftforge.*")
+				includeGroupAndSubgroups("org.spongepowered")
+				includeGroupAndSubgroups("net.minecraftforge")
 			}
 		}
         gradlePluginPortal()
@@ -28,6 +26,10 @@ pluginManagement {
 			}
 		}
 	}
+}
+
+plugins {
+	id("org.gradle.toolchains.foojay-resolver-convention") version("1.0.0")
 }
 
 runCatching {
