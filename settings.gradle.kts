@@ -1,36 +1,35 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
-        fun exclusiveMaven(url: String, filter: Action<InclusiveRepositoryContentDescriptor>) =
-            exclusiveContent {
-                forRepository { maven(url) }
-                filter(filter)
-            }
-        maven("https://maven.minecraftforge.net") {
-            content {
-                includeGroupByRegex("net\\.minecraftforge.*")
-            }
-        }
-        exclusiveMaven("https://maven.parchmentmc.org") {
-            includeGroupByRegex("org\\.parchmentmc.*")
-        }
-        maven("https://repo.spongepowered.org/repository/maven-public/") {
-            content {
-                includeGroupByRegex("org\\.spongepowered.*")
-                includeGroupByRegex("net\\.minecraftforge.*")
-            }
-        }
+        fun exclusiveMaven(url: String, vararg groupPrefixes: String) =
+			exclusiveContent {
+				forRepository { maven(url) }
+				filter {
+					groupPrefixes.forEach(::includeGroupAndSubgroups)
+				}
+			}
+		exclusiveMaven("https://maven.minecraftforge.net", "net.minecraftforge")
+		exclusiveMaven("https://maven.parchmentmc.org", "org.parchmentmc")
+		maven("https://repo.spongepowered.org/repository/maven-public/") {
+			content {
+				includeGroupAndSubgroups("org.spongepowered")
+				includeGroupAndSubgroups("net.minecraftforge")
+			}
+		}
         gradlePluginPortal()
     }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "net.minecraftforge.gradle") {
-                useModule("${requested.id}:ForgeGradle:${requested.version}")
-            }
-            if (requested.id.id == "org.spongepowered.mixin") {
-                useModule("org.spongepowered:mixingradle:${requested.version}")
-            }
-        }
-    }
+	resolutionStrategy {
+		eachPlugin {
+			if (requested.id.id == "org.spongepowered.mixin") {
+				useModule("org.spongepowered:mixingradle:${requested.version}")
+			}
+		}
+	}
+}
+
+plugins {
+	id("org.gradle.toolchains.foojay-resolver-convention") version("1.0.0")
 }
 
 runCatching {
