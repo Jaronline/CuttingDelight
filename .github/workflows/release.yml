@@ -11,6 +11,16 @@ on:
           - STABLE
           - BETA
           - ALPHA
+      target-environment:
+        description: 'The target environment to use'
+        required: true
+        type: choice
+        options:
+          - All
+          - Common
+          - NeoForge
+          - Fabric
+        default: All
 
 permissions:
   contents: read
@@ -56,6 +66,9 @@ jobs:
 
   define-maven-matrix:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.target-environment }}
+      deployment: false
     outputs:
       subprojects: ${{ steps.subprojects.outputs.subprojects }}
     steps:
@@ -136,6 +149,9 @@ jobs:
 
   define-curseforge-matrix:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.target-environment }}
+      deployment: false
     outputs:
       subprojects: ${{ steps.subprojects.outputs.subprojects }}
     steps:
@@ -195,6 +211,9 @@ jobs:
 
   define-modrinth-matrix:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.target-environment }}
+      deployment: false
     outputs:
       subprojects: ${{ steps.subprojects.outputs.subprojects }}
     steps:
