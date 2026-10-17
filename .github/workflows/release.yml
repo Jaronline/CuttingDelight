@@ -290,8 +290,8 @@ jobs:
           git config --local user.email "${GITHUB_EMAIL}"
           git config --local user.name "${GITHUB_USER}"
         env:
-          GITHUB_USER: jaronline-ci[bot]
-          GITHUB_EMAIL: 228008421+jaronline-ci[bot]@users.noreply.github.com
+          GITHUB_USER: ${{ vars.CI_APP_USER }}
+          GITHUB_EMAIL: ${{ vars.CI_APP_EMAIL }}
       - name: Create and Push Tag
         run: |
           git tag -s -m "1.21.1-${{ steps.get_version.outputs.value }}" 1.21.1-${{ steps.get_version.outputs.value }}
