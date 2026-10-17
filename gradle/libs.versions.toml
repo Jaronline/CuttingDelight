@@ -10,7 +10,7 @@ neoform = "1.21.1-20240808.144430"
 java = "21"
 
 # Fabric
-fabric = "0.19.5"
+fabric = "0.20.0"
 fabric-range = ">=0.19.5"
 fabric-api = "0.116.17+1.21.1"
 fabric-api-range = ">=0.116.17+1.21.1"
