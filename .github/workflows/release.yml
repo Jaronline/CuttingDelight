@@ -313,7 +313,7 @@ jobs:
           GITHUB_EMAIL: ${{ vars.CI_APP_EMAIL }}
       - name: Create and Push Tag
         run: |
-          git tag -s -m "1.21.1-${{ steps.get_version.outputs.value }}" 1.21.1-${{ steps.get_version.outputs.value }}
+          git tag -m "1.21.1-${{ steps.get_version.outputs.value }}" 1.21.1-${{ steps.get_version.outputs.value }}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ steps.create-token.outputs.token }}
