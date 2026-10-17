@@ -13,46 +13,9 @@ on:
           - STABLE
           - BETA
           - ALPHA
-      publish-maven:
-        description: 'Whether to publish the artifacts to a Maven repository'
-        required: true
-        default: true
-        type: boolean
-      publish-curseforge-neoforge:
-        description: 'Whether to publish the NeoForge mod to CurseForge'
-        required: true
-        default: true
-        type: boolean
-      publish-modrinth-neoforge:
-        description: 'Whether to publish the NeoForge mod to Modrinth'
-        required: true
-        default: true
-        type: boolean
-      publish-curseforge-fabric:
-        description: 'Whether to publish the Fabric mod to CurseForge'
-        required: true
-        default: true
-        type: boolean
-      publish-modrinth-fabric:
-        description: 'Whether to publish the Fabric mod to Modrinth'
-        required: true
-        default: true
-        type: boolean
-      publish-common:
-        description: 'Whether to publish the Common module to Maven'
-        required: true
-        default: true
-        type: boolean
-      publish-neoforge:
-        description: 'Whether to publish the NeoForge module to Maven'
-        required: true
-        default: true
-        type: boolean
-      publish-fabric:
-        description: 'Whether to publish the Fabric module to Maven'
-        required: true
-        default: true
-        type: boolean
+
+permissions:
+  contents: read
 
 env:
   MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
@@ -62,8 +25,8 @@ env:
   JAVA_CACHE: gradle
 
 jobs:
-  build-common:
-    name: Build Common
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -76,80 +39,60 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
           cache: ${{ env.JAVA_CACHE }}
-      - name: Build :Common
-        run: ./gradlew :Common:build
-      - name: Upload :Common artifact
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+      - name: Prepare Artifacts
+        run: |
+          for d in Common NeoForge Fabric; do
+            mkdir -p "dist/$d"
+            cp -r "$d/build" "dist/$d/build"
+          done
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: common-artifact
-          path: Common/build
+          name: subprojects-build
+          path: dist
+          retention-days: ${{ vars.RELEASE_ARTIFACT_RETENTION || 30 }}
 
-  build-neoforge:
-    name: Build NeoForge
+  define-maven-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      subprojects: ${{ steps.subprojects.outputs.subprojects }}
+    steps:
+      - name: Define Subprojects
+        id: subprojects
+        run: |
+          subprojects=()
+          for p in Common NeoForge Fabric; do
+            upper_p=$(echo "$p" | tr '[:lower:]' '[:upper:]')
+            var_name="PUBLISH_${upper_p}"
+          
+            if [ "${!var_name}" = "true" ]; then
+              subprojects+=("$p")
+            fi
+          done
+          echo "subprojects=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${subprojects[@]}")" >> "$GITHUB_OUTPUT"
+    env:
+      PUBLISH_COMMON: ${{ vars.RELEASE_PUBLISH_MAVEN_COMMON }}
+      PUBLISH_NEOFORGE: ${{ vars.RELEASE_PUBLISH_MAVEN_NEOFORGE }}
+      PUBLISH_FABRIC: ${{ vars.RELEASE_PUBLISH_MAVEN_FABRIC }}
+
+  publish-maven:
+    name: Publish Maven
     runs-on: ubuntu-latest
     needs:
-      - build-common
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Common artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: common-artifact
-          path: Common/build
-      - name: Build :NeoForge
-        run: ./gradlew :NeoForge:build
-      - name: Upload :NeoForge artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: neoforge-artifact
-          path: NeoForge/build
-
-  build-fabric:
-    name: Build Fabric
-    runs-on: ubuntu-latest
-    needs:
-      - build-common
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Common artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: common-artifact
-          path: Common/build
-      - name: Build :Fabric
-        run: ./gradlew :Fabric:build
-      - name: Upload :Fabric artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: fabric-artifact
-          path: Fabric/build
-
-  publish-common:
-    name: Publish Common
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' || (github.event.inputs.publish-maven == 'true' && github.event.inputs.publish-common == 'true')
-    needs: build-common
+      - build
+      - define-maven-matrix
+    if: needs.define-maven-matrix.outputs.subprojects != '[]'
     permissions:
       contents: read
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        subproject: ${{ fromJSON(needs.define-maven-matrix.outputs.subprojects) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -161,78 +104,23 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
           cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Common artifact
+      - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: common-artifact
-          path: Common/build
-      - name: Publish :Common
-        run: ./gradlew :Common:publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-neoforge:
-    name: Publish NeoForge
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' || (github.event.inputs.publish-maven == 'true' && github.event.inputs.publish-forge == 'true')
-    needs: build-neoforge
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :NeoForge artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: neoforge-artifact
-          path: NeoForge/build
-      - name: Publish :NeoForge
-        run: ./gradlew :NeoForge:publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-fabric:
-    name: Publish Fabric
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' || (github.event.inputs.publish-maven == 'true' && github.event.inputs.publish-fabric == 'true')
-    needs: build-fabric
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Fabric artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: fabric-artifact
-          path: Fabric/build
-      - name: Publish :Fabric
-        run: ./gradlew :Fabric:publish
+          name: subprojects-build
+          path: dist
+      - name: Prepare subproject
+        run: |
+          mv dist/${{ matrix.subproject }}/build ${{ matrix.subproject }}
+          rm -rf dist
+      - name: Publish :${{ matrix.subproject }}
+        run: ./gradlew :${{ matrix.subproject }}:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   determine-publish-type:
     name: Determine publish type
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.publish-curseforge-neoforge == 'true' || github.event.inputs.publish-modrinth-neoforge == 'true' || github.event.inputs.publish-curseforge-fabric == 'true' || github.event.inputs.publish-modrinth-fabric == 'true'
     outputs:
       publish-type: ${{ steps.set_publish_type.outputs.publish_type }}
     steps:
@@ -248,13 +136,40 @@ jobs:
           fi
       - run: echo "Publish type is ${{ steps.set_publish_type.outputs.publish_type }}"
 
-  publish-curseforge-neoforge:
-    name: Publish CurseForge (NeoForge)
+  define-curseforge-matrix:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.publish-curseforge-neoforge == 'true'
+    outputs:
+      subprojects: ${{ steps.subprojects.outputs.subprojects }}
+    steps:
+      - name: Define Subprojects
+        id: subprojects
+        run: |
+          subprojects=()
+          for p in NeoForge Fabric; do
+            upper_p=$(echo "$p" | tr '[:lower:]' '[:upper:]')
+            var_name="PUBLISH_${upper_p}"
+          
+            if [ "${!var_name}" = "true" ]; then
+              subprojects+=("$p")
+            fi
+          done
+          echo "subprojects=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${subprojects[@]}")" >> "$GITHUB_OUTPUT"
+        env:
+          PUBLISH_NEOFORGE: ${{ vars.RELEASE_PUBLISH_CURSEFORGE_NEOFORGE }}
+          PUBLISH_FABRIC: ${{ vars.RELEASE_PUBLISH_CURSEFORGE_FABRIC }}
+
+  publish-curseforge:
+    name: Publish CurseForge
+    runs-on: ubuntu-latest
     needs:
-      - build-neoforge
+      - build
       - determine-publish-type
+      - define-curseforge-matrix
+    if: needs.define-curseforge-matrix.outputs.subprojects != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        subproject: ${{ fromJSON(needs.define-curseforge-matrix.outputs.subprojects) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -266,23 +181,54 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
           cache: ${{ env.JAVA_CACHE }}
-      - name: Download :NeoForge artifact
+      - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: neoforge-artifact
-          path: NeoForge/build
+          name: subprojects-build
+          path: dist
+      - name: Prepare subproject
+        run: |
+          mv dist/${{ matrix.subproject }}/build ${{ matrix.subproject }}
+          rm -rf dist
       - name: Publish CurseForge
-        run: ./gradlew :NeoForge:publishCurseforge
+        run: ./gradlew :${{ matrix.subproject }}:publishCurseforge
         env:
           PUBLISH_TYPE: ${{ needs.determine-publish-type.outputs.publish-type }}
 
-  publish-modrinth-neoforge:
-    name: Publish Modrinth (NeoForge)
+  define-modrinth-matrix:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.publish-modrinth-neoforge == 'true'
+    outputs:
+      subprojects: ${{ steps.subprojects.outputs.subprojects }}
+    steps:
+      - name: Define Subprojects
+        id: subprojects
+        run: |
+          subprojects=()
+          for p in NeoForge Fabric; do
+            upper_p=$(echo "$p" | tr '[:lower:]' '[:upper:]')
+            var_name="PUBLISH_${upper_p}"
+          
+            if [ "${!var_name}" = "true" ]; then
+              subprojects+=("$p")
+            fi
+          done
+          echo "subprojects=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${subprojects[@]}")" >> "$GITHUB_OUTPUT"
+        env:
+          PUBLISH_NEOFORGE: ${{ vars.RELEASE_PUBLISH_MODRINTH_NEOFORGE }}
+          PUBLISH_FABRIC: ${{ vars.RELEASE_PUBLISH_MODRINTH_FABRIC }}
+
+  publish-modrinth:
+    name: Publish Modrinth
+    runs-on: ubuntu-latest
     needs:
-      - build-neoforge
+      - build
       - determine-publish-type
+      - define-modrinth-matrix
+    if: needs.define-modrinth-matrix.outputs.subprojects != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        subproject: ${{ fromJSON(needs.define-modrinth-matrix.outputs.subprojects) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -294,66 +240,16 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
           cache: ${{ env.JAVA_CACHE }}
-      - name: Download :NeoForge artifact
+      - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: neoforge-artifact
+          name: subprojects-build
+          path: dist
+      - name: Prepare subproject
+        run: |
+          mv dist/${{ matrix.subproject }}/build ${{ matrix.subproject }}
+          rm -rf dist
       - name: Publish Modrinth
-        run: ./gradlew :NeoForge:publishModrinth
-        env:
-          PUBLISH_TYPE: ${{ needs.determine-publish-type.outputs.publish-type }}
-
-  publish-curseforge-fabric:
-    name: Publish CurseForge (Fabric)
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.publish-curseforge-fabric == 'true'
-    needs:
-      - build-fabric
-      - determine-publish-type
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Fabric artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: fabric-artifact
-          path: Fabric/build
-      - name: Publish CurseForge
-        run: ./gradlew :Fabric:publishCurseforge
-        env:
-          PUBLISH_TYPE: ${{ needs.determine-publish-type.outputs.publish-type }}
-
-  publish-modrinth-fabric:
-    name: Publish Modrinth (Fabric)
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.publish-modrinth-fabric == 'true'
-    needs:
-      - build-fabric
-      - determine-publish-type
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Setup JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          cache: ${{ env.JAVA_CACHE }}
-      - name: Download :Fabric artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: fabric-artifact
-      - name: Publish Modrinth
-        run: ./gradlew :Fabric:publishModrinth
+        run: ./gradlew :${{ matrix.subproject }}:publishModrinth
         env:
           PUBLISH_TYPE: ${{ needs.determine-publish-type.outputs.publish-type }}
