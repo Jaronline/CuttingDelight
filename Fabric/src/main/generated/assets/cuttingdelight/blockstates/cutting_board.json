@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cuttingdelight:block/cutting_board",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cuttingdelight:block/cutting_board"
+    },
+    "facing=south": {
+      "model": "cuttingdelight:block/cutting_board",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cuttingdelight:block/cutting_board",
+      "y": 270
+    }
+  }
+}

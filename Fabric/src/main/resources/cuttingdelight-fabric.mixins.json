@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "dev.jaronline.cuttingdelight.fabric.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CuttingBoardBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

@@ -12,13 +12,13 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 
 import java.util.concurrent.CompletableFuture;
 
-public class Recipes extends RecipeProvider {
-	public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+public class ModRecipeProvider extends RecipeProvider {
+	public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
 
 	@Override
-	protected void buildRecipes(RecipeOutput recipeOutput) {
+	public void buildRecipes(RecipeOutput recipeOutput) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.CUTTING_BOARD)
 				.requires(ModItems.CUTTING_BOARD.get())
 				.unlockedBy("has_original_cutting_board", has(ModItems.CUTTING_BOARD.get()))

@@ -2,6 +2,8 @@ plugins {
     id("cuttingdelight-build")
     alias(libs.plugins.spotless)
     alias(libs.plugins.tasktree)
+    alias(libs.plugins.loom) apply false
+    alias(libs.plugins.loom.companion)
     alias(libs.plugins.moddevgradle) apply false
     alias(libs.plugins.modpublish) apply false
 }
@@ -74,17 +76,36 @@ subprojects {
     }
 
     tasks.withType<ProcessResources> {
-        var replaceProperties = mapOf(
+        val replaceProperties = mapOf(
             "minecraft_version" to cuttingdelight.mcVersion.version, "minecraft_version_range" to cuttingdelight.mcVersion.range,
-            "neo_version_range" to cuttingdelight.neoforgeVersion.range, "loader_version_range" to cuttingdelight.neoforgeLoaderVersion.range,
             "mod_id" to cuttingdelight.modId.get(), "mod_name" to cuttingdelight.modName.get(), "mod_license" to cuttingdelight.modLicense.get(),
             "mod_version" to cuttingdelight.modVersion.version, "mod_authors" to cuttingdelight.modAuthors.get(),
             "mod_credits" to cuttingdelight.modCredits.get(), "mod_description" to cuttingdelight.modDescription.get(),
-            "farmers_delight_version_range" to cuttingdelight.farmersDelightVersion.range
+            "mod_java_version" to cuttingdelight.javaVersion.version,
         )
-        inputs.properties(replaceProperties)
-        filesMatching(listOf("META-INF/neoforge.mods.toml")) {
+        val forgeReplaceProperties = mapOf(
+            "neo_version_range" to cuttingdelight.neoforgeVersion.range,
+            "neo_loader_version_range" to cuttingdelight.neoforgeLoaderVersion.range,
+            "farmers_delight_version_range" to cuttingdelight.farmersDelightVersion.range,
+        )
+        val fabricReplaceProperties = mapOf(
+            "fabric_api_version_range" to cuttingdelight.fabricApiVersionRange.version,
+            "fabric_loader_version_range" to cuttingdelight.fabricVersionRange.version,
+            "mezz_config_version_range" to cuttingdelight.mezzConfigVersionRange.version,
+            "mezz_config_gui_suggests_range" to ">=${cuttingdelight.mezzConfigGUIVersionMin.version}",
+            "mezz_config_gui_breaks_range" to "<${cuttingdelight.mezzConfigGUIVersionMin.version}",
+            "farmers_delight_version_range" to cuttingdelight.farmersDelightFabricVersion.range,
+        )
+
+        inputs.properties(replaceProperties + forgeReplaceProperties + fabricReplaceProperties)
+        filesMatching("pack.mcmeta") {
             expand(replaceProperties)
+        }
+        filesMatching("META-INF/neoforge.mods.toml") {
+            expand(replaceProperties + forgeReplaceProperties)
+        }
+        filesMatching("fabric.mod.json") {
+            expand(replaceProperties + fabricReplaceProperties)
         }
     }
 

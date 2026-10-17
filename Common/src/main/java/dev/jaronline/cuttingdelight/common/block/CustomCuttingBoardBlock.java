@@ -3,7 +3,6 @@ package dev.jaronline.cuttingdelight.common.block;
 import dev.jaronline.cuttingdelight.common.ModBlockEntityTypes;
 import dev.jaronline.cuttingdelight.common.block.entity.CustomCuttingBoardBlockEntity;
 import dev.jaronline.cuttingdelight.common.client.gui.menu.CuttingBoardMenu;
-import dev.jaronline.cuttingdelight.common.event.RightClickBlockEvent;
 import dev.jaronline.cuttingdelight.common.mixin.CuttingBoardBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -88,17 +87,13 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 	}
 
 	public static class ToolCarvingEvent {
-		public static void onSneakPlaceTool(RightClickBlockEvent event) {
-			Level level = event.getLevel();
-			BlockPos pos = event.getPos();
-			Player player = event.getEntity();
-
+		public static InteractionResult onSneakPlaceTool(Level level, BlockPos pos, Player player) {
 			ItemStack heldStack = player.getMainHandItem();
 			BlockEntity tileEntity = level.getBlockEntity(pos);
 
 			if (!player.isSecondaryUseActive() || heldStack.isEmpty() ||
 					!(tileEntity instanceof CustomCuttingBoardBlockEntity cuttingBoard)) {
-				return;
+				return InteractionResult.PASS;
 			}
 
 			if (cuttingBoard.carveToolOnBoard(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
@@ -108,15 +103,11 @@ public class CustomCuttingBoardBlock extends CuttingBoardBlock {
 
 				Vec3 centerPos = pos.getCenter();
 				level.playSound(null, centerPos.x(), centerPos.y(), centerPos.z(), ModSounds.BLOCK_CUTTING_BOARD_CARVE.get(), SoundSource.BLOCKS, 1.0F, 0.8F);
-				event.setCanceled(true);
-				event.setCancellationResult(InteractionResult.SUCCESS);
-				return;
+				return InteractionResult.SUCCESS;
 			}
 
-			if (cuttingBoard.processStoredItemUsingTool(heldStack, player)) {
-				event.setCanceled(true);
-				event.setCancellationResult(InteractionResult.SUCCESS);
-			}
+			return cuttingBoard.processStoredItemUsingTool(heldStack, player) ?
+					InteractionResult.SUCCESS : InteractionResult.PASS;
 		}
 	}
 }

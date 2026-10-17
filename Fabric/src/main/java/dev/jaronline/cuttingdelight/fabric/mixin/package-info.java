@@ -1,4 +1,4 @@
 @NullMarked
-package dev.jaronline.cuttingdelight.common.event;
+package dev.jaronline.cuttingdelight.fabric.mixin;
 
 import org.jspecify.annotations.NullMarked;
