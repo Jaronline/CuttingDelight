@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jspecify.annotations.NullUnmarked;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
@@ -117,6 +118,7 @@ public class CuttingBoardMenu extends AbstractContainerMenu {
 		return this.selectedRecipeIndex.get();
 	}
 
+	@NullUnmarked
 	public CuttingBoardRecipe getSelectedRecipe() {
 		if (this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
 			return this.recipes.get(this.selectedRecipeIndex.get()).value();

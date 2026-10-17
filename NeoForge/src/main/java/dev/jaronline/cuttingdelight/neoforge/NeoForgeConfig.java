@@ -13,7 +13,7 @@ public class NeoForgeConfig implements PlatformConfig {
 	public static final ModConfigSpec.BooleanValue PROCESS_STACK = BUILDER
 			.comment("Whether to allow processing the entire stack on the cutting board when using a tool.",
 					"If false, only one item will be processed at a time.")
-			.translation("cuttingdelight.configuration.process_stack")
+			.translation("cuttingdelight.configuration.general.process_stack")
 			.define("processStack", true);
 
 	static final ModConfigSpec SPEC = BUILDER.build();

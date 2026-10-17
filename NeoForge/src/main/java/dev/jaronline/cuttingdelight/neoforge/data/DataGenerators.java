@@ -1,7 +1,8 @@
 package dev.jaronline.cuttingdelight.neoforge.data;
 
 import dev.jaronline.cuttingdelight.common.ModIds;
-import dev.jaronline.cuttingdelight.common.data.Recipes;
+import dev.jaronline.cuttingdelight.common.data.ModBlockTagsProvider;
+import dev.jaronline.cuttingdelight.common.data.ModRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -26,9 +27,9 @@ public class DataGenerators {
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-		generator.addProvider(event.includeServer(), new BlockTags(output, lookupProvider, existingFileHelper));
+		generator.addProvider(event.includeServer(), new ModBlockTagsProvider(output, lookupProvider));
 
-		generator.addProvider(event.includeServer(), new Recipes(output, lookupProvider));
+		generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookupProvider));
 		generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(), List.of(
 			new LootTableProvider.SubProviderEntry(BlockLoot::new, LootContextParamSets.BLOCK)
 		), lookupProvider));

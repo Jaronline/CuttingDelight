@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}debug",
+  "version": "${mod_version}",
+  "name": "${mod_name}: Debug",
+  "description": "Debug plugin for Cutting Delight.",
+  "license": "MIT",
+  "environment": "*",
+  "depends": {
+    "fabricloader": "${fabric_loader_version_range}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=${mod_java_version}",
+    "fabric-api": "${fabric_api_version_range}",
+    "farmersdelight": "${farmers_delight_version_range}",
+    "${mod_id}": "${mod_version}"
+  }
+}

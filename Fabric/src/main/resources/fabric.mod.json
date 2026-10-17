@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": ["${mod_authors}"],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/cutting-delight",
+    "sources": "https://github.com/Jaronline/CuttingDelight",
+    "issues": "https://github.com/Jaronline/CuttingDelight/issues"
+  },
+  "license": "${mod_license}",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.jaronline.cuttingdelight.fabric.CuttingDelight"],
+    "client": ["dev.jaronline.cuttingdelight.fabric.CuttingDelightClient"],
+    "fabric-datagen": ["dev.jaronline.cuttingdelight.fabric.data.DataGenerator"]
+  },
+  "mixins": [
+    "cuttingdelight-common.mixins.json",
+    "cuttingdelight-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "${fabric_loader_version_range}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=${mod_java_version}",
+    "fabric-api": "${fabric_api_version_range}",
+    "farmersdelight": "${farmers_delight_version_range}",
+    "mezz_config": "${mezz_config_version_range}"
+  },
+  "suggests": {
+    "mezz_config_api": "${mezz_config_gui_suggests_range}"
+  },
+  "breaks": {
+    "mezz_config_gui": "${mezz_config_gui_breaks_range}"
+  }
+}

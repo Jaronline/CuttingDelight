@@ -3,9 +3,15 @@
 
   "block.cuttingdelight.cutting_board": "Cutting Board",
 
+  "cuttingdelight.config.screen.title": "Cutting Delight Config",
   "cuttingdelight.configuration.title": "Cutting Delight Configs",
   "cuttingdelight.configuration.section.cuttingdelight.common.toml": "Cutting Delight Configs",
   "cuttingdelight.configuration.section.cuttingdelight.common.toml.title": "Cutting Delight Configs",
-  "cuttingdelight.configuration.process_stack": "Process Stack",
-  "cuttingdelight.configuration.process_stack.tooltip": "Whether to allow processing the entire stack on the cutting board when using a tool.\nIf disabled, only one item will be processed at a time."
+  "cuttingdelight.configuration.general": "General",
+  "cuttingdelight.configuration.general.description": "",
+  "cuttingdelight.configuration.general.process_stack": "Process Stack (Deprecated)",
+  "cuttingdelight.configuration.general.process_stack.description": "Whether to allow processing the entire stack on the cutting board when using a tool.\nIf disabled, only one item will be processed at a time.",
+  "cuttingdelight.configuration.general.process_stack.tooltip": "Whether to allow processing the entire stack on the cutting board when using a tool.\nIf disabled, only one item will be processed at a time.",
+  "cuttingdelight.configuration.general.process_stack.value.true.description": "Process the entire stack on the cutting board.",
+  "cuttingdelight.configuration.general.process_stack.value.false.description": "Process a single item on the cutting board at a time."
 }

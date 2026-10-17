@@ -25,13 +25,19 @@ abstract class CuttingDelightBuildPlugin(val project: Project) {
     val neoformVersion = versionLookup("neoform")
     val javaVersion = versionLookup("java")
 
+    val fabricVersionRange = versionLookup("fabric.range")
+    val fabricApiVersionRange = versionLookup("fabric.api.range")
+
     val neoforgeVersion = versionLookup("neoforge")
     val neoforgeLoaderVersion = versionLookup("neoforge.loader")
 
     val parchmentMCVersion = versionLookup("parchment.minecraft")
     val parchmentMappingsVersion = versionLookup("parchment.mappings")
 
+    val mezzConfigVersionRange = versionLookup("mezz.config.range")
+    val mezzConfigGUIVersionMin = versionLookup("mezz.config.gui.min")
     val farmersDelightVersion = versionLookup("farmersdelight")
+    val farmersDelightFabricVersion = versionLookup("farmersdelight.fabric")
 
     val modrinthToken = environmentVariable("MODRINTH_TOKEN")
     val curseforgeApiKey = environmentVariable("CURSEFORGE_API_KEY").orElse("0")

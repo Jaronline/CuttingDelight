@@ -4,8 +4,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class Bootstrapper {
-	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static void boostrapByRegistryKey(ResourceKey<? extends Registry<?>> registryKey) {
 		if (registryKey.equals(Registries.BLOCK)) {
 			ModBlocks.bootstrap();
@@ -18,5 +18,13 @@ public final class Bootstrapper {
 		} else if (registryKey.equals(Registries.MENU)) {
 			ModMenuTypes.boostrap();
 		}
+	}
+
+	public static void boostrapAll() {
+		ModBlocks.bootstrap();
+		ModBlockEntityTypes.bootstrap();
+		ModItems.boostrap();
+		ModCreativeTabs.bootstrap();
+		ModMenuTypes.boostrap();
 	}
 }
