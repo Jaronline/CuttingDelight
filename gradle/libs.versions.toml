@@ -34,7 +34,7 @@ farmersdelight-fabric = { strictly = ">=1.21.1-3.3.0", prefer = "1.21.1-3.3.6" }
 farmersdelight-mc = "1.21.1-1.3.2"
 farmersdelight-fabric-mc = "1.21.1-3.3.6+refabricated"
 ## Mezz
-jei = "19.57.0.451"
+jei = "19.69.0.456"
 mezz-config = "0.6.8"
 mezz-config-range = ">=0.5.0 <1.0.0"
 mezz-config-gui = "mc1.21.1-0.5.5"
